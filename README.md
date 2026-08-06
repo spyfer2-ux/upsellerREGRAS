@@ -808,3 +808,109 @@ Os outros 7 anuncios de Etios continuam pausados/inativados.
 | GRX019VW (STS118VW) | 2 |
 | GRX037VW (STS125VW) | 3 |
 | TOTAL DE SKUs CORRIGIDOS | 1.228 |
+
+## 24. Lote 8 - anuncios com SKU = ID do anuncio MLB
+
+### 24.1 O que foi varrido
+
+Varredura completa do cache __ML nas 4 lojas em escopo, procurando itemSku que comeca com MLB.
+
+| Situacao | Anuncios |
+|---|---|
+| ATIVOS com SKU no formato MLB | 329 |
+| PAUSADOS ou EM REVISAO com SKU no formato MLB | 128 |
+| Total no escopo | 457 |
+
+Formatos nos ativos: MLB puro 206, MLBU 51, MLB com sufixo 51, MLB_variacao 21.
+Lojas: AUTOPLUS 319, Jz acessorios 10.
+
+### 24.2 Metodo - as bases confiaveis
+
+Base A - CODIGO NA PROPRIA DESCRICAO. Regex no campo descricao do anuncio procurando tokens
+da gramatica GRX / GR / MDM / FUN / STS / FGS / FXS. 44 anuncios tinham codigo. Depois
+normalizacao pelas regras do repo: STS e FGS viram GRX, FUN vira GR menos a familia FUN240,
+-TIC sai, GR112-113 vira GR100-101, GR333-FUN334 vira GR333-334.
+
+Base B - TITULO IDENTICO. Titulo normalizado igual ao de um anuncio de referencia que ja tem
+SKU bom. 18.398 anuncios de referencia entre ML e Shopee. So aceita se todos os candidatos
+convergirem para o MESMO codigo depois da normalizacao. 35 anuncios.
+
+Base C - MELHOR SIMILARIDADE. Score = 2x Jaccard de modelos + Jaccard de anos, exigindo tipo
+e LED iguais. So aceita score maximo 3.0 com unanimidade apos normalizacao. 29 candidatos.
+
+### 24.3 Os 3 filtros de seguranca antes de gravar
+
+Filtro 1 - COERENCIA DE TIPO. KIT so aceita GRX. PAR so aceita GR###-### ou MDM###-### ou
+FUN240-2. UNI so aceita GR### ou MDM###. ACC so aceita MDM.
+
+Filtro 2 - COERENCIA DE MODELO contra a descricao do catalogo. Exemplo: GRX030VW e Fox 03/09,
+entao nao pode entrar em anuncio de Ranger.
+
+Filtro 3 - COERENCIA DE ANO contra a faixa do catalogo. Exemplo: Sandero e Logan 2007 a 2009
+nao pode ser GRX905RN que e 11/14; seria GRX907RN que e 07/11.
+
+Esses filtros derrubaram 8 propostas que o matcher tinha dado como certas. Sem eles teriam
+entrado SKUs errados no ar. REGRA NOVA: matcher por titulo NUNCA grava sozinho, sempre passa
+pelo catalogo antes.
+
+### 24.4 Resultado
+
+| Etapa | Anuncios | Gravados |
+|---|---|---|
+| Rodada 1 - descricao + titulo identico | 50 | 50 |
+| Rodada 2 - similaridade validada no catalogo | 18 | 18 |
+| TOTAL LOTE 8 | 68 | 68 |
+
+100 por cento verificado relendo o itemSku por idStr depois de gravar.
+
+### 24.5 Achado tecnico novo
+
+O anuncio MLB4793296370 tinha SKU de variacao no formato MLB4793296370_180743907080 e nao
+aceitou o replace com isVariantSku igual a 1. Gravou de primeira com isVariantSku igual a 0.
+REGRA: se falhar com isVariantSku 1, tentar 0 antes de desistir.
+
+### 24.6 Pendencias do lote 8 - retomar aqui
+
+| Grupo | Anuncios | Motivo |
+|---|---|---|
+| Linha GM | 31 | parqueada por ordem do dono |
+| Duvida real | 10 | lista abaixo |
+| Sem evidencia nenhuma | 220 | sem codigo na descricao e sem titulo equivalente |
+| Pausados ou em revisao | 128 | nao mexidos nesta rodada |
+
+| Anuncio | Proposta | Titulo | Duvida |
+|---|---|---|---|
+| MLB4568323147 | GR333-334 | Farol De Neblina Corolla 2018 2019 | unitario sem lado no titulo |
+| MLB4566380429 | GR333-334 | Farol De Milha Corolla 2015 2016 2017 | unitario sem lado no titulo |
+| MLB4566775059 | FXS6002VW | Farol De Milha Up 12 a 2020 Lado Direito | dono mandou pausar FXS6002VW |
+| MLB6530773398 | GRX1105CT | Kit Farol Milha Aircross 2018 2019 | dono mandou pausar Aircross |
+| MLB6680884426 | GRX030VW | Kit Farol Milha Ranger 2012 a 2015 + Led | GRX030VW e Fox, nao Ranger |
+| MLB4615519939 | GRX905RN | Kit Fiesta Rocam 2011 a 2014 | catalogo diz Logan e Sandero; Rocam seria GRX439FD |
+| MLB4589331285 | GRX905RN | Kit Fiesta Rocam 2011 a 2014 | mesmo caso acima |
+| MLB4587291073 | GRX905RN | Kit Citroen C4 Cactus 2019 a 2021 | catalogo nao cobre C4 Cactus |
+| MLB6575163952 | GRX068VW-MH8 | Kit Gol Voyage G6 2012 a 2016 | GRX068VW nao existe no catalogo |
+| MLB4568306839 | GRX158FT-LH8 | Kit Duster Oroch 2020 a 2022 | GRX158FT e Argo, Cronos e Mobi |
+
+Perfil dos 220 sem evidencia: KIT 79, PAR 74, UNI 42, LAMP 14, ACC 11.
+Modelos mais frequentes: Fiat 22, Gol 17, Ka 16, Siena 15, Ford 14, Palio 13, Jeep Renegade 13,
+Saveiro 12, Citroen 12, Renault 11, Fiesta 11, Voyage 10, C3 10, Honda 9, Strada 8, Corolla 8.
+
+Para esses 220 nao da para inferir com seguranca. O caminho e o dono confirmar por familia,
+igual foi feito com STS118VW e STS125VW.
+
+### 24.7 Acumulado geral
+
+| Frente | Anuncios |
+|---|---|
+| Shopee, lotes 1 a 5 | 856 |
+| Mercado Livre, lote 6 | 248 |
+| Lote 7, ML + Shopee | 119 |
+| GRX019VW + GRX037VW | 5 |
+| Lote 8, SKU igual ao ID MLB | 68 |
+| TOTAL DE SKUs CORRIGIDOS | 1.296 |
+
+### 24.8 Memoria viva na aba do UpSeller
+
+window.__LOTE9 guarda: feitos, res1, res2, hold, semEv, gm, outrosEstados.
+Helpers novos: __POST para JSON, __PF para form-urlencoded, __getML para reler SKU por MLB,
+__CATD com o trecho do catalogo usado, __normSku com as conversoes de familia.
