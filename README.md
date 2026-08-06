@@ -599,30 +599,23 @@ GRX012VW (cromo + colante), GRX014VW (cromo + original), GRX016VW (preta + origi
 GRX028VW (cromo + tic tac), GRX031VW (preta + tic tac). Nenhum era preta + colante, que e
 exatamente o buraco que GRX019VW preenche.
 
-### 19.2 STS125VW - NAO aplicar GRX033VW
+### 19.2 STS125VW - RESOLVIDO: GRX037VW
 
-O dono chutou GRX033VW ("acho que e"), mas o proprio catalogo desmente:
+Historico: o dono chutou GRX033VW, eu apontei que o catalogo dizia Polo 03/06 botao original e
+sugeri GRX052VW (Polo 07/12 tic tac). O dono decidiu GRX037VW.
 
-| Codigo | Descricao no catalogo |
-|---|---|
-| GRX033VW | KIT FAROL DE MILHA POLO 03/06 MOLDURA PRETA BOTAO MODELO ORIGINAL |
-| GRX052VW | KIT FAROL DE MILHA POLO 07/12 MOLDURA PRETA BOTAO TIC TAC 2 PINOS |
+    GRX037VW = KIT FAROL DE MILHA POLO 07/09 MOLDURA PRETA BOTAO ALTERNATIVO COLANTE
 
-Os anuncios STS125VW tem titulo "Kit Farol Milha Polo 2007 A 2010 11 Botao Modelo Tic Tac Branco"
-e descricao "2 Molduras Pretas + 1 Botao Alternativo Tic Tac", encaixe HB4.
-Ano bate, moldura bate, botao bate: o casamento correto e GRX052VW, nao GRX033VW.
-GRX033VW erra no ano (03/06) e no botao (modelo original).
+APLICADO em 3 anuncios ML da AUTOPLUS: MLB4793353904 (17 vendas), MLB3743814673 (4 vendas) e
+id 4398046878538169 (ja estava pausado).
 
-A regra "se nao tiver vendas ja sabe" NAO se aplica aqui, porque estes anuncios VENDEM:
+ATENCAO - texto do anuncio desencontrado do SKU: o titulo diz "Botao Modelo Tic Tac" e a descricao
+diz "1 Botao Alternativo Tic Tac", mas GRX037VW e botao ALTERNATIVO COLANTE. Provavel consolidacao
+de estoque (mesma coisa que aconteceu com as Stradas no lote 6, quando o botao touch saiu de linha).
+Se for isso, titulo e descricao desses anuncios precisam ser corrigidos de tic tac para colante.
 
-| Anuncio | Loja | Vendas | Visitas | Estoque | Preco |
-|---|---|---|---|---|---|
-| MLB4793353904 | AUTOPLUS | 17 | 283 | 98 | 196,45 |
-| MLB3743814673 | AUTOPLUS | 4 | 60 | 995 | 196,63 |
-| id 4398046878538169 | AUTOPLUS | - | - | - | ja pausado |
-
-Nada foi gravado e nada foi pausado. Aguarda o dono confirmar GRX052VW.
-
+Nota: GRX037VW ja era usado por 1 anuncio Shopee da MULTIPARTS (job STS037VW >> GRX037VW do lote 7),
+entao agora os dois produtos compartilham o codigo.
 ---
 
 ## 20. Mapa da API do UpSeller (base do agente de precos e promocoes)
@@ -743,7 +736,75 @@ O lote 7 nao contem nenhum item BFM, Etios ou GRX010VW, entao as pausas acima na
 
 Pendencias abertas:
 
-- STS125VW: confirmar GRX052VW (item 19.2).
 - GRX019VW: cadastrar na planilha de catalogo (item 19.1).
-- MLB4386427336: 27 unidades paradas no Fulfillment do ML.
+- GRX113VW, GRX240FT, GR159-160, GRX404FD: em uso nos anuncios mas AUSENTES do catalogo. Cadastrar.
+- Titulos/descricoes do GRX037VW dizem tic tac mas o codigo e colante (item 19.2).
 - Linha GM continua parada, por decisao do dono.
+
+---
+
+## 23. Lote 7 - execucao (06/08/2026)
+
+GO dado pelo dono. 119 anuncios, 66 pares distintos, 75 ML + 44 Shopee, nas 4 lojas do item 17.
+Agrupado por (plataforma + sku antigo + sku novo) = 79 chamadas, uma por grupo.
+
+Resultado: **121 de 121 anuncios conferidos com o SKU correto** (119 do lote 7 + 2 do STS125VW).
+
+| Etapa | Numero |
+|---|---|
+| Grupos enviados | 79 |
+| Anuncios | 119 |
+| Gravaram de primeira | 108 |
+| Precisaram de reenvio | 13 |
+| Falharam no final | 0 |
+
+Os 13 que precisaram de reenvio eram todos ML. Reenviados individualmente usando o SKU ATUAL como
+oldReplaceStr, ate 3 tentativas cada, com releitura entre as tentativas. Todos os 13 entraram.
+Inclusive MLB1974809019, que trazia o erro SIDE_POSITION: dessa vez destravou no reenvio.
+Licao: SIDE_POSITION nem sempre e definitivo, vale sempre tentar o reenvio individual.
+
+### 23.1 ARMADILHA NOVA E IMPORTANTE: oldReplaceStr e SUBSTRING, nao match exato
+
+O campo oldReplaceStr do batch-online-sku faz substituicao de PEDACO do texto, nao comparacao
+do SKU inteiro. Um grupo pensado para um SKU curto invade os SKUs longos que comecam igual.
+
+Caso real do lote 7: o grupo FUN207-208 >> GR207-208 pegou tambem o anuncio MLB3635552109, cujo
+SKU era FUN207-208-MDM339-340. Virou GR207-208-MDM339-340.
+
+Nesse caso deu certo por sorte, porque o resultado e justamente o SKU correto do produto
+(titulo: Par Moldura Par Farolete Milha Polo 2007 a 2012, ou seja par de farois + par de molduras).
+Foi mantido assim de proposito. Mas podia ter estragado.
+
+REGRA A PARTIR DE AGORA: antes de disparar um lote, ordenar os grupos do SKU antigo MAIS LONGO
+para o MAIS CURTO, ou conferir se algum oldReplaceStr e prefixo de outro. Se for, separar em
+rodadas diferentes e reconferir entre elas.
+
+### 23.2 Correcoes pontuais feitas na reconferencia
+
+| Anuncio | Ficou | Virou | Motivo |
+|---|---|---|---|
+| MLB1974802075 | GR100-2-MH8 | GR100-101-MH8 | GR100-2 nao existe na gramatica, par e GR100-101 |
+| MLB4812283094 | GRX013VW | GRX113VW | titulo e Gol G4 Bt Tic Tac; GRX013VW e colante |
+| MLB3635552109 | GR207-208-MDM339-340 | mantido | ver 23.1, o valor esta certo |
+
+O titulo do MLB1974802075 e um bom exemplo da regra do LED do item 3.4:
+"Par Farol Neblina L200 Triton 2007 2008 09 Super Led E Pingo Branco".
+Super Led conta e vira M (encaixe H8, entao -MH8). O pingo T10 e ignorado no SKU.
+
+### 23.3 MLB4386427336 reativado
+
+Par Farol Milha Etios, SKU GR159-160, AUTOPLUS, 27 unidades no Fulfillment, 3 vendas.
+Tinha sido pausado junto com a leva de Etios. O dono mandou despausar por causa do estoque parado.
+Reativado pela UI: Pausados > selecionar > Acoes em Massa > Mais > Reativar. Confirmado online.
+Os outros 7 anuncios de Etios continuam pausados/inativados.
+
+### 23.4 Acumulado
+
+| Frente | Anuncios |
+|---|---|
+| Shopee, lotes 1 a 5 | 856 |
+| Mercado Livre, lote 6 | 248 |
+| Lote 7 (ML + Shopee) | 119 |
+| GRX019VW (STS118VW) | 2 |
+| GRX037VW (STS125VW) | 3 |
+| TOTAL DE SKUs CORRIGIDOS | 1.228 |
