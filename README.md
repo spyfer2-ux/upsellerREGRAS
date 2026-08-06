@@ -174,6 +174,13 @@ Filtro de coerencia de tipo: KIT -> GRX*, PAR -> GR###-### ou MDM###-###, UNI ->
 - `GRX449FD` e o unico Ka botao universal/tic tac sem led que existe: pode manter mesmo quando o titulo diz 2015 a 2021
 - Sem SKU definido, vao para relatorio: MF003, MF004, MF005, BFM478, DLT633, GRXHRV, MDM517-518, GRX600MS, GRX789CV, GRX209HD
 
+### Decisoes do lote 5 (dono, 06/08/2026)
+
+- `FXS1000UN` e farol UNIVERSAL, cabe nos dois lados. Migra para `GR100` (LD), `GR101` (LE) ou `GR100-101` (par).
+- `GRX014VW-X8K` estava errado: o correto e `GRX014VW-XHB4` (X de xenon, encaixe HB4). Anuncio continua ATIVO.
+- `GRX460FD` e kit valido do Fiesta Rocam (nao esta na planilha de catalogo, mas existe).
+- `GRX449FD` fica como esta: so existe a versao tic-tac sem LED.
+
 ### Prefixos ainda NAO definidos (relatorio)
 
 `FXS1000UN`, `FXS6002VW`, `FXS188UND-FXS188UNE`, `FLU363-1-2`, `FLU436`, `FLU527YMC`, `RS742BL`, `CHI594`, `ATP907RN-LH8`, `DLHD19`, `DLT633`, `MF003/004/005`, `GRX014VW-X8K`, `GRX037HY-RB4`
@@ -257,6 +264,16 @@ GR100-101 (Symbol, Kwid, Argo, Fiesta Rocam, HR-V) + migracao de 15 anuncios que
 
 ---
 
+### Lote 5 (14 anuncios, todos OK)
+
+| Titulo | SKU aplicado | Anuncios |
+| --- | --- | --- |
+| Par Farol De Milha Ford Ranger 2013-2018 (desc: FXS1000UN) | `GR100-101` | 10 |
+| Kit Farol De Milha Gol Saveiro Voyage G5 Xenon 8k | `GRX014VW-XHB4` | 3 |
+| Kit Farol De Neblina Fiesta Rocam 2010-2014 Branco | `GRX460FD` | 1 |
+
+Verificado na UI depois de gravar: os 3 grupos voltaram com o SKU novo.
+
 ## 11. Rejeicoes manuais (nao aplicar sem revisao)
 
 Duster 12/15 com GRX927RN (catalogo diz Logan/Sandero 15/20); Ka 15/19 e Novo Ka 18/20 com GRX905RN;
@@ -265,6 +282,28 @@ Strada suporte com MDM377-378; Gol G5 com GRX032VW; Renegade lente de vidro; Mas
 Ford Ranger 2024/2025 com descricao de Argo/Cronos (FGS0142FT).
 
 ---
+
+### PAUSADOS pelo dono no lote 5 (67 anuncios, nao mexer)
+
+Motivo geral: produto que ele nao fabrica/vende mais, ou que ainda nao tem codigo definido.
+
+| Codigo na descricao | Produto | Anuncios |
+| --- | --- | --- |
+| GRX1105CT | Kit Aircross 2018/2019 | 7 |
+| GRX1108CT | Kit Citroen C3 22 | 1 |
+| GRX322NS | Kit Versa 2020/2022 | 6 |
+| GRX474FD | Kit Ka 2015/2021 branco | 5 |
+| GRX054VW | Kit Gol/Voyage G8 2018/2023 | 1 |
+| FXS6002VW | Farol Up 12/20 lado direito (nao tem) | 9 |
+| FXS188UND / FXS188UNE | Universal full LED (nao tem) | 8 |
+| FLU363-1-2 | Shooter lateral strobo 36w | 6 |
+| FLU436 | Barra slim 12 LED 36w | 5 |
+| FLU527YMC | Quadrado 9 LED 27w amarelo | 1 |
+| RS742BL | Redondo 14 LED 42w off-road | 7 |
+| DLHD19 | DRL HR-V 2019/2020 | 3 |
+| DLT633 | Moldura daylight Corolla 15/17 | 1 |
+| MF005 | Moldura Gol G5 / Voyage | 5 |
+| ZH11 | Par lampada super LED H11 | 5 |
 
 ## 12. Armadilhas tecnicas
 
