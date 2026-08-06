@@ -313,3 +313,156 @@ Motivo geral: produto que ele nao fabrica/vende mais, ou que ainda nao tem codig
 - O texto depois do codigo gruda no match se a regex for permissiva demais. Delimitar bem.
 - Concorrencia segura na gravacao: 3 requisicoes em paralelo com 120ms de intervalo.
 - O catalogo tem descricoes duplicadas em codigos diferentes (ex: GRX090JP e GRX093JP tem o mesmo texto). Nesses casos so a foto resolve.
+
+## 13. Mercado Livre - onde ficam os anuncios e como gravar
+
+Os anuncios do ML ficam em **Produtos > Mercado Livre > User Product** (`/pt/products/mercado/up-active`).
+Abas: Ativos, Pausados, Revisando, Inativos, Excluidos pelo ML. Visoes: Por Familia e Por Anuncio.
+
+Listagem (form-urlencoded):
+
+    POST /api/mercado/user-product/index
+    dataType=2 hasCatalogProduct=0 sortName=3 sortValue=0 pageNum=N pageSize=50
+    productState=active|paused|under_review  state=online
+    (busca por anuncio: searchType=3 searchValue=MLBxxxxxxxx)
+
+pageSize e limitado a 50. Campos uteis: id (idStr), itemId, userProductId, itemSku, title,
+categoryPath, state, description, shopName, soldQuantity, visit, availableQuantity, health,
+price, familyName, **errMsg**, hasVariation.
+
+Gravacao de SKU (JSON) - mesmo formato da Shopee, so muda o caminho:
+
+    POST /api/mercado/user-product/batch-online-sku
+    {"type":1,"startNumber":"","isVariantSku":1,"prefixType":0,"suffixType":0,
+     "idList":["<idStr>"],"oldReplaceStr":"<sku antigo>","newReplaceStr":"<sku novo>"}
+
+Aceita varios ids no mesmo idList quando o par antigo/novo e igual.
+Na interface: selecionar linhas > Acoes em Massa > Editar SKU > aba **Modificar SKU** >
+"Caracter do SKU" + "Substituir com" > Atualize ao Mercado Livre.
+
+Pausar: selecionar > Acoes em Massa > Mais > Pausar > confirmar.
+
+### Cuidado: resposta code:0 nao garante gravacao
+
+O endpoint sempre responde `{"code":0,"msg":"success"}` e enfileira um processo
+(`PRODUCT:MERCADO_USER_PRODUCTACTION_PRODUCT_BATCH_SKUONLINE:...`). A gravacao pode falhar
+depois, em silencio. **Sempre reconferir** relendo `/index` e comparando itemSku.
+Reenviar ajuda nos casos transitorios; o que nao muda depois de 3 tentativas esta travado.
+
+### Motivo real de travamento: atributo invalido no ML
+
+Quando o campo `errMsg` traz
+
+    error-3510-invalid.item.attribute.values: Attribute [SIDE_POSITION] is not valid,
+    item values [(null:Ambos os lados)]
+
+o Mercado Livre recusa **qualquer** atualizacao do anuncio, inclusive SKU. Nao e problema do
+UpSeller. Precisa corrigir o atributo Lado/Posicao no anuncio antes.
+
+## 14. Decisoes do dono - lote 6
+
+| Codigo antigo | Decisao | Observacao |
+|---|---|---|
+| STS256FT, GRX230FT, STS230FT | **GRX132FT** | "TODOS ESSAS STRADAS SAO GRX132FT". Botao touch/universal nao existe mais no estoque |
+| STS905K-MH11 | **GRX905RN-MH11** | Ford Ka botao alternativo; o -MH11 indica o LED |
+| STS006VW | **GRX006VW** | Produto continua ATIVO, so troca o prefixo |
+| GRX086VW-LH3 | **PAUSAR** | Golf 98/02. Unico ativo pausado: MLB6574344204 |
+| STS165FT-LH1-PINGOT10 | PAUSADO | sem vendas (MLB4586708871) |
+| STS903RN-LH11-PINGOT10 | PAUSADO | sem vendas (MLB4586681555) |
+| STS010VW | GRX032VW (**em conferencia**) | ver secao 15 |
+| Saveiro G6 sem moldura | mesmo bloco do Gol G5 = GR207-208 | ver secao 15 |
+
+## 15. Pendencia aberta - STS010VW / Saveiro G6
+
+O dono indicou `STS010VW = GRX032VW`, mas no catalogo:
+
+- **GRX032VW** = KIT FAROL DE MILHA **POLO 12/16** MOLDURA CROMO BOTAO QUADRADO MODELO ORIGINAL
+- **GRX014VW** = KIT FAROL DE MILHA **GOL G5** MOLDURA CROMO BOTAO MODELO ORIGINAL
+- **GRX028VW** = KIT FAROL DE MILHA **GOL G5** MOLDURA CROMO BOTAO TIC TAC 2 PINOS
+- **GR207 / GR208** = FAROL MILHA GOL G5 / POLO 07/11 / FOX 10/14 POLICARBONATO LE / LD
+
+Todos os anuncios STS010VW tem titulo **Gol G5 2008 a 2012**, nao Polo 12/16.
+Por isso nada foi gravado: aguarda confirmacao. Sao 14 anuncios (4 ML + 10 Shopee).
+
+Dois anuncios Shopee do grupo nao sao Gol G5 e tambem esperam definicao:
+
+- 23899335537 - Saveiro G6 2013/2016 "Sem Moldura", mas a descricao lista 2 farois +
+  **2 molduras** + botao modelo original + halogena HB4 + pingo T10. E kit completo.
+- 21197919410 - "Gol Polo Fox Golf Voyage", generico, sem modelo definido.
+
+## 16. Resultado do lote 6
+
+| Bloco | Enviados | Gravados |
+|---|---|---|
+| ML-1 limpo (STS/FGS/FXS0->GRX, FUN->GR, -TIC, codigos aposentados) | 239 | ver total |
+| ML-2 pares GR + GRX905RN + STS905K-MH11 | 47 | ver total |
+| ML-3 resolvidos por evidencia de botao | 7 | ver total |
+| Stradas -> GRX132FT (ML) | 6 | 5 (1 em Revisando nao aceita) |
+| Stradas -> GRX132FT (Shopee) | 2 | 2 |
+| STS006VW -> GRX006VW | 1 | 1 |
+| **Total** | **302** | **248** |
+
+54 anuncios nao aceitaram a gravacao: 39 com o erro SIDE_POSITION do ML, 15 sem mensagem
+mesmo apos 3 reenvios. Lista para conferir com foto:
+
+| ID do anuncio | SKU atual | SKU desejado |
+|---|---|---|
+| MLB6627863170 | STS145FT | GRX145FT |
+| MLB6627863234 | STS145FT | GRX145FT |
+| MLB6627863186 | STS145FT | GRX145FT |
+| MLB6627863208 | STS145FT | GRX145FT |
+| MLB6627863228 | STS145FT | GRX145FT |
+| MLB6627863178 | STS145FT | GRX145FT |
+| MLB6627863172 | STS145FT | GRX145FT |
+| MLB6627863196 | STS145FT | GRX145FT |
+| MLB6627863216 | STS145FT | GRX145FT |
+| MLB6627863158 | STS145FT | GRX145FT |
+| MLB6627863198 | STS145FT | GRX145FT |
+| MLB6627863218 | STS145FT | GRX145FT |
+| MLB6627863160 | STS145FT | GRX145FT |
+| MLB6627863230 | STS145FT | GRX145FT |
+| MLB6627863238 | STS145FT | GRX145FT |
+| MLB6627863212 | STS145FT | GRX145FT |
+| MLB6627863174 | STS145FT | GRX145FT |
+| MLB6627863184 | STS145FT | GRX145FT |
+| MLB6627863206 | STS145FT | GRX145FT |
+| MLB6627863200 | STS145FT | GRX145FT |
+| MLB6627863220 | STS145FT | GRX145FT |
+| MLB6627863162 | STS145FT | GRX145FT |
+| MLB6627863168 | STS145FT | GRX145FT |
+| MLB6627863232 | STS145FT | GRX145FT |
+| MLB6627863226 | STS145FT | GRX145FT |
+| MLB6627863154 | STS145FT | GRX145FT |
+| MLB6627863202 | STS145FT | GRX145FT |
+| MLB6627863222 | STS145FT | GRX145FT |
+| MLB6627863188 | STS145FT | GRX145FT |
+| MLB6627863210 | STS145FT | GRX145FT |
+| MLB6627863190 | STS145FT | GRX145FT |
+| MLB6627863182 | STS145FT | GRX145FT |
+| MLB6627863214 | STS145FT | GRX145FT |
+| MLB4455302919 | FUN112 | GR100-101 |
+| MLB4650858208 | STS036VW | GRX036VW |
+| MLB3484510335 | STS095JP | GRX095JP |
+| MLB4650910482 | STS406FD-UHB4 | GRX406FD-UHB4 |
+| MLB3504482145 | FGS0319NS | GRX319NS |
+| MLB3688155717 | FUN205-206 | GR205-206 |
+| MLB4658464840 | FUN205-206 | GR205-206 |
+| MLB3696032215 | FUN205-206 | GR205-206 |
+| MLB3526333829 | STS537TA | GRX537TA |
+| MLB3307995739 | STS207HD-LH8 | GRX207HD-LH8 |
+| MLB2080246362 | STS101FT | GRX101FT |
+| MLB2070941163 | STS207HD | GRX207HD |
+| MLB2012063205 | STS100FT | GRX100FT |
+| MLB4696403604 | STS147FT-MH8 | GRX147FT-MH8 |
+| MLB3496633197 | STS207HD | GRX207HD |
+| MLB3491721601 | STS154FT | GRX154FT |
+| MLB3485735595 | STS905RN-MH11 | GRX905RN-MH11 |
+| MLB3479108887 | STS906RN | GRX906RN |
+| MLB3479070441 | FUN100-101-MH8 | GR100-101-MH8 |
+| MLB6627863738 | FUN118 | GR118 |
+| MLB6627863740 | FUN117 | GR117 |
+| MLB3923513762 | FUN207-208-XHB4 | GR207-208-XHB4 |
+| MLB4456127595 | STS230FT | GRX132FT |
+| MLB4818991419 | GRX230FT | GRX132FT |
+
+Acumulado desde o lote 1: 856 Shopee + 248 Mercado Livre.
