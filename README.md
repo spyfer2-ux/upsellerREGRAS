@@ -16,7 +16,7 @@ Universo: 14.337 anuncios ativos, 9 lojas.
 
 | Fonte | Onde | Uso |
 |---|---|---|
-| SKU CORRETO (catalogo) | Sheets id 12Rhj2S7P3Z8yBr5zd-KFcykWzMR6145zTMuhfXEkNWs, gid 1575529579 | Coluna A = SKU (autoritativa), Coluna B = descricao |
+| SKU CORRETO (catalogo) | Sheets id 12Rhj2S7P3Z8yBr5zd-KFcykWzMR6145zTMuhfXEkNWs, gid 1575529579 | Coluna A = SKU (autoritativa), Coluna B = descricao. 795 codigos. INCOMPLETA: existem codigos em uso que nao estao nela. |
 | sku errado | Sheets id 1sgsTkGBZudzoky_623OMANxyU0Kl2Xe4hVzl9F3w_Cw | ID do anuncio + SKU errado |
 | UpSeller | app.upseller.com/pt/products/shopee/active | onde a correcao e aplicada |
 
@@ -41,8 +41,9 @@ Padrao: PREFIXO + NUMERACAO + MONTADORA + sufixo opcional.
 | `GR###-###` | PAR DE FAROIS |
 | `MDM` | Acessorio (moldura, grade, suporte) |
 | `STS` | LEGADO -> hoje vira `GRX` |
-| `FGS0` e `FGS` | LEGADO, ainda mais antigo que o STS -> hoje vira `GRX` (ex: `FGS0413FD` = `GRX413FD`) |
-| `FUN` | LEGADO -> hoje vira `GR` (ver excecao no item 7) |
+| `FGS0` e `FGS` | LEGADO, anterior ao STS -> hoje vira `GRX` (ex: `FGS0413FD` = `GRX413FD`) |
+| `FXS` | LEGADO. Ver item 7, tratado caso a caso |
+| `FUN` | LEGADO -> hoje vira `GR` (ver excecoes no item 7) |
 | `GR###F` | LEGADO da epoca de fabricacao propria: DESCONSIDERAR |
 
 Exemplos: `GR100` = farol unitario, `GR100-101` = par, `GRX905RN` = kit completo.
@@ -80,19 +81,32 @@ Frase do dono: "E POR ANO DE CARRO MINHA LOGICA".
 
 Fontes de candidato, em ordem de forca:
 
-1. **SKU na descricao**: campo `SKU: XXXX` dentro do texto (aparece em ~15% dos anuncios). Costuma vir no padrao antigo `FGS0` -> migrar para `GRX`.
-2. **DESC**: `Codigo do Produto: XXX` dentro da descricao (~6% dos anuncios). Aplicar conversoes STS->GRX, FGS->GRX, FUN->GR.
+1. **SKU na descricao**: campo `SKU: XXXX` dentro do texto. Costuma vir no padrao antigo `FGS0` -> migrar para `GRX`.
+2. **DESC**: `Codigo do Produto: XXX` dentro da descricao. Aplicar conversoes STS->GRX, FGS->GRX, FUN->GR.
 3. **IRM**: anuncios irmaos com titulo identico nas 9 lojas que ja tem SKU valido.
+
+No total, 1.637 anuncios tem codigo na descricao (139 codigos distintos).
+
+### PERIGO: descricao copiada de outro produto
+
+Muitas descricoes foram copiadas entre anuncios de modelos diferentes. Exemplos reais encontrados:
+
+- "Kit Farol De Milha **Ford Ranger** 2024 2025" com descricao e SKU FGS0142FT de **Argo/Cronos**
+- "Par Farol De Milha **Argo**" com descricao de **Mobi**
+
+OBRIGATORIO: antes de aceitar o codigo da descricao, cruzar o MODELO do titulo com o modelo citado
+na descricao E com a coluna B do catalogo. Se nao bater, vai para o relatorio.
+(O dono ja sinalizou que vai arrumar essas descricoes depois.)
 
 Sinais tecnicos que a descricao entrega e que definem a variante certa:
 
-- `Botao`: Modelo Original / Alternativo Colante / Tic Tac 2 pinos / Tic Tac 3 pinos
+- `Botao`: Modelo Original / Alternativo Colante / Tic Tac 2 pinos / Tic Tac 3 pinos / Universal
 - `Material da Lente`: Vidro (sufixo `-V`) ou Acrilico/Policarbonato (sem sufixo)
 - `Encaixe de Lampada`: define o encaixe do sufixo
-- `Moldura`: preta / cromo / cinza / sem moldura / aro prata
+- `Moldura`: preta / cromo / cinza / grafite / sem moldura / aro prata
 - `Itens Inclusos` ou `Conteudo da Embalagem`: define o TIPO
 
-Tipo do produto sai do bloco "Conteudo da Embalagem" / "Itens Inclusos":
+Tipo do produto:
 
 - KIT: tem botao + rele + chicote
 - PAR: 01 lado esquerdo + 01 lado direito
@@ -102,19 +116,15 @@ Tipo do produto sai do bloco "Conteudo da Embalagem" / "Itens Inclusos":
 
 Filtro de coerencia de tipo: KIT -> GRX*, PAR -> GR###-### ou MDM###-###, UNI -> GR### ou MDM###, ACC -> MDM*, LAMP -> (M|X|L|U|Z)H*.
 
-Validacao de catalogo: retirar os sufixos de lampada/lente e a base tem que existir no catalogo. Em pares, os dois numeros precisam existir.
-
-Depois disso SEMPRE conferir manualmente modelo + ano contra a coluna B do catalogo.
-
 ---
 
 ## 5. Classificacao de confianca
 
 | Nivel | Criterio | Acao |
 |---|---|---|
-| ALTA | codigo unico na descricao, OU irmaos unanimes com 2+ votos | aplicar |
+| ALTA | codigo unico na descricao COM modelo batendo, OU irmaos unanimes com 2+ votos | aplicar |
 | MEDIA | irmaos com 75%+ e 3+ votos, ou 1 voto unico | aplicar apos validacao |
-| CONFLITO | codigo da descricao diferente do vencedor dos irmaos | relatorio |
+| CONFLITO | codigo da descricao diferente do vencedor dos irmaos, ou modelo do titulo diferente do modelo da descricao | relatorio |
 | BAIXA | o resto | relatorio |
 
 ---
@@ -130,22 +140,43 @@ Depois disso SEMPRE conferir manualmente modelo + ano contra a coluna B do catal
 7. Nunca escrever na planilha do dono sem autorizacao explicita.
 8. SKU existente que nao e MLB TAMBEM pode estar errado. Voto de irmao e candidato, nao prova.
 9. Editar so o SKU nao dispara o filtro de anuncio duplicado da Shopee: nao precisa reescrever titulo.
-10. Codigo que existe na descricao mas NAO existe no catalogo vai para o relatorio ate o dono confirmar.
+10. Codigo que existe na descricao mas nao existe no catalogo NAO e motivo automatico de recusa: a planilha esta incompleta. Confirmar com o dono e seguir.
 
 ---
 
 ## 7. Decisoes pontuais ja dadas pelo dono
 
+### Codigos aposentados
+
+- `GR112` / `GR113` / `GR112-113` (universal lente vidro aro prata): **NAO USAR MAIS**. Hoje e `GR100` (LD), `GR101` (LE), `GR100-101` (par).
+- `GRX005VW` (Gol G4 botao redondo original): PAUSADO. So existe `GRX011VW`.
+
+### Farol universal
+
+- `GR100-101` e o par universal policarbonato aro prata. Serve C3, Symbol, Kwid, Clio, HR-V, Argo, Mobi, Fiesta Rocam e muitos outros.
+- Kit universal correspondente: `GRX905RN`.
+- Argo/Mobi com **botao original**: kit e `GRX147FT`. Com botao alternativo colante: `GRX134FT`.
+- `FUN100-101` era o codigo antigo de `GR100-101`.
+
+### Farol Fiat com suporte universal (antigo FXS0460)
+
+- Sozinho (unitario) -> `FUN240`
+- Par -> `FUN240-2`
+- Kit -> `GRX240FT`
+- Com lampada halogena H1 -> `FUN240-2-LH1`
+- **EXCECAO a regra FUN->GR**: essa familia continua com o prefixo `FUN`, nao vira GR.
+
+### Outros
+
 - `GRX1101CT` e `GRX1111CT` = `GRX905RN`
-- `GRX905RN` e o par universal, cabe em muitos carros. No C3 o par e `GR100-101` e o kit e `GRX905RN`.
-- `FUN100-101` era o codigo antigo de `GR100-101`
 - Gol G1 87/94: kit = `GRX096VW`, par unitario = `GR269-270`
-- `GRX240FT` = 2x FUN240, nao tem SKU -> relatorio
-- IDs 58261256371, 58211774435, 58261753375 -> `GR100-101`
 - Corolla 15/17 par: `GR333-334` e VALIDO mesmo nao estando cadastrado na planilha
-- **EXCECAO a regra FUN->GR**: o `GR240-2` deve ser gravado como `FUN240-2` (ex: `FUN240-2-LH1`, par de farol Fiat com suporte universal + lampada H1)
-- Gol G4 botao modelo original: `GRX005VW` (redondo) esta PAUSADO. So existe o `GRX011VW`. Usar sempre `GRX011VW`.
-- Sem SKU definido, vao para relatorio: MF005, BFM478, DLT633, GRXHRV, MDM517-518, GRX600MS, GRX789CV, GRX209HD
+- `GRX449FD` e o unico Ka botao universal/tic tac sem led que existe: pode manter mesmo quando o titulo diz 2015 a 2021
+- Sem SKU definido, vao para relatorio: MF003, MF004, MF005, BFM478, DLT633, GRXHRV, MDM517-518, GRX600MS, GRX789CV, GRX209HD
+
+### Prefixos ainda NAO definidos (relatorio)
+
+`FXS1000UN`, `FXS6002VW`, `FXS188UND-FXS188UNE`, `FLU363-1-2`, `FLU436`, `FLU527YMC`, `RS742BL`, `CHI594`, `ATP907RN-LH8`, `DLHD19`, `DLT633`, `MF003/004/005`, `GRX014VW-X8K`, `GRX037HY-RB4`
 
 ---
 
@@ -178,8 +209,7 @@ POST /api/shopee/product/batch-online-sku      (application/json)
 2) esperar ~2,5s e entao type:1 substituindo <SKU>0 por <SKU>
 ```
 
-ATENCAO: o caminho "Modificar SKU -> Prefixo" (tanto na UI quanto na API) responde "Sucesso" mas NAO grava quando o SKU esta vazio. So o metodo de 2 passos funciona.
-Sempre usar o idStr real vindo da listagem, nunca deduzir.
+ATENCAO: o caminho "Modificar SKU -> Prefixo" (UI e API) responde "Sucesso" mas NAO grava quando o SKU esta vazio. So o metodo de 2 passos funciona.
 
 ---
 
@@ -204,32 +234,35 @@ Banner "Nova versao esta disponivel": fechar no X. NUNCA clicar em "Recarregar A
 | SKUs vazios | - | 72 | OK, 0 falhas |
 | Lote 2 | 113 | 319 | OK, 0 falhas |
 | Lote 3 (teste cego) | 9 | 74 | OK, 0 falhas |
-| TOTAL CORRIGIDO | | 631 | |
+| Lote 4 (codigo na descricao) | 38 | 225 | OK, 0 falhas |
+| TOTAL CORRIGIDO | | 856 | |
 
-Restantes: aproximadamente 4.047 anuncios com SKU errado (690 da linha GM parada).
+Restam aproximadamente 3.836 anuncios com SKU errado, sendo 688 da linha GM (parada).
 Definicao de "errado": SKU vazio, comeca com MLB, ou nao bate com o padrao de nomenclatura.
 
-### Lote 3 detalhado (teste cego, 10 titulos sorteados)
+### Lote 3 (teste cego, 10 titulos sorteados)
 
-| Titulo | SKU aplicado |
-|---|---|
-| Kit Farol Milha Ka 2015-2018 | GRX413FD-V |
-| Par Moldura Grade Polo 2003-2006 | MDM341-342 |
-| Kit Farol Milha Polo 2003-2006 + Led | GRX036VW-MH3 |
-| Par Farolete Corolla 2015-2017 | GR333-334 |
-| Kit Farol Milha Gol G4 + Super Led H3 | GRX011VW-MH3 |
-| Par Farol Milha Grand Siena 2018-2021 + Lampada | FUN240-2-LH1 |
-| Kit Farolete Jeep Renegade 2015-2020 + Led | GRX095JP-MH8 |
-| Kit Farol Milha Fit 2015-2017 | GRX219HD |
-| Par Farol Milha Gol/Voyage G7 2016-2018 | GR251-252 |
-| Kit Lampadas Scenic 2001-2008 | RELATORIO, sem SKU no catalogo |
+GRX413FD-V (Ka 15/18) / MDM341-342 (moldura Polo 03/06) / GRX036VW-MH3 (kit Polo 03/06 + led) /
+GR333-334 (Corolla 15/17) / GRX011VW-MH3 (Gol G4 + super led) / FUN240-2-LH1 (Grand Siena + lampada) /
+GRX095JP-MH8 (Renegade 15/20 + led) / GRX219HD (Fit 15/17) / GR251-252 (Gol-Voyage G7).
+Kit Lampadas Scenic 2001-2008 ficou sem SKU, no relatorio.
+
+### Lote 4 (principais)
+
+GRX011VW (Gol G4) / GR205-206 (Polo 02/06 e Saveiro G4) / GRX148FT (Toro) / GRX021VW (Golf 08/10) /
+GRX134FT (Mobi/Argo bt alternativo) / GRX321NS (Kicks 21/22) / GRX435FD (EcoSport 18/20) /
+GRX524TA (Corolla 2018 grafite) / GRX126FT (Strada Working) / GRX014VW (Gol G5) / GRX403FD (New Fiesta 13) /
+GRX449FD (Ka botao universal) / GR333-334 e GR333-334-MH8 (Corolla) / FUN240-2 (Siena, Grand Siena, Punto, Ducato, Uno) /
+GR100-101 (Symbol, Kwid, Argo, Fiesta Rocam, HR-V) + migracao de 15 anuncios que estavam com GR112-113.
 
 ---
 
 ## 11. Rejeicoes manuais (nao aplicar sem revisao)
 
-Casos em que o voto dos irmaos ou da descricao estava errado:
-Duster 12/15 com GRX927RN (catalogo diz Logan/Sandero 15/20); Ka 15/19 e Novo Ka 18/20 com GRX905RN; Ka 15/21 com GRX449FD; 5 grupos Fiorino com GRX107FT; Gol G4 +Xenon com sufixo -MH3; Strada Working 12/13 com GRX105FT; Strada suporte com MDM377-378; Gol G5 com GRX032VW; Renegade lente de vidro; Kwid GR112-113; Master lente de vidro.
+Duster 12/15 com GRX927RN (catalogo diz Logan/Sandero 15/20); Ka 15/19 e Novo Ka 18/20 com GRX905RN;
+5 grupos Fiorino com GRX107FT; Gol G4 +Xenon com sufixo -MH3; Strada Working 12/13 com GRX105FT;
+Strada suporte com MDM377-378; Gol G5 com GRX032VW; Renegade lente de vidro; Master lente de vidro;
+Ford Ranger 2024/2025 com descricao de Argo/Cronos (FGS0142FT).
 
 ---
 
@@ -237,6 +270,7 @@ Duster 12/15 com GRX927RN (catalogo diz Logan/Sandero 15/20); Ka 15/19 e Novo Ka
 
 - Loops longos estouram o timeout de 45s do CDP: rodar como IIFE assincrona solta gravando progresso em uma variavel global e depois consultar.
 - Saidas grandes de JS sao truncadas: injetar um `<pre>` na pagina e ler o texto. Remover o `<pre>` antes de clicar na UI, porque ele desloca o layout.
-- Ao validar a base do codigo no catalogo, remover primeiro os sufixos (-M / -X / -L / -V). Regex simples falha em codigos com letras no fim, tipo `GRX702CV`.
+- Regex de extracao do codigo: o trecho do par precisa aceitar 2 a 5 digitos. `-\d` com um digito so trunca `GR102-103` em `GR102-1`.
+- O texto depois do codigo gruda no match se a regex for permissiva demais. Delimitar bem.
 - Concorrencia segura na gravacao: 3 requisicoes em paralelo com 120ms de intervalo.
-- O catalogo tem descricoes duplicadas em codigos diferentes (ex: GRX090JP e GRX093JP tem exatamente o mesmo texto). Nesses casos so a foto resolve.
+- O catalogo tem descricoes duplicadas em codigos diferentes (ex: GRX090JP e GRX093JP tem o mesmo texto). Nesses casos so a foto resolve.
