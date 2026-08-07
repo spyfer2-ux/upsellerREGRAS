@@ -1,3 +1,88 @@
+# 30. LOTE 10 - FECHAMENTO DA CONVERSAO DE FAMILIAS LEGADAS (07/08/2026)
+
+## 30.1 Placar final dos 955 jobs de SKU
+
+| Plataforma | Jobs | Gravados | Pendentes | Sumiram |
+|---|---|---|---|---|
+| Mercado Livre | 872 | 689 | 181 | 2 |
+| Shopee | 83 | 83 | 0 | 0 |
+| **Total** | **955** | **772** | **181** | **2** |
+
+Dos 181 pendentes: 179 estao em `under_review` (Revisando) e 2 caem no bug de categoria
+com variacao descrito em 30.4.
+
+## 30.2 Placar da correcao de atributo SIDE_POSITION
+De 2.222 anuncios com "Ambos os lados" / "Esquerdo" / "Direito" sem value_id, sobraram 383:
+
+| Situacao | Anuncios | Da para corrigir por API |
+|---|---|---|
+| Corrigidos | 1.839 | - |
+| Em under_review | 259 | nao, so quando sair da revisao |
+| Categorias MLB194704 e MLB7863 | 114 | nao, ver 30.4 |
+| Categorias que nao tem o atributo | 10 | nao se aplica |
+
+## 30.3 A ordem que funciona (confirmada em producao)
+Para desbloquear a gravacao de SKU em anuncio ML com atributo invalido, mandar UMA chamada
+so, com dimensoes + SIDE_POSITION juntos, para `batch-attributes-edit-online`. Mandar so o
+SIDE_POSITION resulta em `error-5402` porque o ML valida o item inteiro no mesmo push.
+Depois disso a escrita de SKU (`batch-online-sku`) passa.
+
+Rendimento medido: 925 chamadas / 1.299 anuncios, 100% de sucesso, ~35 minutos.
+
+## 30.4 BUG: categorias onde SIDE_POSITION aceita variacao
+Quando o atributo tem `tags.allow_variations = true` na categoria, o endpoint de atributos em
+massa do UpSeller responde `successList` mas NAO propaga o valor para o Mercado Livre. Confere
+em `api.mercadolibre.com/categories/<CAT>/attributes`:
+
+| Categoria | allow_variations | batch funciona |
+|---|---|---|
+| MLB46659, MLB456915, MLB456167 | nao | SIM |
+| MLB194704, MLB7863 | sim | NAO - grava local e reverte |
+
+Sintoma tipico: o valor aparece certo se voce reler `user-product/edit`, mas a gravacao de SKU
+seguinte volta com `error-3510-invalid.item.attribute.values ... item values [(null:Esquerdo)]`.
+Esses 114 anuncios precisam ser corrigidos na tela de Editar em Massa da UI.
+
+## 30.5 Outro achado: SKU em minusculo quebra o replace
+`oldReplaceStr` e case sensitive. Um anuncio com `sts039hy` nunca casa com `STS039HY`.
+Sempre comparar o SKU real lido do servidor, nao o SKU esperado.
+
+## 30.6 Retrato atual do parque (07/08/2026)
+
+| Padrao do SKU | Mercado Livre | Shopee |
+|---|---|---|
+| Correto | 10.697 | 16.028 |
+| Vazio | 2.555 | 528 |
+| MLB como SKU | 1.215 | 3.943 |
+| STS | 383 | 63 |
+| FUN (fora FUN240) | 175 | 4 |
+| FGS | 11 | 0 |
+| FXS | 3 | 0 |
+| Total lido | 15.039 | 20.566 |
+
+## 30.7 Os 355 legados que sobraram e por que nao foram tocados
+
+| Motivo | Anuncios |
+|---|---|
+| Linha GM / sufixo CV (fora de escopo por ordem do dono) | 132 |
+| Base nao existe no catalogo | 161 |
+| Base bloqueada pelo dono | 21 |
+| Sufixo fora da whitelist | 10 |
+| Elegiveis mas com sufixo estranho - vao para relatorio | 31 |
+
+Exemplos dos 31 que precisam de confirmacao do dono antes de gravar:
+FUN106-107-LH27-P, STS514TA-UTH11, FUN100-101-h11, FUN117-118S, FUN207-208V,
+FUN100-101CRO, FUN100-100tr, STS132FT-Branco.
+
+## 30.8 Proximos passos
+1. Reprocessar os 179 SKUs quando os anuncios sairem de `under_review`.
+2. Corrigir os 114 SIDE_POSITION de MLB194704 e MLB7863 pela UI de Editar em Massa.
+3. Confirmar com o dono os 31 sufixos estranhos.
+4. Atacar os 5.158 anuncios com MLB no lugar do SKU pelo funil de evidencia (Padrao B).
+5. Atacar os 3.083 anuncios com SKU vazio.
+
+---
+
 # 29. REGRA DE CRIACAO E DUPLICACAO DE ANUNCIOS (07/08/2026)
 
 Autorizacao do dono: aceitou trocar "muitos titulos para o mesmo produto" por "um anuncio por
