@@ -1,3 +1,152 @@
+# 32. PROGRAMA DE CRIACAO DE ANUNCIOS - GATILHO "VAMOS FAZER ANUNCIOS" (07/08/2026)
+
+## 32.0 COMO USAR ESTA SECAO
+Quando o dono abrir um chat novo e escrever **VAMOS FAZER ANUNCIOS**, o agente deve:
+1. Ler esta secao inteira ANTES de qualquer coisa.
+2. Rodar o bootstrap 32.2 para reconstruir os caches.
+3. Abrir o cronograma 32.8, achar o primeiro dia com status PENDENTE na tabela 32.9.
+4. Mostrar o lote do dia ao dono e ESPERAR O GO. Nunca publicar sem OK.
+5. Depois de publicar, atualizar a tabela 32.9 com o resultado.
+
+## 32.1 ESCOPO FIXADO PELO DONO (07/08/2026)
+Foco em 4 lojas: **AUTOPLUS** e **Jz acessorios** (Mercado Livre), **MULTIPARTS** e **REIS SHOPEE** (Shopee).
+As outras 10 lojas continuam existindo mas nelas SO se corrige SKU - nao se cria anuncio.
+
+| Loja | Plataforma | shopId |
+|---|---|---|
+| AUTOPLUS | Mercado Livre | 216172 |
+| Jz acessorios | Mercado Livre | 560564 |
+| MULTIPARTS | Shopee | 867015 |
+| REIS SHOPEE | Shopee | 693152 |
+
+## 32.2 BOOTSTRAP - ARMADILHAS DE API (CUSTOU HORAS, NAO REPETIR)
+- A paginacao das DUAS plataformas usa **pageNum**, NAO `page`. Mandando `page` a API devolve sempre a primeira pagina e o cache sai truncado.
+- `pageSize` maximo util = 100. Os campos `pages` e `hasNextPage` vem sempre 0/false. Paginar por `total`.
+- Shopee: `/api/shopee/product/index` com `{pageNum, pageSize:100, state:'online', shopIds}`. Os filtros `searchType`/`productState` devolvem total=0 - nao usar.
+- ML: `/api/mercado/user-product/index` com `{pageNum, pageSize:100, dataType:2, productState:'active', state:'online', shopIds}`.
+- ML: o campo `attributes` vem como **string JSON**, precisa JSON.parse, e as chaves sao snake_case (`value_id`, `value_name`). Chamar `.find()` direto quebra a funcao inteira em silencio.
+- Campos que importam na Shopee: `sales`, `views`, `deboost`, `isBanned`, `violationTime`, `repeatName`, `totalAvailableStock`.
+- Campos que importam no ML: `soldQuantity`, `visit`, `health`, `underReviewStatus`.
+- A aba de trabalho perde `window.__*` em qualquer reload. Persistir em `localStorage` (`__CRONO`, `__ANUNCIOS_PLANO`).
+
+## 32.3 DIAGNOSTICO DA SHOPEE - POR QUE OS ANUNCIOS NAO RANQUEIAM
+Levantamento de 5.769 anuncios online (MULTIPARTS 2.753 + REIS 3.016), 8.834 vendas.
+
+**Nao ha punicao.** Zero deboost, zero violacao registrada, 3 banidos no total. A conta esta limpa.
+
+**O problema e o comprimento do titulo.** 4.906 dos 5.769 (85%) tem titulo de ~52 caracteres, no padrao curto do ML. A busca da Shopee casa cauda longa; titulo curto nao aparece em consulta nenhuma.
+
+Controlado por idade do anuncio:
+
+| Idade | titulo ate 60 | titulo 61-90 | titulo 91-120 |
+|---|---|---|---|
+| 31-90 dias | 4,1 views / 0,10 vendas | 23,9 / 0,69 | 11,9 / 0,30 |
+| 91-180 dias | 14,1 / 1,59 | 46,6 / 4,19 | **89,9 / 7,80** |
+| 366+ dias | 16,9 / 10,58 | 82,6 / 29,52 | **121,0 / 30,38** |
+
+O efeito se mantem em TODOS os grupos de idade. Titulo longo rende de 3x a 7x mais views.
+**Regra: anuncio novo na Shopee nasce com 91-120 caracteres. Nunca com titulo curto de ML.**
+
+## 32.4 MERCADO LIVRE - FAIXA OTIMA
+Levantamento de 3.764 anuncios ativos (AUTOPLUS 2.781 + Jz 1.010), 18.037 vendas.
+
+| Comprimento | anuncios | visitas/anuncio | vendas/anuncio |
+|---|---|---|---|
+| ate 45 | 398 | 8,8 | 1,82 |
+| 46-55 | 762 | 30,7 | 3,56 |
+| 56-60 | 975 | 54,1 | 6,12 |
+| 61-70 | 667 | **66,7** | **8,17** |
+| 71-80 | 517 | 49,3 | 4,11 |
+| 81-90 | 369 | 34,7 | 2,17 |
+
+O otimo medido e 61-70 caracteres. **Teto operacional em vigor: 60 caracteres (regra do dono).** Se o dono liberar, subir para 70.
+
+## 32.5 FAROLETE - DESCARTADO, CONFIRMADO PELOS DADOS
+Controlado por comprimento de titulo, "farolete" nao adiciona views (52,3 contra 52,0) e vem com MENOS vendas (5,41 contra 9,57).
+No autocomplete do ML devolve lanterna (recarregavel, tatico, cabeca). Na Shopee configura termo irrelevante = spam.
+**Nunca usar Farolete em titulo novo. Variacoes validas: MILHA, NEBLINA, AUXILIAR.**
+
+## 32.6 A BASE LEGITIMA DO VOLUME - APLICACAO VEICULAR
+Volume NAO se faz repetindo o mesmo produto com titulo trocado (o ML cancela e a Shopee marca como spam).
+Faz-se com **um anuncio por aplicacao veicular**, que e como o mercado de autopeca funciona.
+
+Exemplo real: GRX240FT tem 164 aplicacoes distintas (Uno Way, Uno Sporting, Strada Working, Strada Trekking, Palio G4...) e 1.916 vendas. Cada aplicacao e um anuncio legitimo, nao uma duplicata.
+
+Fontes de volume, em ordem de seguranca:
+1. **Loja diferente** - mesmo anuncio, mesmo titulo, em outra loja. 100% permitido.
+2. **Aplicacao veicular diferente** - mesmo SKU, veiculo/geracao/ano diferente.
+3. **Variante real** - botao, lente, moldura, lampada. So se existir no catalogo.
+
+Nunca inventar veiculo, ano ou variante que o catalogo nao confirma.
+
+## 32.7 INVENTARIO APURADO (07/08/2026)
+- 471 SKUs validos nas 4 lojas (de 1.764 codigos brutos).
+- 1.733 aplicacoes veiculares distintas mapeadas.
+- Matriz (SKU x aplicacao x loja) em falta: 3.930 posicoes.
+- Apos filtros: **2.728 anuncios novos prontos e validados**.
+
+| Loja | Anuncios | SKUs | Titulo medio |
+|---|---|---|---|
+| AUTOPLUS | 349 | 96 | 56 chars |
+| Jz acessorios | 941 | 225 | 55 chars |
+| MULTIPARTS | 672 | 158 | 97 chars |
+| REIS SHOPEE | 766 | 179 | 96 chars |
+
+874 titulos sao reuso de titulo que ja vende em outra loja. 1.854 foram gerados.
+
+## 32.8 CRONOGRAMA - 196/DIA POR 14 DIAS UTEIS
+Cota diaria fixa: **AUTOPLUS 25 | Jz acessorios 68 | MULTIPARTS 48 | REIS SHOPEE 55 = 196/dia**.
+
+Travas obrigatorias:
+- Maximo **12 anuncios do mesmo SKU na mesma loja no mesmo dia**.
+- Cada dia sai com ~80 SKUs distintos. Menos de 40 SKUs distintos = errado, refazer.
+- Publicar em blocos de 50, espalhados no dia. Nunca despejar 196 de uma vez.
+- Teto do dono: 2.000/dia e 300/hora. Sao teto ABSOLUTO, nao meta.
+- Parar TUDO no primeiro cancelamento, suspensao ou 3 falhas seguidas, e avisar o dono.
+
+## 32.9 CONTROLE DE EXECUCAO
+| Dia | Data | Anuncios | Status | Moderacao? |
+|---|---|---|---|---|
+| 1 | | 196 | PENDENTE | |
+| 2 | | 196 | PENDENTE | |
+| 3 | | 196 | PENDENTE | |
+| 4 | | 195 | PENDENTE | |
+| 5 | | 195 | PENDENTE | |
+| 6 | | 195 | PENDENTE | |
+| 7 | | 195 | PENDENTE | |
+| 8 | | 195 | PENDENTE | |
+| 9 | | 195 | PENDENTE | |
+| 10 | | 195 | PENDENTE | |
+| 11 | | 194 | PENDENTE | |
+| 12 | | 194 | PENDENTE | |
+| 13 | | 194 | PENDENTE | |
+| 14 | | 194 | PENDENTE | |
+
+## 32.10 REGRAS DE TITULO (VALEM PARA TODO ANUNCIO NOVO)
+- ML: 50 a 60 caracteres. Shopee: 85 a 120 caracteres.
+- Estrutura: TIPO + VARIACAO + MODELO + GERACAO + ANOS + ESPECIFICACAO.
+- Variacao: MILHA, NEBLINA, AUXILIAR. Nunca FAROLETE.
+- Geracao antes do ano - o comprador busca "gol g4", nao "gol 2006".
+- Ano completo (2003 2004 2005 2006) ou abreviado (2003 04 05 06), alternando. Sempre dentro da faixa do catalogo.
+- Titulo NUNCA se repete dentro da mesma loja. Entre lojas pode.
+- PROIBIDO: frete gratis, parcelamento, desconto, promocao, brinde como chamariz, cor/tamanho como enfeite, veiculo que o produto nao atende.
+- LED so entra se estiver no SKU (M = super led 6000k, X = xenon, L = lampada comum). Pingo T10 nunca.
+- Limpeza obrigatoria antes de publicar: "Origina" truncado, "2cibie" colado, dois-pontos solto, CamelCase grudado, palavra "Farol" repetida. 24% dos titulos herdados tinham pelo menos um desses defeitos.
+
+## 32.11 EXCLUSOES ATIVAS NESTE PROGRAMA
+- Codigos bloqueados pelo dono: GRX010VW, GRX086VW, GRX322NS, GRX054VW, GRX005VW, GRX474FD, GRX068VW.
+- Parqueados: STS010VW, STS010VW-MHB4, STS025VW-LH3, STS204HD-TIC, FUN314-2, FUN207-208-GG739-GG738, GRX025VW-LH3.
+- Linha GM (sufixo CV): CONGELADA. Sufixo F (GR102F, GR103F...): proibido.
+- ULTRALED (UH/UTH - secao 31.2): sem estoque, ordem de pausar. Nenhum entrou no plano.
+- SKU comecando com MLB: e ID de anuncio no campo errado. Corrigir SKU antes, nunca replicar.
+- FUN240 e familia: CORRETA, permanece FUN, nao converter (secao 30).
+
+## 32.12 PENDENCIAS ANTES DO DIA 1
+- **Fase 0 nao executada**: 158 grupos de titulo repetido dentro da mesma loja (Classe A), 104 titulos novos ja gerados e validados, aguardando GO do dono.
+- **Risco a validar**: SKUs universais aparecem em veiculos muito diferentes (GRX905RN em Fiorino, Civic e Mobi; GR100-101 em L200 Triton, Sandero, Peugeot 2008 e Duster Oroch). Isso foi herdado dos anuncios que ja existem. Conferir na planilha do dono ANTES de multiplicar - se a aplicacao estiver errada, o programa multiplica o erro por 4 lojas.
+- 790 anuncios Shopee estao sem estoque e levam metade das views. Repor ou pausar.
+- 158 anuncios marcados com `repeatName` pela propria Shopee, com 0,09 vendas/anuncio.
+
 # 31. REGRAS NOVAS DO DONO E ATAQUE AOS SKUs COM MLB (07/08/2026)
 
 ## 31.1 Codigos decididos nesta rodada
