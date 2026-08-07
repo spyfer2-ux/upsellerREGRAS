@@ -1,3 +1,58 @@
+# 37. CORRECAO DA SECAO 35 - FASE 0 REGERADA COM GUARDA DE ANOS
+
+A secao 35 foi escrita com numeros de uma versao anterior do lote. **Vale esta secao 37.**
+
+## 37.1 O defeito encontrado depois de commitar a secao 35
+O encurtador de titulo podia COMER ANOS. Exemplo real:
+"Cibie Gol Saveiro Voyage G5 Interruptor 2008 2009 2010 Branco"
+virava "Cibie Milha Auxiliar Gol Saveiro Voyage G5 Interruptor 2008".
+O anuncio passava a cobrir 1 ano em vez de 3 - titulo mentindo a aplicacao.
+A validacao antiga so exigia "tem pelo menos um ano", entao deixou passar.
+
+## 37.2 A guarda nova - anosOk(original, novo)
+Extrai o conjunto de anos dos dois titulos (expandindo abreviacao pelo seculo do ano anterior) e exige:
+1. mesma ponta inicial e mesma ponta final da faixa;
+2. nenhum ano inventado que nao existia no original;
+3. ou a lista e identica, ou o novo usa forma de intervalo ("2011 A 2021").
+Tambem normaliza "2008 A 10" para "2008 A 2010".
+
+## 37.3 Numeros que VALEM (substituem os da secao 35)
+
+| Situacao | Secao 35 (errado) | VALE AGORA |
+|---|---|---|
+| Novo titulo pronto | 423 | **428** |
+| Sem SKU - vai antes para correcao de SKU | 130 | **130** |
+| Sem candidato viavel - revisao manual | 11 | **6** |
+| Grupos com SKU diferente (CONF=SIM) | 176 | **178** |
+
+Por loja: AUTOPLUS 184 | Jz acessorios 12 | MULTIPARTS **85** | REIS SHOPEE **147**
+
+Validacao dura, 428/428 zerado: excedeLimite 0, palavraProibida 0, colideComExistente 0,
+colideEntreOsNovos 0, **anosErrados 0**, igualAoOriginal 0, sujeira 0, curtoDemais 0.
+Comprimento medio: ML 59, Shopee 69. Encurtados por ja estarem acima do limite: 79.
+
+localStorage `__FASE0` esta na versao **v4**. Se ler v1/v2/v3, esta desatualizado - regerar.
+
+## 37.4 ATENCAO - sessao paralela mexendo nas mesmas contas
+A secao 36 foi commitada por outra sessao ENQUANTO esta aqui estava rodando
+(73 SKUs gravados, 48 anuncios pausados). Consequencias:
+- Os caches `__ML2` (3.764) e `__SP2` (5.769) desta sessao sao ANTERIORES a esses writes.
+- Conferido: nenhum dos anuncios citados na secao 36 aparece no lote da Fase 0 nem no
+  cronograma (o foco aqui sao so as 4 lojas AUTOPLUS / Jz / MULTIPARTS / REIS SHOPEE).
+- Mesmo assim: **rodar bootstrap de novo antes de aplicar qualquer coisa** e reconferir o lote,
+  porque anuncio pausado nao deve ser retitulado.
+- As "regras novas do dono" da secao 36 NAO foram ditas neste chat. Nao foram aplicadas aqui.
+  Confirmar com o dono antes de usa-las.
+
+## 37.5 Armadilha do editor do GitHub
+Colar por ClipboardEvent depois de mexer na selecao via JS NAO funciona: o CodeMirror ignora
+o range setado por JS e cola onde a selecao interna dele estava, no meio do arquivo.
+Certo: clicar no editor, dar Ctrl+Home de verdade (tecla), e so entao colar.
+Com Soft wrap ligado, seta pra baixo anda por linha VISUAL, nao por linha logica -
+nao da pra contar linha com seta.
+
+---
+
 # 36. SESSAO 07/08/2026 parte 3 - REGRAS NOVAS DO DONO, CORRECOES E PAUSAS
 
 ## 36.1 Regras novas confirmadas pelo dono no chat
