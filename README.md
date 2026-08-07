@@ -1,3 +1,80 @@
+
+
+---
+
+## 26. VARREDURA GLOBAL — TODAS AS LOJAS (Ago/2026)
+
+### 26.1 Novas regras de sufixo de montadora confirmadas pelo dono
+- FT = FIAT
+- CV = CHEVROLET (GM)  -> linha GM segue FORA do escopo de correcao por ordem do dono
+- RN = RENAULT | VW = VOLKSWAGEN | FD = FORD | HD = HONDA | HY = HYUNDAI | TA = TOYOTA | NS = NISSAN | MS = MITSUBISHI
+
+### 26.2 Descobertas tecnicas de API (IMPORTANTES)
+- A listagem NAO permite enumeracao total: existe cap de offset. Sem filtro o Shopee devolve no maximo ~7000 linhas unicas e depois REPETE paginas. Com filtro productState o cap cai para ~500 por fatia. No ML ocorre o mesmo. NUNCA confie em contagem de array; sempre valide por Set de idStr.
+- Solucao: nao enumerar. Usar BUSCA POR SKU (substring).
+  - ML  : POST /api/mercado/user-product/index  com searchType=5  (5 = SKU)
+  - Shopee: POST /api/shopee/product/index      com searchType=4  (4 = SKU)
+- Filtro de loja: parametro correto e shopIds (NAO shopId, NAO shopIdList).
+- Shopee usa productState com valores: NORMAL, UNLIST, SOLDOUT, REVIEWING, BANNED, SELLER_DELETE, SHOPEE_DELETE.
+- ML usa productState: active, paused, under_review (sempre com state=online).
+- A busca por SKU tambem varre SKU de VARIACAO. Por isso aparecem anuncios cujo SKU principal ja esta correto mas alguma variacao ainda tem MLB/FUN/STS.
+
+### 26.3 IDs das lojas (shopIds)
+MERCADO LIVRE (5): AUTOPLUS=216172 | Jz acessorios=560564 | Ama Ecommerce=560565 | MACHADO=746964 | FAROIS BR=946988
+SHOPEE (9): MULTIPARTS=867015 | REIS SHOPEE=693152 | AUTOPLUS SHOPEE=216161 | Gerson=712410 | GB AUTO SHOPEE=664488 | MALVA=897457 | PSHOP STORE=688746 | navattashop=560632 | Machado Prime Auto=679528
+Totais: ML 5.496 ativos (todas as lojas) | Shopee 20.912 anuncios online (todas as lojas)
+
+### 26.4 RESULTADO DA VARREDURA — MERCADO LIVRE (todos os estados)
+| Loja | MLB | STS | FGS | FXS | FUN* |
+|---|---|---|---|---|---|
+| AUTOPLUS | 360 | 257 | 3 | 2 | 313 |
+| Jz acessorios | 122 | 231 | 1 | 0 | 115 |
+| Ama Ecommerce | 460 | 170 | 3 | 0 | 316 |
+| MACHADO | 94 | 137 | 7 | 0 | 78 |
+| FAROIS BR | 291 | 189 | 8 | 2 | 245 |
+| TOTAL ML | 1.327 | 984 | 22 | 4 | 1.067 |
+(*) FUN inclui a familia legitima FUN240, que NAO deve ser convertida.
+
+### 26.5 RESULTADO DA VARREDURA — SHOPEE (todos os estados)
+| Loja | MLB | STS | FUN |
+|---|---|---|---|
+| MULTIPARTS | 253 | 16 | 72 |
+| REIS SHOPEE | 834 | 5 | 53 |
+| AUTOPLUS SHOPEE | 879 | 31 | 89 |
+| Gerson | 567 | 24 | 81 |
+| GB AUTO SHOPEE | 796 | 15 | 24 |
+| MALVA | 451 | 8 | 16 |
+| PSHOP STORE | 1.346 | 23 | 26 |
+| navattashop | 831 | 31 | 30 |
+| Machado Prime Auto | 1.019 | 24 | 32 |
+| TOTAL SHOPEE | 6.976 | 177 | 423 |
+FGS e FXS = 0 no Shopee.
+
+### 26.6 DENTRO DO ESCOPO ATUAL (ML AUTOPLUS + Jz / Shopee MULTIPARTS + REIS)
+Somente ANUNCIOS ATIVOS:
+- SKU no formato MLB: AUTOPLUS 257 | Jz 38 | MULTIPARTS 222 | REIS 431 = **948 ativos**
+- STS ativo: 5 | FUN (fora da familia 240) ativo: 2
+- FUN240 ativo (CORRETO, nao mexer): AUTOPLUS 246 | Jz 66 | MULTIPARTS 68 | REIS 52
+Pausados / under review / unlist dentro do escopo: MLB 450 | STS 435 | FUN 81 | FGS 4 | FXS 1
+
+DESCOBERTA PRINCIPAL: o trabalho de MLB feito nos Lotes 8/8b foi SO no Mercado Livre.
+O Shopee tem 653 anuncios ATIVOS em escopo com SKU no formato MLB que nunca foram tratados.
+
+### 26.7 LINHA GM (sufixo CV) — congelada por ordem do dono
+Ativos em escopo com CV no SKU: ML AUTOPLUS 172 | ML Jz 9 | SP MULTIPARTS 195 | SP REIS 158 = 534 ativos (804 no total).
+NAO corrigir ate liberacao expressa.
+
+### 26.8 FILA DE TRABALHO PENDENTE
+1. Shopee em escopo: 653 ativos com SKU MLB (nunca tratados) — maior lacuna.
+2. ML em escopo: 295 ativos com SKU MLB restantes (sem evidencia nos Lotes 8/8b).
+3. Legado pausado em escopo: 435 STS + 81 FUN + 4 FGS + 1 FXS.
+4. 261 do relatorio do Lote 8 (31 GM + 10 duvida + 220 sem evidencia).
+5. 2 bloqueios tecnicos: MLB3245952287 (pausado, SKU de variacao) e MLB4639861333 (under_review).
+6. Fora de escopo (aguardando decisao do dono): 3 lojas ML + 7 lojas Shopee, ~6.000 anuncios com SKU MLB.
+7. Auditoria de COERENCIA de sufixo (ex.: produto Fiat com sufixo VW) — ainda nao executada, exige cruzamento com o catalogo de 797 linhas.
+
+### 26.9 Regra nova de seguranca
+Ao verificar gravacao, checar TODOS os estados (active, paused, under_review no ML; NORMAL, UNLIST, SOLDOUT, REVIEWING, BANNED no Shopee) antes de declarar FALHA. Ja houve falso-negativo por reler so em active.
 # upsellerREGRAS
 
 Memoria de trabalho do projeto de correcao de SKUs dos anuncios **Shopee** no **UpSeller**.
