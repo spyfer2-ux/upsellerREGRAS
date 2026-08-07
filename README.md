@@ -1,3 +1,65 @@
+# 31. REGRAS NOVAS DO DONO E ATAQUE AOS SKUs COM MLB (07/08/2026)
+
+## 31.1 Codigos decididos nesta rodada
+
+| SKU antigo | Decisao | Situacao |
+|---|---|---|
+| FUN106-107-LH27 | vira GR106-107-LH27 (Onix). LH27 = lampada H27, e par COM lampadas | 1 gravado, 1 em revisao |
+| FUN100-101-h11 | vira GR100-101-LH8 | gravado |
+| FUN100-101CRO | vira GR100-101 | gravado |
+| FUN100-100tr | vira GR100-101 | gravado |
+| STS132FT-Branco | vira GRX132FT | gravado |
+| STS514TA | inativar | pendente |
+| FUN117-118S | pausar | ja estava pausado |
+| FUN207-208V | pausar | ja estava pausado |
+
+## 31.2 NOVA REGRA - sufixo ULTRALED
+`UH` e `UTH` seguidos do encaixe significam ULTRALED: UH4, UH7, UH8, UH11, UH27,
+UTH4, UTH7, UTH8, UTH11, UTH27 e as variantes com HB3/HB4.
+Nao ha mais ultraled no estoque - ordem do dono e pausar todos.
+Nao confundir com `M` (super LED 6000k / LED 6k), `L` (lampada comum) e `X` (xenon).
+
+Levantamento antes de pausar: 145 anuncios (92 ML + 53 Shopee), 547 vendas acumuladas.
+Os campeoes de venda sao FUN187-188-UTH11 (204), UTH4-UTH11 (78), UTH11-2 UTHB3-1 (61)
+e GRX409FD-UH8 (49). Precisa do OK do dono antes de pausar por causa do volume.
+
+## 31.3 Funil de evidencia para SKU = ID MLB
+Universo inicial: 1.215 anuncios no ML com MLB no lugar do SKU.
+
+| Base | Criterio | Candidatos | Gravados |
+|---|---|---|---|
+| D | o MLB embutido no SKU e o itemId de outro anuncio nosso com SKU bom | 26 | incluidos em B |
+| B | titulo identico a outro anuncio com SKU bom, e unanime | 222 | 75 |
+| C | titulo igual apos remover stopwords e cores, e unanime | 179 | 6 |
+| E | PRIMEIRA IMAGEM identica a de outro anuncio com SKU bom, e unanime | 141 | 10 |
+
+Resultado: 1.215 -> 1.124. Dos 1.124 que sobraram, 451 estao em `under_review`
+e 673 nao tem nenhuma evidencia utilizavel.
+
+### Base E (nova) - casamento por imagem
+O campo de imagem que vem da listagem e uma string com varias URLs separadas por `|`.
+A PRIMEIRA URL identifica o produto: anuncios clonados entre lojas compartilham a mesma foto.
+Indexar so os anuncios com SKU bom e exigir unanimidade. Foi o unico metodo que pegou
+anuncios cujo titulo tinha sido reescrito.
+
+### Filtros de seguranca aplicados em toda gravacao
+1. Coerencia de TIPO: titulo "Kit" exige GRX, "Par" exige GR###-###, "Par Suporte/Moldura"
+   exige MDM, unitario exige GR###.
+2. Linha GM (base terminando em CV) fica fora.
+3. Base bloqueada pelo dono ou marcada para relatorio fica fora.
+4. Base tem que existir no catalogo (ou na allowlist manual).
+5. Titulo com match ambiguo (mais de um SKU candidato) nunca grava.
+
+## 31.4 O que ainda falta
+1. OK do dono para pausar os 145 ULTRALED.
+2. Inativar STS514TA-UTH11 (MLB3653166736, 4 vendas).
+3. 673 anuncios com MLB sem evidencia - so resolve lendo a descricao. O UpSeller nao expoe
+   endpoint de descricao; os caminhos testados (`user-product/description`, `/detail`, `/get`,
+   `product/description`, `/edit-description`) todos retornam vazio.
+4. 451 anuncios com MLB presos em revisao.
+
+---
+
 # 30. LOTE 10 - FECHAMENTO DA CONVERSAO DE FAMILIAS LEGADAS (07/08/2026)
 
 ## 30.1 Placar final dos 955 jobs de SKU
