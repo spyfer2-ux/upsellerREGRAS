@@ -1,3 +1,76 @@
+# 39. DECISOES DO DONO - GR117-118 E CLIO, AIRCROSS OPCAO B
+
+## 39.1 GR117-118 = CLIO. NAO e universal.
+Palavras do dono: "GR117-118 CLIO NAO E UNIVERSAL".
+Isso fecha a pendencia da secao 35.7, mas ABRE uma bem maior.
+
+**ACHADO GRAVE: 29 anuncios no ar usam GR117-118 em carro que NAO e Clio.**
+
+| | Anuncios no ar (4 lojas) | No cronograma |
+|---|---|---|
+| GR117-118 em Clio - OK | 8 | 10 |
+| GR117-118 em outro carro - CONFERIR | **29** | 25 (retirados) |
+| Total | 37 | 35 |
+
+Carros errados encontrados: Nissan March, Nissan Versa, Nissan Sentra, Nissan Livina,
+Nissan Grand Livina e Renault Master.
+Distribuicao no ar: AUTOPLUS 10 | MULTIPARTS 14 | REIS SHOPEE 12 | Jz acessorios 1.
+
+**ESSES 29 ANUNCIOS SOMAM 106 VENDAS. NAO FOI MEXIDO EM NADA.**
+
+Duas leituras possiveis, e NAO da pra decidir sem o dono:
+- (1) O SKU esta errado nesses 29 e o certo e outro codigo. Nesse caso e correcao de SKU.
+- (2) O GR117-118 tambem SERVE em March/Versa/Sentra/Livina. Faz sentido tecnico:
+  Clio e Renault, March/Versa/Sentra/Livina sao Nissan, e Renault-Nissan e a mesma alianca -
+  farol de milha compartilhado entre plataformas e comum. As 106 vendas sem reclamacao
+  reforcam essa leitura.
+
+Regra do repo: NUNCA inventar SKU, na duvida relatorio de erro. E: levantar vendas antes de
+qualquer pausa. Cumprido. **Aguardando o dono dizer se e (1) ou (2).**
+
+Enquanto isso: os 25 do cronograma que nao sao Clio foram RETIRADOS e ficaram em
+`__HOLD_GR117` no localStorage. Os 10 de Clio ficaram e agora estao VALIDADOS.
+
+## 39.2 AIRCROSS - opcao B aprovada pelo dono
+Decisao: "pode com a letra B" = Aircross sai de vez, inclusive o que ja esta no ar.
+Ja retirados do cronograma os 5 que eu tinha planejado (secao 38.3).
+
+**Lista dos 16 no ar nas 4 lojas** (salva em `__AIRCROSS_OUT`):
+AUTOPLUS 4 | Jz acessorios 3 | MULTIPARTS 4 | REIS SHOPEE 5. Vendas somadas: apenas 3.
+
+Mas eles NAO sao todos a mesma coisa:
+
+| Tipo | Qtd | O que fazer |
+|---|---|---|
+| Farol de milha de Aircross | 12 | SAIR - e o produto que o dono nao tem mais |
+| **Lampada super LED** (produto universal, "Aircross" so no titulo) | **4** | **PERGUNTAR ANTES** |
+
+As 4 lampadas sao: 3 na Jz acessorios (SKUs vazio, vazio e MH1-MH7) e 1 na REIS SHOPEE
+(MLB3302767645). Sao lampada super LED 6000k / kit alto-baixo - produto universal que o dono
+TEM. O "Aircross" ali e so o titulo puxando busca, nao e a peca especifica de Aircross.
+Pausar essas 4 seria jogar fora anuncio de produto que existe no estoque.
+As 3 unicas vendas do grupo Aircross estao justamente nessas 4.
+
+**Nada foi pausado.** Confirmar com o dono se a opcao B pega tambem as lampadas.
+
+## 39.3 Numeros atualizados
+
+| | Antes | Agora |
+|---|---|---|
+| Cronograma - total | 2.698 | **2.673** |
+| Cronograma - por dia | 190 a 195 | **189 a 194** |
+| Fase 0 - retitulos | 423 | 423 (sem mudanca) |
+
+O cronograma ficou abaixo dos 196/dia por causa das retiradas (Etios 23, Aircross 5,
+GR117 nao-Clio 25 = 53 anuncios). Se o dono liberar os 25 do GR117-118, volta pra faixa de 196.
+
+## 39.4 Fila de pendencias do dono
+1. GR117-118 em March/Versa/Sentra/Livina/Master: SKU errado ou serve mesmo? (29 anuncios, 106 vendas)
+2. Aircross opcao B pega tambem as 4 lampadas super LED universais?
+3. Encurtar os 1.642 titulos do ML acima de 60 caracteres? (passivo separado, secao 35.5)
+
+---
+
 # 38. RECONCILIACAO COM A SECAO 36 (outra instancia do Claude)
 
 O dono confirmou: a secao 36 foi escrita por OUTRA INSTANCIA do Claude rodando em paralelo,
