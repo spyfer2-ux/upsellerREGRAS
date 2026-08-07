@@ -1,3 +1,78 @@
+# 34. SESSAO 07/08/2026 (parte 2) - CATALOGO DESBLOQUEADO PELO DONO E FASE 0
+
+## 34.1 Confirmacoes do dono - conhecimento de produto
+Fonte: o proprio dono, no chat. Tem PRIORIDADE sobre a planilha de catalogo.
+
+**BLOCO UNIVERSAL - GR100 / GR101 / GR100-101**
+Cabe em centenas de carros. Palavras do dono: "GR100-101 cabe em centenas de carros mesmo, pode confiar".
+Nao precisa de aval do catalogo por veiculo.
+
+**GRX905RN = UNIVERSAL (CORRIGE O CATALOGO)**
+A planilha diz "LOGAN SANDERO OROCH". Esta errado/incompleto.
+O dono confirmou por escrito: GRX905RN e UNIVERSAL.
+Composicao da caixa: 1x GR100 + 1x GR101 + chicote + botao + rele + pingo LED.
+E a versao KIT do bloco universal, com botao colante ou tic-tac alternativo.
+
+**GRX240FT = UNIVERSAL**
+Mesma logica do bloco universal. E formado por FUN240.
+Quando sai como KIT o codigo e GRX240FT; o componente solto e FUN240 / FUN240-2.
+Isso fecha a pendencia dos 779 anuncios sem aval de catalogo.
+
+**GRX147FT = ORIGINAL do Fiat Argo**
+Unico caso da lista abaixo em que existe peca ORIGINAL. Os demais sao alternativos.
+
+**APLICACAO DECLARADA PELO DONO** para o bloco universal (GR100-101 / GRX905RN / GRX240FT):
+Fiat Argo, Fiat Cronos, Fiat Mobi, Fiat Fiorino, Fiat Ducato,
+Renault Kwid, Renault Master,
+Jeep Renegade,
+Ford Ka, Ford Ranger, Ford Fiesta, Ford EcoSport,
+Citroen C4 Pallas,
+Honda Civic.
+Essa lista e PISO, nao teto - o bloco e universal.
+
+## 34.2 Pendencias fechadas
+| Pendencia | Antes | Agora |
+|---|---|---|
+| GRX905RN conflito de catalogo | 125 anuncios travados | LIBERADO - universal |
+| 779 anuncios sem aval (GRX240FT + familia FUN240) | travados | LIBERADO - universal |
+| GR117-118 | sem aval | CONTINUA TRAVADO - dono nao se manifestou |
+
+## 34.3 Base liberada para o programa de anuncios
+Familias universais nas 4 lojas do foco: **1.714 anuncios ja no ar**.
+AUTOPLUS 771 | Jz acessorios 136 | MULTIPARTS 461 | REIS SHOPEE 346
+Maiores: FUN240-2 392, GR100-101 390, GRX905RN 261, GRX240FT 206,
+GR100-101-LH8 123, GR100-101-MH8 80, GRX905RN-MH8 51, FUN240-2-CHI-LH1 38.
+Esta e a base que sustenta as 196/dia da secao 32.
+
+## 34.4 FASE 0 - diagnostico de titulos repetidos na mesma loja
+Regra do dono: "os titulos nunca devem se repetir na mesma loja, mas em outras pode repetir".
+Varredura nas 4 lojas do foco (9.533 anuncios: AUTOPLUS 2.765, Jz 999, MULTIPARTS 2.753, REIS 3.016).
+Comparacao por titulo normalizado (minusculo, sem acento, sem pontuacao).
+
+**RESULTADO: 514 grupos de titulo repetido, 564 anuncios excedentes para retitular.**
+
+| Loja | Grupos | Excedentes |
+|---|---|---|
+| AUTOPLUS | 178 | 194 |
+| Jz acessorios | 123 | 124 |
+| MULTIPARTS | 82 | 87 |
+| REIS SHOPEE | 131 | 159 |
+
+Tamanho dos grupos: 473 com 2, 33 com 3, 7 com 4, 1 com 5.
+- 329 grupos tem o MESMO SKU nos dois anuncios (duplicata real de titulo).
+- 185 grupos tem SKU DIFERENTE com titulo igual (erro de titulo OU erro de SKU - conferir um a um).
+- 220 dos anuncios envolvidos estao com SKU VAZIO - entram antes na fila de correcao de SKU.
+
+**Criterio de quem fica com o titulo original:** fica o de MAIOR venda; empate, o de maior
+visualizacao; empate, o mais antigo. Os demais sao retitulados pela regra 32.10.
+
+## 34.5 Proximo passo
+1. Fase 0: retitular os 564 excedentes - lote montado, ESPERANDO GO DO DONO.
+2. Depois: cronograma de 14 dias, 196/dia (secao 32).
+Gatilho de retomada continua: **VAMOS FAZER ANUNCIOS**
+
+---
+
 # 33. SESSAO 07/08/2026 - ULTRALED PAUSADO E ATAQUE A LISTA DE MLBs DO DONO
 
 ## 33.1 Endpoints: form-urlencoded x JSON (nao confundir)
