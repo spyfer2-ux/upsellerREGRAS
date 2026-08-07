@@ -1,3 +1,72 @@
+# 38. RECONCILIACAO COM A SECAO 36 (outra instancia do Claude)
+
+O dono confirmou: a secao 36 foi escrita por OUTRA INSTANCIA do Claude rodando em paralelo,
+na conta dele. Fonte legitima. As regras da 36 foram entao cruzadas com o lote da Fase 0
+e com o cronograma. Resultado abaixo.
+
+## 38.1 O que estava ERRADO no meu cronograma
+
+**ETIOS - 23 anuncios removidos.** A secao 18.2 ja dizia "Etios, dono nao trabalha mais",
+e a secao 36 confirma que o kit 26036-26037-KIT ja foi pausado.
+Eu estava planejando CRIAR 23 anuncios de Etios. Bug meu, corrigido.
+Removidos: AUTOPLUS 9 | Jz acessorios 9 | REIS SHOPEE 4 | MULTIPARTS 1.
+SKUs envolvidos: GRX517TA, GRX517TA-MH16, GR159-160.
+Tambem tirei 5 retitulos de Etios da Fase 0 (anuncio que vai ser pausado nao precisa
+de titulo novo). Ficaram parkeados em `__FASE0.parkEtios`.
+
+**AIRCROSS - 5 anuncios removidos, PENDENTE DECISAO.** Ver 38.3.
+
+**MOBI KIT - 3 SKUs corrigidos.** Regra 36: kit do Mobi e GRX905RN.
+Eu tinha 3 titulos com a palavra "Kit" carregando GR100-101, que e o PAR e nao o kit.
+Trocados para GRX905RN (dias 6, 7 e 12). Nenhum deles tinha LED, entao nao levou -MH8.
+
+## 38.2 O que estava CERTO (conferido, sem alteracao)
+- **C3**: 18 anuncios no plano, todos na faixa 2009 a 2015 ou Picasso. A regra 36 manda
+  pausar so C3 2022. Nenhum anuncio meu e 2022. Todos ficam.
+- **TIC TAC**: 7 anuncios no plano com "tic tac" no titulo. Nenhum carrega GRX147FT
+  (GRX147FT e o Argo ORIGINAL, tic tac e ALTERNATIVO). Regra respeitada.
+- **Anuncios citados na secao 36**: nenhum aparece no lote da Fase 0 nem no cronograma.
+  Sao de outras lojas, fora das 4 do foco.
+
+## 38.3 PENDENCIA - Aircross com SKU do bloco universal
+A outra instancia deixou isso em aberto e eu bati no mesmo ponto.
+No meu cronograma havia 5 anuncios com titulo de Aircross carregando GR100 / GR101:
+AUTOPLUS 1 | Jz acessorios 2 | MULTIPARTS 1 | REIS SHOPEE 1.
+
+O conflito: o dono disse que **nao tem mais o produto Aircross**, mas o SKU desses anuncios
+e o **bloco universal**, que ele TEM e que cabe no Aircross.
+Ou seja, o produto existe em estoque; o que acabou foi a peca especifica de Aircross.
+
+Tirei os 5 do plano por precaucao. **Decisao do dono:**
+- (A) pode anunciar Aircross com o bloco universal - devolvo os 5 e libero o resto; ou
+- (B) Aircross sai de vez - ficam fora e os ja no ar tambem devem sair.
+
+## 38.4 Numeros atualizados
+
+| | Antes | Agora |
+|---|---|---|
+| Fase 0 - retitulos prontos | 428 | **423** |
+| Cronograma - total | 2.726 | **2.698** |
+| Cronograma - por dia | 193 a 196 | **190 a 195** |
+
+Fase 0 por loja: AUTOPLUS 184 | Jz acessorios 12 | MULTIPARTS 82 | REIS SHOPEE 145
+localStorage: `__FASE0` v5, `__CRONO` ja limpo.
+
+## 38.5 REGRA NOVA DE OPERACAO - duas instancias na mesma conta
+Aconteceu de verdade nesta sessao: a outra instancia commitou no README no meio da minha
+edicao e o GitHub recusou meu commit com "spyfer2-ux has committed since you started editing".
+Tambem houve risco de numeracao de secao colidir (36 vs 37).
+
+Regras para nao dar merda:
+1. Antes de editar o README, reler o ultimo commit. Nunca reaproveitar aba de edicao antiga.
+2. Se o GitHub acusar conflito, **descartar e refazer**. Nunca forcar por cima.
+3. Numerar secao consultando a ultima existente na hora, nao no comeco da sessao.
+4. Duas instancias NAO devem gravar na mesma loja ao mesmo tempo. Dividir por loja ou por hora.
+5. Cache `__ML2`/`__SP2` de uma instancia fica velho quando a outra grava.
+   **Sempre rebootstrap antes de aplicar lote**, mesmo que o cache pareca bom.
+
+---
+
 # 37. CORRECAO DA SECAO 35 - FASE 0 REGERADA COM GUARDA DE ANOS
 
 A secao 35 foi escrita com numeros de uma versao anterior do lote. **Vale esta secao 37.**
