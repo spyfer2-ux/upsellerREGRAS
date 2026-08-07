@@ -1,3 +1,82 @@
+# 35. FASE 0 PRONTA + CRONOGRAMA VALIDADO (07/08/2026)
+
+## 35.1 Onde esta o lote (memoria viva)
+Tudo salvo no localStorage da aba de trabalho do UpSeller (app.upseller.com):
+- `__FASE0` (120 KB) - { plano[423], semSku[130], falhou[11] }
+- `__F0GEN` - codigo-fonte das funcoes geradoras, para reproduzir igual
+- `__CRONO` - cronograma de 14 dias ja corrigido
+- `__ANUNCIOS_PLANO` - plano bruto de 2.726 anuncios
+Caches em memoria: `__ML2` (3.764) e `__SP2` (5.769).
+localStorage sobrevive a reload; `__ML2`/`__SP2` NAO - rodar bootstrap da secao 33.
+
+## 35.2 Resultado da Fase 0
+514 grupos de titulo repetido / 564 anuncios excedentes.
+
+| Situacao | Qtd |
+|---|---|
+| Novo titulo pronto | **423** |
+| Sem SKU - vai antes para a fila de correcao de SKU | 130 |
+| Sem candidato viavel - revisao manual | 11 |
+
+Por loja (retitulos prontos): AUTOPLUS 184 | Jz acessorios 12 | MULTIPARTS 81 | REIS SHOPEE 146
+
+Criterio de quem MANTEM o titulo original: maior venda; empate, maior visualizacao; empate, id menor.
+176 dos 423 tem CONF=SIM: os dois anuncios do grupo tinham SKU DIFERENTE com titulo igual.
+Nesses o titulo repetido pode ser sintoma de SKU errado - conferir na hora de aplicar.
+
+## 35.3 Como o titulo novo e gerado (algoritmo, reproduzivel)
+1. **limpa2** - corrige "Origina"->Original, "2cibie"->"2 Cibie", separa CamelCase, tira dois-pontos
+   solto, remove "+brinde ...", "frete gratis", "promocao/desconto/parcelamento",
+   troca "farolete"->"Farol" e colapsa "Farol" repetido.
+2. **encurta(t, limite)** - so se passar do limite: abrevia anos -> remove enchimento
+   (vidro, universal, completo, para, com, de, do, da, h1/h3/h7/h8/h11...) -> comprime faixa de anos
+   para "2004 A 2016" -> ultimo recurso corta na palavra inteira. NUNCA remove veiculo nem anos.
+3. **variacao** - troca/insere o conjunto MILHA / NEBLINA / AUXILIAR (8 combinacoes).
+   So aplica se o anuncio E farol de milha (titulo casa farol|milha|neblina|auxiliar ou SKU GR/GRX/FUN/MDM).
+   Em produto que nao e farol (ex.: rack de teto) NAO insere variacao - diferencia por formato de ano.
+4. **formato de ano** - original, abreviado (2015 16 17) ou expandido (2015 2016 2017).
+5. Escolhe o candidato MAIS LONGO que caiba no limite e que ainda nao exista naquela loja.
+
+Limites: ML 60 / Shopee 120. Proibido: frete gratis, parcelamento, desconto, promocao, brinde, farolete.
+
+## 35.4 Validacao dura do lote (tudo zerado)
+excedeLimite 0 | palavraProibida 0 | colideComTituloExistente 0 | colideEntreOsNovos 0 |
+perdeuOAnoDoOriginal 0 | ficouIgualAoOriginal 0.
+Bonus: 79 dos 423 tambem foram ENCURTADOS porque ja estavam acima do limite.
+
+## 35.5 ACHADO NOVO - 1.642 titulos do ML acima de 60 caracteres
+Distribuicao de tamanho de titulo:
+- ML: mediana 60, p90 82, **maximo 174**, acima de 60 = **1.642 de 3.764 (44%)**
+- Shopee: mediana 57, p90 75, maximo 120, acima de 120 = 0 (a Shopee corta no limite)
+O ML aceitou titulos longos, mas a regra do dono e 60. Isso e um passivo separado da Fase 0
+(1.642 anuncios para encurtar). Nao entra no lote atual - precisa de decisao do dono.
+
+## 35.6 Cronograma de 14 dias - revalidado
+2.726 anuncios, 193 a 196 por dia, 295 SKUs distintos.
+Por loja no total: AUTOPLUS 349 | Jz acessorios 939 | MULTIPARTS 672 | REIS SHOPEE 766.
+Dia 1: 196 (AUTOPLUS 25 | Jz 68 | MULTIPARTS 48 | REIS 55), 80 SKUs distintos.
+Teto de 12 anuncios do mesmo SKU na mesma loja no mesmo dia: respeitado (maximo exato = 12).
+Colisao com titulo existente (ja considerando a Fase 0 aplicada): **2 encontradas e corrigidas**
+(GRX905RN "Kit Farol de Milha Renault Sandero 2008 2009 2010 2011 LED" nos dias 6 e 13).
+Agora: 0 colisoes.
+
+## 35.7 UNICA PENDENCIA ABERTA - GR117-118
+35 anuncios do plano usam GR117-118 e esse codigo continua sem aval de catalogo.
+AUTOPLUS 9 | Jz acessorios 14 | MULTIPARTS 5 | REIS SHOPEE 7.
+Perguntar ao dono: GR117-118 tambem e universal, ou tem aplicacao especifica?
+Enquanto nao responder, esses 35 ficam FORA e o dia perde ~2 anuncios.
+
+## 35.8 Ordem de execucao quando o dono voltar (segunda)
+1. Bootstrap da secao 33 (reconstruir `__ML2` e `__SP2` com pageNum).
+2. **Fase 0** - aplicar os 423 retitulos em blocos de 50, relendo para confirmar (code:0 nao prova).
+3. So depois comecar o Dia 1 do cronograma (196 anuncios).
+4. Atualizar a tabela de controle 32.9 a cada bloco.
+5. FREIO: parar no primeiro cancelamento/suspensao ou 3 falhas seguidas.
+
+Gatilho de retomada: **VAMOS FAZER ANUNCIOS**
+
+---
+
 # 34. SESSAO 07/08/2026 (parte 2) - CATALOGO DESBLOQUEADO PELO DONO E FASE 0
 
 ## 34.1 Confirmacoes do dono - conhecimento de produto
