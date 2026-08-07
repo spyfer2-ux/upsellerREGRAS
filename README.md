@@ -1,3 +1,155 @@
+# 29. REGRA DE CRIACAO E DUPLICACAO DE ANUNCIOS (07/08/2026)
+
+Autorizacao do dono: aceitou trocar "muitos titulos para o mesmo produto" por "um anuncio por
+variante real, replicado entre lojas, com compatibilidades preenchidas". Termo FAROLETE descartado.
+
+## 29.1 O QUE AS PLATAFORMAS PROIBEM (fontes oficiais, lidas em 07/08/2026)
+
+MERCADO LIVRE - Central do Vendedor:
+- "Por que evitar anuncios duplicados de autopecas": duplicado = mesmo produto com as MESMAS
+  CONDICOES DE VENDA. Na categoria "Pecas de Carros e Caminhonetes" (a nossa) o duplicado e
+  CANCELADO. Em Motos/Caminhoes/Agro/Nautica/Pneus e apenas pausado, e ali sim vale diferenciar
+  por titulo, foto e descricao. A instrucao oficial: nao criar mais de um anuncio para o mesmo
+  produto e adicionar os veiculos compativeis no anuncio com mais exposicao.
+- "Anuncios duplicados: o que sao e como evita-los": nao sao permitidos e sao cancelados
+  automaticamente por descumprir as Politicas de Cadastro de Anuncios. Se ja existirem, o ML
+  OCULTA o duplicado e mantem ativo so o de melhor visibilidade. Caminhos permitidos: variacoes,
+  kits, ou anuncios realmente diferenciados. "Anunciar semelhante" e "Vender um igual" copiam os
+  dados mas EXIGEM mudar as condicoes de venda.
+- "Como gerenciar os anuncios com eficiencia": escala de sancao = anuncio pausado, cancelado e,
+  no pior caso, CONTA DESATIVADA. Existe a infracao "usar tecnicas proibidas", definida como
+  acoes com o objetivo de contornar ou violar as politicas.
+- "Como fazer um bom titulo": estrutura produto + marca + modelo + algumas especificacoes.
+  Em autopecas os veiculos compativeis vao na secao de COMPATIBILIDADES, nao no titulo.
+  Nao repetir info que ja esta na ficha; nao por cor/tamanho; nao por frete gratis, parcelamento
+  nem promocao.
+
+SHOPEE BRASIL - "[Orientacoes] Guia de Violacao de Anuncio" (help.shopee.com.br, artigo 76225):
+- SPAM e uma das 4 violacoes e cobre TRES coisas ao mesmo tempo: praticas para manipular os
+  resultados da pesquisa; termos de pesquisa IRRELEVANTES OU EXCESSIVOS no titulo ou descricao;
+  e ANUNCIOS DUPLICADOS. A recomendacao deles e transformar anuncios muito parecidos em VARIACOES.
+- Consequencia: anuncio suspenso ou deletado. Deletado gera PONTOS DE PENALIDADE. Muitos pontos
+  restringem privilegios de venda e LIMITAM A COTA DE ANUNCIOS POR 28 DIAS.
+
+CONCLUSAO: titulo diferente NAO transforma o mesmo produto em produto diferente. O plano de criar
+milhares de anuncios do mesmo produto so variando palavra e exatamente o que gera cancelamento no
+ML e congelamento de cota na Shopee. Esta secao 29 substitui aquele plano.
+
+## 29.2 AS TRES BASES LEGITIMAS DE REPLICACAO
+
+BASE 1 - VARIANTE REAL. Um anuncio por variante que o catalogo distingue de fato:
+botao (original / alternativo colante / tic tac 2 pinos / tic tac 3 pinos / universal);
+lente (vidro = sufixo -V / acrilico); moldura (preta / cromo / cinza / grafite / sem moldura /
+aro prata); lampada (Super LED = M, xenon = X, halogena = L, por encaixe); tipo (KIT GRX /
+PAR GR###-### / UNITARIO GR### / ACESSORIO MDM). Duas variantes = dois produtos, podem coexistir.
+
+BASE 2 - LOJA DIFERENTE. Duplicidade e julgada dentro da mesma conta de vendedor. O mesmo anuncio,
+com o mesmo titulo, replicado em OUTRA loja e permitido. O volume cresce na HORIZONTAL (14 lojas),
+nunca na vertical dentro de uma loja.
+
+BASE 3 - COMPATIBILIDADES. Nao e anuncio novo: e o canal oficial de descoberta em autopecas.
+Preencher a ficha de compatibilidades do anuncio de maior exposicao rende mais que espalhar anos
+no titulo, e e o que o proprio ML manda fazer.
+
+NAO PODE: mesmo SKU + mesma loja + mesmas condicoes de venda, mudando so a palavra do titulo.
+
+## 29.3 ELEGIBILIDADE (checar antes de criar)
+1. SKU valido pela gramatica do item 3 e coerente com o catalogo em MODELO, ANO e TIPO.
+2. Maximo 6 anuncios daquele SKU na loja alvo.
+3. Fora de qualquer lista de bloqueio, parqueio, linha GM (sufixo CV) ou produto descontinuado.
+4. Anuncio de ORIGEM sem atributo invalido (secao 28): SIDE_POSITION com value_id null ou
+   dimensao de embalagem mal formada SE PROPAGA para a copia e trava o anuncio novo.
+5. Origem nao pode estar under_review.
+6. SKU errado, vazio ou legado: corrigir ANTES, replicar depois.
+
+## 29.4 PRIORIDADE: CONCORRENCIA BAIXA ANTES DE VENDA ALTA
+Ordenar por vendas-por-anuncio dividido pela concorrencia da busca. Nicho pequeno com venda alta e
+muito mais barato que cabeca de cauda saturada. Concorrencia lida em lista.mercadolivre.com.br.
+
+| Busca | Concorrencia | SKU nosso | Vendas | Anuncios |
+|---|---|---|---|---|
+| farol de milha oroch | 677 | GRX905RN-LH8 | 136 | 2 |
+| farol de milha triton | 961 | GRX602MS | 61 | 4 |
+| farol de milha master | 1.632 | GR342 | 57 | 4 |
+| farol de milha hilux sw4 | 1.867 | GR306-307 | 89 | 4 |
+| farol de milha onix plus | 2.560 | GR955-956 (GM congelado) | 111 | 4 |
+| farol de milha fiesta | 5.498 | GRX406FD-MHB4 | 277 | 5 |
+| farol de milha saveiro | 8.099 | GRX054VW-MH8 (bloqueado) | 460 | 4 |
+| farol de milha (generico) | +9.999 | - | - | - |
+
+## 29.5 TITULO
+Limite duro: 60 caracteres no Mercado Livre, 120 na Shopee, contados ANTES de enviar.
+Estrutura: TIPO + VARIACAO + MODELO + GERACAO + ANOS + ESPECIFICACAO TECNICA.
+
+Variacoes permitidas, em ordem de forca medida no autocomplete do ML:
+MILHA (forte) > NEBLINA (forte) > AUXILIAR (medio, puxa moto e universal).
+FAROLETE DESCARTADO por ordem do dono (07/08/2026). Motivo: no autocomplete do ML o termo
+"farolete" devolve lanterna (recarregavel, tatico, cabeca, moto), ou seja intencao errada. Na
+Shopee isso se enquadra em "termo de pesquisa irrelevante", que e a definicao de spam deles.
+
+GERACAO ANTES DO ANO. As buscas relacionadas do ML mostram que o comprador procura por geracao
+muito mais que por ano solto: gol g2, g3, g4, g5, g6, g7, g8, gol bola, saveiro g7, onix joy.
+Formato de ano: completo (2003 2004 2005 2006) ou abreviado (2003 04 05 06), alternando entre
+titulos, SEMPRE dentro da faixa que o catalogo autoriza. Nunca inventar ano.
+LED so entra no titulo se entrar no SKU pela regra do item 3.4 (Super LED / 6000K sim, pingo T10 nunca).
+
+Proibido no titulo: frete gratis, parcelamento, desconto, promocao, cor, tamanho, dado pessoal, e
+enfileirar modelos ou anos que o produto nao atende.
+
+## 29.6 UNICIDADE
+Titulo nunca repete na mesma loja. Checar contra o Set de titulos daquela loja, normalizado em
+maiusculas com espacos colapsados. Entre lojas diferentes pode repetir.
+DIVIDA EXISTENTE: 440 anuncios ativos nas 4 lojas em escopo JA tem titulo repetido dentro da
+propria loja (AUTOPLUS 184, Jz acessorios 124, MULTIPARTS 63, REIS 69). Limpar antes de criar novo.
+
+## 29.7 RITMO E MODERACAO
+O limite que importa nao e o tecnico da plataforma, e o de moderacao.
+Teto operacional inicial: 100 a 150 anuncios novos por dia POR LOJA. Escalonar so apos 14 dias sem
+moderacao. Blocos de 50, com pausa e reconferencia entre blocos.
+FREIO: parar o lote inteiro no primeiro cancelamento ou suspensao, ou em 3 falhas seguidas.
+Os limites citados pelo dono (2.000/dia por plataforma, 300/hora) ficam como teto ABSOLUTO que
+nao deve ser alcancado nesta fase.
+
+## 29.8 CONFERENCIA
+Vale o item 27.8 e a secao 28: code:0 nao prova nada. Depois de criar, pollar /api/check-process,
+reler a listagem e confirmar que o anuncio existe, com o SKU certo e o titulo exatamente como foi
+enviado. Procurar em TODOS os productState antes de declarar falha.
+
+## 29.9 APROVACAO
+Nenhum anuncio e criado ou duplicado sem o dono ver a lista completa antes: loja de destino, SKU,
+titulo e contagem de caracteres.
+
+## 29.10 ENDPOINTS DE CRIACAO E COPIA (mapeados, ainda NAO usados)
+ML: /api/mercado/user-product/copy | /api/mercado/user-product/add |
+    /api/mercado/product/copy | /api/mercado/product/batch-publish
+Shopee: /api/shopee/product/copy-shopee-product | /api/shopee/product/add |
+    /api/shopee/product/batch-publish
+Apoio de titulo: /api/ai/title | /api/ai/save-title
+Na UI do ML existem "Anunciar semelhante" e "Vender um igual", que exigem mudar condicoes de venda.
+
+## 29.11 FOTO DE COBERTURA DO PARQUE (07/08/2026, 4 lojas em escopo)
+8.503 anuncios ativos: ML AUTOPLUS 2.780 + Jz acessorios 999; Shopee MULTIPARTS 2.410 + REIS 2.314.
+6.108 com SKU valido, distribuidos em apenas 379 SKUs distintos.
+
+| Faixa | SKUs | Anuncios | Vendas | Vendas por anuncio |
+|---|---|---|---|---|
+| 1-2 anuncios, com venda | 80 | 133 | 1.235 | 9,3 |
+| 3-6 anuncios, com venda | 66 | 268 | 3.119 | 11,6 |
+| 7-20 anuncios | 56 | 629 | 3.149 | 5,0 |
+| 21+ anuncios | 67 | 4.855 | 7.003 | 1,4 |
+| 1-6 anuncios, zero venda | 110 | 223 | 0 | 0 |
+
+Leitura: 67 SKUs ocupam 57% do parque e rendem 1,4 venda por anuncio. 146 SKUs rendem 9 a 12
+vendas por anuncio com apenas 401 anuncios. A replicacao deve ir para esses 146.
+
+## 29.12 OUTRAS DEMANDAS VISTAS NAS BUSCAS RELACIONADAS
+Aparecem buscas de acessorio avulso: rele farol milha, botao do farol de milha strada, lampada
+farol milha strada, xenon farol milha, farol milha drl, lente farol l200 triton, tampa do farol de
+milha palio, suporte farol. A linha BFM pausada no Lote 7 e exatamente "botao de farol de milha":
+a demanda existe na busca, o problema pode ter sido posicionamento e nao produto. Rever com o dono.
+
+---
+
 # 28. ATRIBUTOS DO MERCADO LIVRE - O BLOQUEIO INVISIVEL DOS SKUs
 
 ## 28.1 O sintoma
