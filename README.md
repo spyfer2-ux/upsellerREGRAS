@@ -2,6 +2,76 @@
 
 ---
 
+## 27. LOTE 10 — CONVERSAO DE FAMILIAS LEGADAS EM TODAS AS 14 LOJAS
+
+Autorizacao do dono: "pode incluir, e corrigir pra todas as lojas! por enquanto!"
+Escopo ampliado: 5 lojas ML + 9 lojas Shopee.
+
+### 27.1 CORRECAO CRITICA DA DESCOBERTA ANTERIOR (secao 26.2)
+O cap de paginacao NAO existe. O erro era meu: **pageSize maximo e 100**.
+Com pageSize=200 a API devolve lixo (50 linhas) e repete paginas, o que gerou os duplicados.
+Com pageSize=100 a enumeracao completa funciona ate o fim.
+Universo real confirmado: **ML 15.039 + Shopee 20.912 = 35.951 anuncios**.
+Destes: 18.393 com SKU bom; errados = MLB 8.138, VAZIO 3.219, STS 1.074, FUN 381, FGS 22, FXS 3.
+
+### 27.2 Como ler o catalogo sem CORS
+JSONP com script tag NAO funciona (gviz exige OAuth e devolve ACCESS_DENIED).
+O que funciona: abrir uma aba em gviz/tq?tqx=out:html e usar get_page_text (limite 50.000 chars).
+O catalogo inteiro (797 linhas) cabe em uma leitura so.
+
+### 27.3 A ESCRITA DE SKU NO ML E ASSINCRONA
+Descoberta importante: /api/mercado/user-product/batch-online-sku retorna
+{code:0, data:"PRODUCT:MERCADO_USER_PRODUCTACTION_PRODUCT_BATCH_SKUONLINE:<n>:<puid>"}.
+Esse data e um UUID de processo. O resultado real so aparece em:
+GET /api/check-process?uuid=<UUID>  ->  {processMsg:{code, successNum, totalNum}}
+- code -1 = processo ainda nao existe/expirou
+- code 1  = terminou; comparar successNum x totalNum
+**code:0 na chamada NAO significa nada.** Sempre conferir successNum.
+O payload que eu usava ja era identico ao da interface (confirmado capturando o XHR do botao Acoes em Massa > Editar SKU > aba "Modificar SKU").
+
+### 27.4 O ML DERRUBA GRANDE PARTE DAS GRAVACOES (silenciosamente)
+Taxa de sucesso observada: ~20% por rodada em lote, ~40% quando enviado 1 a 1.
+Nao ha mensagem de erro: errMsg fica vazio e successNum volta 0.
+Parte tem causa conhecida: 100 anuncios tem erro pendente do Mercado Livre no campo errMsg,
+quase todos "nullerror-3510-invalid.item.attribute.values: Attribute [SIDE_POSITION] is not valid,
+item values [(null:Ambos os lados)]". Enquanto esse atributo estiver invalido o ML recusa
+qualquer atualizacao do anuncio, inclusive SKU. **Isso o dono precisa corrigir no anuncio.**
+O resto parece limitacao de fila/rate limit do UpSeller->ML.
+CONCLUSAO OPERACIONAL: gravacao no ML exige RODADAS REPETIDAS ate convergir.
+O Shopee nao tem esse problema: gravou 83/83 de primeira.
+
+### 27.5 O que foi processado no Lote 10
+Anuncios com familia legada (STS/FGS/FXS/FUN fora da familia 240) nas 14 lojas: 1.480.
+- **955 aprovados e enviados** (ML 872 + Shopee 83)
+- **525 retidos** (ver 27.6)
+Conversao 100% mecanica + validada contra o catalogo:
+STS### -> GRX### | FUN### -> GR### | FGS0###/FGS### -> GRX### | FUN240 permanece FUN
+Normalizacoes de sufixo aplicadas: remove -TIC e TIC final, remove -PINGOT10 e -T10,
+-X8K -> -XHB4, -X8H* -> -XH*, -TICTAC removido, -FUN/-STS/-FGS no meio do codigo viram so o numero
+(ex.: FUN217-FUN218 -> GR217-218).
+Sufixos aceitos: MH*, LH*, XH*, UH*, ZH*, -V, -S, -DRL, MDM### e numeros.
+
+### 27.6 Os 525 retidos e o motivo
+| Motivo | Qtd |
+|---|---|
+| linha GM (sufixo CV) — congelada por ordem do dono | 208 |
+| codigo destino fora do catalogo | 191 |
+| bloqueado pelo dono (GRX010VW, GRX086VW, GRX322NS, GRX054VW, GRX005VW, GRX474FD, GRX068VW) | 30 |
+| sufixo desconhecido (T104LED, T105LED, EMLED, BRANCO, SLH11, FL852, 101CRO, 100TR, GG739 etc) | 39 |
+| sem regra de conversao (FXS300CV-FXS330CV, FXS0521TA, FXS0460FT) | 3 |
+| anuncios excluidos pelo vendedor (SELLER_DELETE) | 53 |
+| anuncio Shopee 58261760339 (proibido mexer) | 1 |
+
+### 27.7 Codigos liberados manualmente (nao estao no catalogo mas o dono confirmou)
+GR117, GRX006VW, GRX019VW, GRX113VW, GRX240FT, GRX460FD, GRX404FD
+
+### 27.8 Regra nova
+NUNCA declarar sucesso por code:0. Para o ML, confirmar via /api/check-process e depois reler o anuncio.
+Rodar em rodadas ate a lista de pendentes parar de diminuir.
+
+
+---
+
 ## 26. VARREDURA GLOBAL — TODAS AS LOJAS (Ago/2026)
 
 ### 26.1 Novas regras de sufixo de montadora confirmadas pelo dono
