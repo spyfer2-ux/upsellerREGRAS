@@ -914,3 +914,96 @@ igual foi feito com STS118VW e STS125VW.
 window.__LOTE9 guarda: feitos, res1, res2, hold, semEv, gm, outrosEstados.
 Helpers novos: __POST para JSON, __PF para form-urlencoded, __getML para reler SKU por MLB,
 __CATD com o trecho do catalogo usado, __normSku com as conversoes de familia.
+
+## 25. Lote 8b e Lote 9 - continuacao da mesma sessao
+
+### 25.1 Lote 8b - pausados e em revisao com SKU no formato MLB
+
+Os 128 anuncios pausados ou em revisao com SKU MLB passaram pelo mesmo funil das bases
+confiaveis. 15 sao da linha GM e ficaram parqueados. So 24 tinham evidencia forte e desses
+8 sobreviveram aos filtros de tipo, modelo e ano.
+
+Como ler anuncio pausado pela API: mesmo endpoint /api/mercado/user-product/index, mas com
+productState igual a paused e state igual a online. Para em revisao, productState igual a
+under_review. Com productState active o anuncio pausado simplesmente NAO aparece.
+
+| Anuncio | Virou | Titulo |
+|---|---|---|
+| MLB6531297044 | GR108-109 | Par Farol Milha Hb20 2020 a 2022 |
+| MLB3715452400 | GRX112VW | Kit Farol Milha Nivus 2020 a 2023 |
+| MLB3299655783 | FUN240 | Farol Milha Siena G4 El 2012 a 2017 |
+| MLB3347789619 | GRX402FD | Kit Farol Milha Ranger 2012 ate 2014 |
+| MLB3635634677 | GRX570FT | Kit Farol Milha Strada 2021 a 2023 |
+| MLB3347939629 | GRX908RN | Kit Farol Milha Sandero Logan 2014 a 2016 |
+
+Gravados 6 de 8. Os 2 que nao entraram estao na secao 25.4.
+
+### 25.2 Lote 9 - familias legadas ainda no ar no Mercado Livre
+
+Varredura por SKU que ainda comeca com STS, FGS, FXS ou FUN fora da familia FUN240.
+Achados 602 no ML e 47 na Shopee. Dos 602, 95 estavam ATIVOS - esses sao a sobra do lote 6,
+inclusive os que tinham travado com SIDE_POSITION.
+
+8 foram pulados de proposito porque o dono mandou parquear: STS010VW, STS010VW-MHB4,
+STS025VW-LH3, STS204HD-TIC, FUN314-2 e FUN207-208-GG739-GG738.
+
+Os outros 87 foram convertidos. Conversoes mecanicas STS vira GRX e FUN vira GR, mais as
+decisoes ja tomadas pelo dono:
+
+| De | Para | Motivo |
+|---|---|---|
+| STS118VW | GRX019VW | decisao do dono |
+| STS125VW | GRX037VW | decisao do dono |
+| STS111FTGS e STS111FTI | GRX240FT | decisao do dono |
+| STS147FTX | GRX147FT | decisao do dono |
+| STS905RNF | GRX905RN | erro de digitacao |
+| STS101FT-X8H1 | GRX101FT-XH1 | padrao X8 vira X |
+| FUN112 | GR100 | codigo aposentado |
+| FUN112-2-MH8 e FUN100-2-MH8 | GR100-101-MH8 | decisao do dono |
+| FUN100-101 com sufixo CV, D, DJ, PD, PJ | GR100-101 | decisao do dono |
+| FUN239-240P | FUN240-2 | decisao do dono |
+
+Resultado: 87 de 87 confirmados no ar.
+
+### 25.3 ARMADILHA NOVA - verificacao falsa negativa
+
+Tres anuncios apareceram como FALHA na conferencia mas na verdade tinham gravado certo.
+Motivo: eles estavam PAUSADOS e a releitura estava sendo feita com productState igual a active,
+entao a busca voltava vazia e o codigo interpretava como nao gravado.
+
+REGRA: ao conferir gravacao, procurar o anuncio nos tres productState - active, paused e
+under_review - antes de declarar falha. Isso vale para qualquer lote daqui pra frente.
+
+### 25.4 Bloqueios reais que sobraram
+
+| Anuncio | Estado | SKU atual | Deveria ser |
+|---|---|---|---|
+| MLB3245952287 | pausado | MLB3245952287_176939551715 | MDM379-380 |
+| MLB4639861333 | em revisao | MLB3697002984 | GR100-101 |
+
+Nos dois a API responde code 0 e success mas o ML nao aplica. Tentado com isVariantSku 1 e 0,
+varias vezes, e tambem pelo endpoint family-product que responde Error.Select_one_product
+porque usa outro espaco de id. Provavel bloqueio do proprio ML. Resolver pela tela de edicao
+do anuncio ou esperar sair da revisao.
+
+### 25.5 Acumulado atualizado
+
+| Frente | Anuncios |
+|---|---|
+| Shopee, lotes 1 a 5 | 856 |
+| Mercado Livre, lote 6 | 248 |
+| Lote 7, ML + Shopee | 119 |
+| GRX019VW + GRX037VW | 5 |
+| Lote 8, SKU igual ao ID MLB, ativos | 68 |
+| Lote 8b, pausados e em revisao | 6 |
+| Lote 9, familias legadas STS FGS FXS FUN | 87 |
+| TOTAL DE SKUs CORRIGIDOS | 1.389 |
+
+### 25.6 Proximo passo quando voltar
+
+Primeiro: as 10 duvidas da secao 24.6 e as 2 travas da 25.4.
+Segundo: os 220 anuncios sem evidencia da secao 24.6, que precisam de confirmacao por familia.
+Terceiro: sobraram 47 SKUs de familia legada na Shopee e 507 no ML entre pausados e em revisao.
+Quarto: a aba do UpSeller RECARREGOU no fim desta sessao, entao os caches window.__ML,
+window.__SP e window.__LOTE9 se perderam. Precisa reconstruir antes de retomar. O trabalho
+gravado no servidor nao foi afetado.
