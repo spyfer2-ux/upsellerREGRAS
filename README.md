@@ -1,3 +1,110 @@
+# 28. ATRIBUTOS DO MERCADO LIVRE - O BLOQUEIO INVISIVEL DOS SKUs
+
+## 28.1 O sintoma
+Centenas de anuncios ML aceitavam o POST de SKU (code 0, uuid retornado), o processo terminava com
+successNum 0 e o SKU voltava errado na releitura. Nao era problema de SKU: o Mercado Livre estava
+rejeitando o item inteiro por causa de ATRIBUTOS invalidos. Enquanto o atributo esta invalido,
+NENHUMA alteracao (SKU, preco, titulo) consegue ser publicada nesse anuncio.
+
+## 28.2 Problema A - SIDE_POSITION com valor inexistente
+Valor encontrado nos anuncios:
+
+    {"id":"SIDE_POSITION","name":"Lado","value_id":null,"value_name":"Ambos os lados"}
+
+"Ambos os lados" NAO EXISTE no Mercado Livre. O valor correto e "Ambos lados" (sem o "os"),
+com value_id 43419976. Quando value_id vem null, o valor e texto livre e o ML recusa.
+
+### Valores validos por categoria (fonte: api.mercadolibre.com/categories/<CAT>/attributes)
+
+| Categoria | Valores validos de SIDE_POSITION |
+|---|---|
+| MLB46659, MLB194704, MLB456915, MLB456167 | 364128 Esquerdo / 364127 Direito / 43419976 Ambos lados |
+| MLB7863 (lanternas) | 42758041 Direito/Passageiro / 42758042 Esquerdo/Motorista / 43419976 Ambos lados |
+| MLB257273, MLB431130, MLB458222, MLB429458, MLB459141, MLB5759 | categoria NAO tem SIDE_POSITION - ignorar |
+
+## 28.3 Problema B - dimensoes da embalagem mal formadas
+Erro do ML: `error-5402-item.attribute.invalid.format.seller.package.dimensions`
+
+Formato ERRADO gravado no UpSeller:  `value_name:"48"` + `value_struct:"cm"` (string)
+Formato CORRETO exigido pelo ML:    `value_name:"48 cm"` + `value_struct:{"number":48,"unit":"cm"}`
+
+Regras: SELLER_PACKAGE_LENGTH / WIDTH / HEIGHT usam unidade `cm`; SELLER_PACKAGE_WEIGHT usa `g`.
+Somente numeros inteiros. O campo `name` do atributo pode ser igual ao proprio `id`.
+
+## 28.4 Como detectar sem gastar requisicoes
+O registro que vem da listagem (`/api/mercado/user-product/list`) ja traz o campo `attributes`,
+que e uma STRING JSON com todos os atributos. Basta `JSON.parse` para auditar os 15.039 anuncios
+sem abrir nenhuma pagina.
+
+- SIDE_POSITION ruim  => `value_id == null`
+- Dimensao ruim       => `typeof value_struct !== "object"` ou `value_name` nao casa com `/^\d+(\.\d+)?\s+(cm|g)$/`
+
+Para o payload completo de um anuncio: `GET /api/mercado/user-product/edit` com o parametro `id`
+(retorna `userProductList`, `categoryId`, `shopId`, `fmIdStr`, `hasVariation`).
+
+## 28.5 Endpoint de correcao de atributos em massa
+Descoberto lendo os chunks do webpack (`bundle.manifest.*.js` em cdn.upseller.cn/us-web/<ano-mes>/,
+738 chunks; o chamador esta em `bundle.66853.*.js`). A UI de "Acoes em Massa" NAO tem opcao de
+atributo, e a pagina "Editar em Massa" faz no-op silencioso quando so "Atributos" esta marcado.
+
+    POST /api/mercado/user-product/batch-attributes-edit-online
+    [ { attributes: "<STRING JSON com SOMENTE os atributos editados>",
+        categoryId: "MLB46659",
+        idList: ["4398048479734062", ...],   // maximo 50 por chamada
+        shopId: <id numerico da loja> } ]
+
+Resposta: `code 0` + `data` = uuid. Assincrono: pollar `/api/check-process` com o parametro `uuid`
+ate `processMsg.code === 1`, e ler `processMsg.data.successList` / `failList`.
+
+Cada atributo editado deve ir completo:
+
+    {id:"SELLER_PACKAGE_HEIGHT", name:"SELLER_PACKAGE_HEIGHT", value_id:null,
+     value_name:"23 cm", value_struct:{number:23,unit:"cm"},
+     values:[{id:null,name:"23 cm",struct:{number:23,unit:"cm"}}]}
+
+    {id:"SIDE_POSITION", name:"Lado", value_id:"43419976", value_name:"Ambos lados",
+     values:[{id:"43419976",name:"Ambos lados",struct:null}]}
+
+Agrupar por (shopId + categoryId + conjunto identico de atributos). Dimensoes variam por anuncio,
+entao na pratica quase 1 job por anuncio.
+
+## 28.6 Anuncios em revisao nao podem ser editados
+Anuncios com status `under_review` (Revisando) retornam `All.Error_failed_product_status`.
+Nao ha como corrigir atributo nem SKU neles - ficam para depois, quando sairem da revisao.
+
+## 28.7 Diagnostico completo do parque ML (15.039 anuncios)
+
+| Problema | Anuncios |
+|---|---|
+| SIDE_POSITION invalido | 2.222 |
+| Dimensoes de embalagem mal formadas | 11.133 |
+| Os dois ao mesmo tempo | 1.750 |
+
+## 28.8 Sequencia obrigatoria (Padrao F)
+1. Enumerar e auditar atributos pela string `attributes` da listagem.
+2. Corrigir SIDE_POSITION e/ou dimensoes via `batch-attributes-edit-online` e pollar o uuid.
+3. SO DEPOIS rodar a escrita de SKU (`batch-online-sku`) e pollar o uuid.
+4. Reler o anuncio no servidor para confirmar. `code 0` nao prova nada.
+
+## 28.9 Resultados desta rodada
+
+| Lote | O que foi feito | Enviados | OK | Falha |
+|---|---|---|---|---|
+| B | SIDE_POSITION dos anuncios sem problema de dimensao | 470 | 356 | 114 (todos under_review) |
+| C | Escrita de SKU dos anuncios ja desbloqueados | 90 | 83 | 7 |
+| D | Dimensoes + SIDE_POSITION dos SKUs pendentes editaveis | 178 | em execucao | - |
+
+Bloqueio estrutural restante: 185 dos 455 SKUs pendentes estao em `under_review`.
+
+## 28.10 Armadilhas de ferramenta (para o proximo agente)
+- IIFE async devolve `{}` no console remoto: guarde o resultado em `window.__X` e leia numa segunda chamada.
+- Nunca usar `navigate` na aba de trabalho do UpSeller: o reload destroi todos os caches `window.__*`.
+- A pagina de edicao individual travava em "Digite Codigo de Barras entre 8-255 caracteres".
+- `sessionStorage.Upseller_storeToNewWindow = {bulkEditIds:[...], categoryMatchIds:[]}` controla a selecao da tela de Editar em Massa.
+- `pageSize` maximo 100. Com 200 a API devolve lixo.
+
+---
+
 
 
 ---
