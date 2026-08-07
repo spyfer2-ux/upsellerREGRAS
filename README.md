@@ -1,3 +1,83 @@
+# 33. SESSAO 07/08/2026 - ULTRALED PAUSADO E ATAQUE A LISTA DE MLBs DO DONO
+
+## 33.1 Endpoints: form-urlencoded x JSON (nao confundir)
+Os endpoints de LISTAGEM usam **form-urlencoded**. Mandar JSON retorna HTTP 200 com data.list vazio
+e total 0 - falha silenciosa, parece que a conta esta vazia.
+Os endpoints de ESCRITA em lote usam **JSON**.
+
+- Listar ML: POST /api/mercado/user-product/index (form)
+  dataType 2, hasCatalogProduct 0, sortName 3, sortValue 0, pageNum, pageSize 100, productState, state online
+  productState: active, paused, under_review
+- Listar Shopee: POST /api/shopee/product/index (form)
+  sortName 3, sortValue 0, vagueSearchType 0, pageNum, pageSize 100, state online
+  productState: NORMAL, UNLIST, SOLDOUT, SELLER_DELETE, SHOPEE_DELETE, BANNED, REVIEWING
+  busca por SKU exato: searchType 4 mais searchValue
+- Pausar Shopee: POST /api/shopee/product/updateUnlist (form) flag false e ids em CSV. flag true reativa.
+- Gravar SKU Shopee: POST /api/shopee/product/batch-online-sku (JSON)
+- Gravar SKU ML: POST /api/mercado/user-product/batch-online-sku (JSON)
+  corpo: type 1, startNumber vazio, isVariantSku 1, prefixType 0, suffixType 0, idList, oldReplaceStr, newReplaceStr
+
+## 33.2 BUG: oldReplaceStr nao aceita parenteses
+Se o SKU antigo tem ( ou ), o batch-online-sku responde code 0 success mas NAO grava.
+Caso real: MLB3551564480-ESQUERDO (MOTORISTA).
+Solucao: pagina de edicao individual do anuncio. A parte sem parenteses funciona por API normalmente.
+
+## 33.3 Regra ULTRALED - produto descontinuado, pausar tudo
+O dono confirmou em 07/08/2026: acabou o estoque e nao vai repor.
+Detector: regex /UT?HB?[0-9]+/i sobre o SKU.
+Pega UH4 UH7 UH8 UH11 UH27 UHB4 UTH1 UTH4 UTH7 UTH11 UTH16 UTHB3 UTHB4 e combinacoes.
+NAO casa com LED normal (MH8 MH11 MHB4 MH3 nao tem U) nem com FUN (exige H logo depois do U).
+
+Situacao encontrada: 218 anuncios, 990 vendas historicas.
+- ML: 157 anuncios, TODOS ja pausados (134) ou em revisao (23).
+- Shopee: 61 anuncios, 40 ativos. Os 40 foram pausados e verificados (0 ativos restantes).
+Os 23 do ML em revisao voltam a ficar ativos se o ML aprovar - reconferir depois.
+
+## 33.4 Lista de SKUs ruins entregue pelo dono
+168 valores distintos presentes em 1.362 anuncios (o mesmo SKU ruim se repete em varias lojas clonadas).
+ML: 119 ativos, 2 pausados, 143 em revisao. Shopee: 829 ativos, 48 pausados, 220 excluidos, 1 esgotado.
+
+Funil de evidencia:
+- Base A (codigo na descricao): 15 casos, quase todos linha GM. Descartado.
+- Base B (titulo normalizado identico a anuncio com SKU bom, e unanime): 103 propostas.
+- Base C (titulo sem palavras de ligacao): 4 propostas. A versao agressiva foi REJEITADA porque
+  remover DIREITO e ESQUERDO do titulo quebra a regra de paridade.
+- Base D (MLB embutido no SKU): inutil aqui, os ids eram auto referentes.
+- Base E (mesma imagem principal): 0 adicionais, a Base B ja tinha pego.
+
+## 33.5 Trava nova: coerencia de LADO
+Se o SKU antigo OU o titulo contem ESQUERDO ou MOTORISTA, o codigo alvo tem que ser IMPAR.
+Se contem DIREITO ou PASSAGEIRO, tem que ser PAR.
+Quando o match sugere o lado errado, troca pelo irmao (GR100 vira GR101) se o irmao existir no catalogo.
+Se o anuncio e de um lado so e o match sugeriu SKU de par ou de kit, rejeita.
+Essa trava pegou 3 erros reais nesta rodada.
+
+## 33.6 Resultado
+114 SKUs gravados e conferidos relendo do servidor:
+- 106 do funil de evidencia (105 por API, 1 pela pagina de edicao por causa dos parenteses)
+- 8 pela regra do Mobi (kit vira GRX905RN, par vira GR100-101)
+Destaques: GRX402FD 21, GRX905RN 17, GR100-101-MH8 9, GRX107FT 9, FUN240-2 8, GRX133HY 7.
+
+Caso especial: anuncio Shopee 4398046628667475 (Mitsubishi ASX) tem 2 variantes de lado.
+Variante ESQUERDO virou GR101, variante DIREITO virou GR100, SKU principal virou GR100-101.
+Anuncio com variante de lado precisa de confirmacao do dono sobre qual e o SKU principal correto.
+
+## 33.7 O que sobrou
+893 anuncios vivos em 152 grupos sem evidencia utilizavel: o produto inteiro esta com SKU ruim em
+todas as lojas, nao existe irmao com codigo bom para copiar. So o dono consegue informar.
+Mais 143 em revisao no ML (nao editaveis) e 220 excluidos na Shopee.
+
+Top modelos entre os 893: C3 50, Corolla 50, Ka 49, Uno 45, Gol 42, Fit 38, Palio 37, Fiesta 34,
+Onix 33, Mobi 31, S10 31, Strada 25, Ranger 23, Siena 22, Prisma 20, Sandero 20, Aircross 17, Etios 16.
+
+Pendencias que dependem do dono:
+- Etios 26036-26037-KIT: 16 anuncios, 148 vendas. Ele ja disse que nao tem mais Etios, mas o volume pede reconfirmacao.
+- Mobi Botao Tic Tac: botao original (GRX147FT) ou alternativo (GRX905RN)?
+- Mobi e Argo unitarios sem lado no titulo: nao da para escolher entre GR100 e GR101.
+- Kit Mobi com LED: base GRX905RN mas falta saber o encaixe para montar o sufixo M.
+- Aircross e C3: a instrucao antiga era pausar Aircross e C3 22, mas os anuncios achados sao 2009 a 2015.
+- Linha GM (Montana, S10, Spin, Onix, Prisma, Cobalt, Celta, Cruze): segue fora de escopo por ordem do dono.
+
 # 32. PROGRAMA DE CRIACAO DE ANUNCIOS - GATILHO "VAMOS FAZER ANUNCIOS" (07/08/2026)
 
 ## 32.0 COMO USAR ESTA SECAO
