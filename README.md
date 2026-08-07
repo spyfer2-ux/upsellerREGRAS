@@ -1,3 +1,66 @@
+# 36. SESSAO 07/08/2026 parte 3 - REGRAS NOVAS DO DONO, CORRECOES E PAUSAS
+
+## 36.1 Regras novas confirmadas pelo dono no chat
+
+GR100 e GR101 sao IGUAIS e servem nos DOIS lados. Palavras do dono: GR100 e exatamente igual ao GR101 ele cabe em ambos os lados.
+Consequencia pratica: o filtro de paridade por lado NAO e mais motivo de rejeicao no funil de evidencias. Anuncio unitario SEM lado no titulo pode receber GR100 com seguranca. A regra de nomenclatura antiga, direito par e esquerdo impar, continua valendo para escrever o codigo, mas nao trava mais a correcao.
+
+GRX147FT e o Argo ORIGINAL. TIC TAC e ALTERNATIVO. Logo, titulo com botao tic tac NUNCA vira GRX147FT; no bloco universal vira GRX905RN.
+
+Mobi kit e GRX905RN. Se o titulo tiver LED, o SKU tem que levar o sufixo -MH8, virando GRX905RN-MH8.
+
+Aircross e C3 2022: o dono nao tem mais o produto, pausar tudo. O restante da linha C3, de 2009 a 2015 e Picasso, fica no ar e so corrige o SKU.
+
+26036-26037-KIT do Etios: o dono ja pausou.
+
+## 36.2 SKUs gravados nesta sessao - 73 anuncios em 9 grupos
+
+| SKU antigo | SKU novo | Anuncios | Motivo |
+|---|---|---|---|
+| MLB4241023721 | GRX905RN-MH8 | 13 | Kit Mobi com Led |
+| MLBU1463445622 | GRX905RN | 6 | Kit Mobi botao tic tac, alternativo |
+| 41076011302 | GR100 | 4 | Farol unitario Mobi sem lado no titulo |
+| MLB1992601853 | GRX905RN | 11 | Kit C3 2009 a 2012 |
+| MLB5117936738 | GRX905RN | 10 | Kit C3 2009 a 2012 mais brinde |
+| MLB5118186480 | GRX905RN-MH8 | 9 | Kit C3 2009 a 2012 mais super led |
+| MLB3701142186 | GR100-101 | 8 | Par C3 Picasso |
+| MLB5117955160 | GRX905RN | 8 | Kit C3 2009 a 2012 |
+| 22697440002 | GRX905RN | 4 | Kit C3 2009 a 2012 |
+
+Verificado depois de gravar: os 9 SKUs antigos retornam ZERO em Shopee NORMAL, Shopee UNLIST e ML ativo. Tambem confirmado que 18266239133 e 17648161339, do lote anterior, continuam zerados.
+
+## 36.3 Pausas executadas
+
+| Alvo | Plataforma | Anuncios | Situacao |
+|---|---|---|---|
+| Aircross, SKUs ruins MLB e UCMUNIAC | Shopee | 28 | pausados e conferidos |
+| Aircross, SKUs ruins MLB e UCMUNIAC | Mercado Livre | 12 | pausados e conferidos |
+| C3 2022, MLBU2088529107 e MLB3205262897 | Shopee | 8 | pausados e conferidos |
+| C3 2022, familia GRX278CT | ambos | 0 | ja estavam pausados antes |
+| Etios 26036-26037-KIT, loja PSHOP STORE | Shopee | 1 | FALHOU, anuncio esta em promocao |
+
+## 36.4 Armadilhas novas descobertas nesta sessao
+
+BUSCA POR SKU NA API. Shopee usa searchType 4 e Mercado Livre usa searchType 5. Nos dois, vagueSearchType 0 e busca exata, 1 e comeca com, 2 e contem. O campo de estado chama productState e nao productStatus. O corpo tem que ser form-urlencoded; com JSON o total volta certo mas a lista volta vazia, o que gera verificacao falsa.
+
+ENUMERADOR ANTIGO. A funcao __enumML foi escrita com JSON e passou a devolver zero. Reescrever sempre com form-urlencoded.
+
+PAUSAR NO MERCADO LIVRE. POST /api/mercado/product/update-unlist com corpo JSON, campos flag false e productIds em array. Depois o app consulta /api/check-process com o uuid retornado.
+
+PAUSAR NA SHOPEE. POST /api/shopee/product/updateUnlist com corpo form, campos flag false e ids em CSV.
+
+PROMOCAO TRAVA A PAUSA. A Shopee recusa pausar anuncio que esta em promocao. A mensagem so aparece na tela: The product cannot be delisted because the product has promotion. A API responde code 0 e success mesmo assim. Sempre reconferir relistando o SKU depois de pausar.
+
+MENU LATERAL DERRUBA A SESSAO. Clicar em User Product no menu lateral recarrega tambem a outra aba do UpSeller e destroi todos os globais em memoria. Nao clicar no meio de um lote.
+
+## 36.5 Pendencias abertas para o dono
+
+ETIOS. O anuncio 26036-26037-KIT da loja PSHOP STORE, com 14 vendas, nao pausa porque esta em promocao. O dono precisa tirar a promocao no Seller Center da Shopee e depois avisar para pausar.
+
+AIRCROSS COM SKU BOM. Sobraram 7 anuncios na Shopee com GRX905RN e 1 no ML com GR100 cujo titulo e de Aircross, mas o produto e o kit universal que o dono tem. Nao foram pausados. Decidir: pausar ou trocar o titulo.
+
+LAMPADAS DE AIRCROSS. Tres anuncios no ML de lampada super led para Aircross, um com SKU MH1-MH7 e dois sem SKU. Sao lampada e nao farol, entao ficaram de fora da pausa. Decidir.
+
 # 35. FASE 0 PRONTA + CRONOGRAMA VALIDADO (07/08/2026)
 
 ## 35.1 Onde esta o lote (memoria viva)
