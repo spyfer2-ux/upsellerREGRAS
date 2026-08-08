@@ -1,3 +1,126 @@
+# 40. TIKTOK SHOP MAPEADO E PRIMEIRA CORRECAO EM MASSA
+
+Sessao 07/08/2026 parte 4. Pedido do dono: "TENTE ARRUMAR O SKU DA LOJA tiktok SHOP, EU TE DOU AUTORIZACAO" e, na sequencia, "pode continuar arrumando esses" (os erros mecanicos de digitacao levantados no inventario da secao anterior).
+
+## 40.1 A loja no UpSeller
+
+TikTok Shop e canal AUTORIZADO. Loja unica: Autoplus Tik Tok, shopId 773197. Caminho: Produtos > TikTok Shop > Ativo, rota /pt/products/tiktok/active.
+
+| Aba | Anuncios |
+|---|---|
+| Ativo | 518 |
+| Arquivado | 54 |
+| Revisando | 52 |
+| Falha na Revisao | 696 |
+| Congelado | 19 |
+| Excluidos pela TikTok Shop | 34 |
+| Total da sidebar | 1373 |
+
+## 40.2 ACHADO PRINCIPAL: no TikTok o SKU mora na VARIACAO, nao no anuncio
+
+No Mercado Livre e na Shopee o SKU util vem no campo itemSku do anuncio. No TikTok o itemSku do pai vem quase sempre nulo e o SKU real fica em variationSku. Lendo so a lista, 365 dos 518 ativos pareceriam estar sem SKU; lendo a variacao, o numero de vazios de verdade cai para 21. Quem ler so o grid vai concluir errado.
+
+| Classificacao dos 518 ativos pelo SKU efetivo | Qtd |
+|---|---|
+| GRX | 205 |
+| MLB (id de anuncio no lugar do SKU) | 194 |
+| So numero | 44 |
+| GR | 24 |
+| Vazio de verdade | 21 |
+| Outros | 20 |
+| STS | 8 |
+| FUN240 | 1 |
+| FUN legado | 1 |
+
+## 40.3 Endpoints do TikTok no UpSeller
+
+| Acao | Metodo e rota | Corpo |
+|---|---|---|
+| Listar anuncios | POST /api/tiktok/product/index | form-urlencoded, productState active ou inactive, state online, shopIds, sortName, sortValue, pageNum, pageSize |
+| Contadores | POST /api/tiktok/product/get-online-count | JSON |
+| Variacoes de um anuncio | POST /api/tiktok/product/variation-list | JSON com productId |
+| Editar SKU em massa | POST /api/tiktok/product/batch-online-sku | JSON |
+| Pausar um | POST /api/tiktok/product/one-update-unlist | JSON com flag e productId |
+| Pausar em massa | POST /api/tiktok/product/update-unlist | JSON com flag e productIdList |
+
+Corpo real do batch-online-sku, capturado do botao Editar SKU aba Modificar SKU:
+
+| Campo | Valor |
+|---|---|
+| type | 1 |
+| startNumber | vazio |
+| isVariantSku | 1 |
+| prefixType e suffixType | 0 |
+| idList | lista de idStr dos anuncios |
+| oldReplaceStr | SKU antigo |
+| newReplaceStr | SKU novo |
+
+A aba Gerar SKU NAO serve para gravar um SKU exato: o campo Valor Inicial e obrigatorio e sempre concatena um numero no fim. Anuncio sem nenhum SKU so pela pagina de edicao individual.
+
+## 40.4 Como o SKU certo foi descoberto
+
+Tres funis, nesta ordem de confianca. ITEM: o proprio SKU errado e o ID de um anuncio do Mercado Livre, entao basta ler esse anuncio no ML e copiar o SKU ja corrigido; foi o funil mais forte. TITULO: titulo normalizado identico ao de um anuncio ML ou Shopee com SKU bom, exigindo resposta unanime. FUZZY: semelhanca de tokens (Jaccard) maior ou igual a 0,75 contra o catalogo bom, tambem exigindo unanimidade.
+
+A imagem NAO funciona como evidencia no TikTok. A CDN e outra (ibyteimg.com) e nunca bate com mlstatic nem com susercontent. Zero casos resolvidos por imagem.
+
+## 40.5 Resultado no TikTok Shop
+
+Foram lidos 572 anuncios (518 ativos mais 54 arquivados). Desses, 239 ja tinham SKU bom e 333 estavam errados. Sairam 145 propostas e foram gravados 103 anuncios em 70 grupos. Todos foram reconferidos relendo variation-list: 103 de 103 corretos.
+
+| Evidencia usada | Gravados |
+|---|---|
+| ITEM (id do ML dentro do SKU) | 45 |
+| TITULO exato | 42 |
+| FUZZY maior ou igual a 0,75 | 16 |
+
+| Motivo de rejeicao | Qtd |
+|---|---|
+| Linha GM, adiada pelo dono | 22 |
+| SKU vazio, precisa edicao individual | 4 |
+| Base bloqueada pelo dono | 4 |
+| Strada, precisa o dono confirmar | 4 |
+| Tipo incoerente entre KIT, PAR e unitario | 3 |
+| Etios, o dono mandou pausar | 2 |
+| Anuncio de acabamento/moldura, nao e farol | 1 |
+| LED incoerente com o sufixo M | 1 |
+| Sufixo invalido ZH8 | 1 |
+
+## 40.6 Faxina mecanica de SKU em Mercado Livre e Shopee
+
+Segunda parte do pedido. Varredura do catalogo vivo (ML ativo, ML pausado, ML em revisao e Shopee NORMAL) aplicando so as regras mecanicas ja confirmadas pelo dono, sem inventar codigo novo. Resultado: 473 anuncios em 234 grupos, sendo 432 no ML e 41 na Shopee, mais 24 anuncios de repescagem em 12 grupos que estavam em estados nao varridos na primeira passada.
+
+| Regra mecanica aplicada | Anuncios |
+|---|---|
+| STS para GRX | 239 |
+| FUN para GR (FUN240 preservado) | 182 |
+| Sufixo NH para MH (erro de digitacao) | 20 |
+| Remocao do -TIC | 11 |
+| Zero a mais no codigo, GRX0112VW para GRX112VW | 9 |
+| FGS e FGS0 para GRX | 9 |
+| Zero faltando, GRX15VW-MH3 para GRX015VW-MH3 | 3 |
+
+Ficaram DE FORA de proposito: tudo que termina em CV (linha GM, adiada pelo dono), BFM (o dono mandou pausar, nao renomear), CHI-TIC-TAC (chicote, o TIC ali faz parte do nome do botao) e FUN112-113 (o dono nao trabalha mais).
+
+## 40.7 Duas armadilhas tecnicas descobertas nesta sessao
+
+O parametro do campo de busca chama searchValue, NAO searchContent. Com o nome errado a API responde 200 e devolve o catalogo inteiro, o que faz qualquer conferencia dar falso positivo. Sempre confirmar que o total voltou menor que o total geral.
+
+No batch-online-sku, isVariantSku precisa ser 0 quando o anuncio NAO tem variacao. Com isVariantSku 1 em anuncio sem variacao a API responde code 0 e success mas nao grava nada. Foi exatamente isso que segurou 15 anuncios do ML na primeira rodada.
+
+## 40.8 Pendencias abertas para o dono
+
+Strada no TikTok: o funil aponta GRX126FT para "Strada Working", mas existe a regra antiga do dono de que "todas essas Stradas sao GRX132FT". 4 anuncios parados esperando definicao.
+
+Etios no TikTok: 2 anuncios ainda no ar. O dono ja disse que nao tem mais Etios. Falta autorizacao para pausar no TikTok.
+
+GR100-101-ZH8: sufixo ZH8 nao existe na tabela valida. Provavel XH8 ou LH8, nao da para adivinhar.
+
+4 anuncios do TikTok sem nenhum SKU precisam de edicao individual, porque a tela de massa nao grava SKU exato.
+
+Um anuncio da Shopee com SKU literalmente "sts" em minusculo e sem titulo, id 4398046602148961, nao foi tocado.
+
+15 anuncios do Mercado Livre travados por ATRIBUTO, nao por SKU. Sao 1x FUN314-2, 9x FUN100-101, 2x STS145FT-LH1, 1x FUN103, 1x FUN313-314 e 1x FUN279-280. O ML recusa a gravacao com error-3510 invalid.item.attribute.values nos atributos SIDE_POSITION (valor "Ambos os lados") e VEHICLE_PARTS_POSITION (valor "Direito"). Enquanto o atributo nao for corrigido no anuncio, NENHUMA edicao de SKU passa. Isso liga direto com o reparo de atributos das secoes anteriores.
+
 # 39. DECISOES DO DONO - GR117-118 E CLIO, AIRCROSS OPCAO B
 
 ## 39.1 GR117-118 = CLIO. NAO e universal.
