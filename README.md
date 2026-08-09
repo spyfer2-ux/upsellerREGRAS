@@ -1,3 +1,86 @@
+# 41. TIKTOK SHOP RODADA 2: oldReplaceStr E REGEX E REGRA DA STRADA
+
+Sessao 09/08/2026. Pedido do dono: A ESTRADA SE FOR 2020 E GRX132FT SE NAO E ESSE GRX126FT QUE VC ACHOU MESMO, PODE ALTERAR O RESTANTE DOS SKU DO tik tok.
+
+## 41.1 Regra nova de nomenclatura da Strada
+
+Strada 2020 em diante usa GRX132FT. Strada anterior a 2020, linha Working e Trecking de 2009 a 2019, usa GRX126FT. Essa regra do dono tem precedencia sobre o titulo identico encontrado no catalogo, que apontava GRX105FT. O anuncio 4 Farol Milha Palio Strada Siena Adventure nao entra nessa regra porque e produto multi modelo com codigo proprio FUN240-4.
+
+## 41.2 Descobertas tecnicas da API TikTok
+
+O parametro de paginacao de /api/tiktok/product/index e pageNum. Com page, pageNo, current, pageIndex ou offset a API responde 200 e devolve sempre a primeira pagina, dando a falsa impressao de que a loja tem apenas 50 anuncios.
+
+O campo oldReplaceStr de /api/tiktok/product/batch-online-sku e interpretado como EXPRESSAO REGULAR pelo servidor. Por isso SKU com parenteses nunca era gravado. A solucao e escapar o parenteses com barra invertida dentro do oldReplaceStr. Assim da para limpar sufixos tipo PASSAGEIRO e MOTORISTA que vinham entre parenteses.
+
+O campo isVariantSku precisa espelhar hasVariation. Anuncio com hasVariation zero exige isVariantSku zero, senao a API responde code zero e success mas nao grava nada.
+
+Anuncio sem nenhum SKU nao pode ser gravado por replace direto, porque oldReplaceStr vazio e no-op. Solucao em dois passos: primeiro chamar com type zero e startNumber 1 para semear um SKU qualquer, depois ler variation-list e trocar o valor semeado pelo SKU correto com type um. Com type zero e isVariantSku um o valor semeado vira -default; com isVariantSku zero vira o proprio startNumber.
+
+A gravacao e assincrona. Depois do POST espere cerca de tres segundos antes de reler variation-list, senao a verificacao acusa falso negativo.
+
+## 41.3 Endpoints de catalogo
+
+Mercado Livre usa /api/mercado/user-product/index e Shopee usa /api/shopee/product/index. Os dois exigem form urlencoded com sortName 3, sortValue 0, vagueSearchType 0, pageNum, pageSize, productState e principalmente state igual a online. Sem o campo state a API devolve total zero.
+
+## 41.4 Funil novo: SOURCE
+
+Cada anuncio TikTok guarda sourceId, sourcePlatform e sourceUrl apontando para o anuncio original de Mercado Livre ou Shopee de onde foi clonado. No Mercado o sourceId vem no formato puid, barra vertical, itemId. Esse funil identifica o mesmo anuncio fisico em outro canal e por isso e a evidencia mais forte que existe, acima de TITULO e de FUZZY.
+
+Origem das 44 correcoes gravadas nesta rodada:
+
+| Funil | Anuncios |
+|---|---|
+| TITULO exato unanime | 22 |
+| SOURCE mesmo anuncio no ML ou Shopee | 9 |
+| REGRA DO DONO Strada | 4 |
+| FUZZY Jaccard 0.75 ou mais | 5 |
+| ITEM, o SKU era id de anuncio ML | 2 |
+| MECANICO GR905RN vira GRX905RN | 2 |
+
+## 41.5 Resultado
+
+A loja Autoplus Tik Tok tem 535 anuncios ativos. Antes desta rodada 331 estavam no padrao. Depois: 373. Foram gravados e verificados 44 anuncios, todos relidos via variation-list.
+
+Restam 162 fora do padrao: 66 da linha GM Chevrolet, que continua parada por ordem do dono; 15 de outra linha de produto, tapete, bandeja, chicote e kit de lampada; 11 acessorios, moldura, grade, suporte, acabamento e botao, que precisam de codigo MDM proprio; e 70 farois sem evidencia suficiente.
+
+## 41.6 Farois pendentes por modelo
+
+| Modelo | Anuncios |
+|---|---|
+| Sem modelo identificado | 8 |
+| Uno | 7 |
+| Civic | 5 |
+| Corolla | 5 |
+| Etios | 4 |
+| Fit | 4 |
+| Ranger | 3 |
+| Kangoo | 3 |
+| HR-V | 3 |
+| Punto | 3 |
+| Aircross | 2 |
+| Sandero | 2 |
+| Demais modelos com 1 anuncio cada | 21 |
+
+Etios continua na lista porque o dono mandou pausar essa linha, entao os anuncios nao foram renomeados.
+
+## 41.7 Casos esperando decisao do dono
+
+Kit Farol Milha mais 2 Super Led Golf Gti Sportline 2008 a 2014 recebeu GR207-208-MHB4. Duas evidencias independentes, o anuncio de origem e a imagem identica, apontam esse codigo, mas o titulo comeca com Kit, o que pela regra pediria prefixo GRX. Fica registrado para o dono confirmar.
+
+Kit Farol Milha Ka 2015 2016 2017 Botao Modelo Alternativo tinha empate entre GRX413FD e GRX445FD por titulo. Foi gravado GRX413FD porque e o SKU do anuncio de origem.
+
+Farol De Neblina Corolla 2018 2019 e unitario e o titulo nao diz o lado, entao nao foi alterado. Pela regra, direito seria GR334 e esquerdo GR333.
+
+Par Farol Neblina Pajero Dakar 2009 tem no catalogo o SKU GR100-101-ZH8, com sufixo ZH8 que nao existe no padrao. Validos sao MHB4, MH8, MH11, MH3, LH e XH. Nao foi aplicado.
+
+Par Acabamento Farol De Milha C4 Pallas e acabamento, nao farol, entao nao recebeu GR100-101.
+
+## 41.8 Observacao sobre o catalogo geral
+
+Ao reindexar o catalogo, 5407 ativos ML, 4876 pausados ML, 4757 em revisao ML e 14067 Shopee, apareceram varios anuncios de Shopee que ainda tem como SKU o proprio id do anuncio. Sao justamente as origens de boa parte dos 70 farois pendentes do TikTok. Corrigir essas origens no Shopee resolve o TikTok em cascata.
+
+---
+
 # 40. TIKTOK SHOP MAPEADO E PRIMEIRA CORRECAO EM MASSA
 
 Sessao 07/08/2026 parte 4. Pedido do dono: "TENTE ARRUMAR O SKU DA LOJA tiktok SHOP, EU TE DOU AUTORIZACAO" e, na sequencia, "pode continuar arrumando esses" (os erros mecanicos de digitacao levantados no inventario da secao anterior).
