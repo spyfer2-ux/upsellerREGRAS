@@ -1,3 +1,76 @@
+# 46. CELTA LINHA CV - RODADA 2 (ATP710CV, STS710CV-UHB4, GR702CV/GR703CV)
+
+Sessao 10/08/2026. Continuacao da secao 45, com tres regras novas ditadas pelo dono.
+
+## 46.1 Regras novas do dono
+
+ATP710CV e o GRX710CV. A familia ATP entra no padrao GRX igual STS e FGS0.
+
+STS710CV-UHB4 pode pausar. E da linha ULTRALED, que o dono nao vende mais.
+
+GR702CV: se o anuncio for KIT vira GRX702CV; se for PAR vira GR102-103.
+
+## 46.2 O que foi aplicado
+
+ATP710CV virou GRX710CV. Como o servidor faz replace por regex, a mesma regra corrigiu o sufixo junto. Dois anuncios alvo: MLB3454482259 (ATP710CV-XHB4 virou GRX710CV-XHB4, pausado) gravou; MLB4586688273 (ATP710CV) esta em revisao e ficou bloqueado.
+
+STS710CV-UHB4 (MLB3707696475) ja estava pausado. Nada a fazer.
+
+Varredura extra de legado do Celta: 20 jobs montados sobre STS730CV, STS731CV, STS734CV, STS735CV, STS736CV, STS742CV, STS746CV, STS754CV, STS763CV e STS765CV. Todos viraram GRX mantendo numero e sufixo. Cerca de 14 anuncios pausados gravados.
+
+O sufixo -TIC foi removido no mesmo passo: STS735CV-TIC-LH3 virou GRX735CV-LH3.
+
+X8HB4 continua sendo normalizado para XHB4.
+
+Na Shopee e no TikTok nao existe nenhum desses SKUs. Tudo era do Mercado Livre.
+
+## 46.3 GR702CV e GR703CV - pendente de decisao
+
+MLB4586678093, SKU GR702CV, titulo Farolete Celta 2007 a 2015 Direito, ativo.
+
+MLB4586703821, SKU GR703CV, titulo Farolete Celta 2007 a 2015 Esquerdo, ativo.
+
+Nenhum dos dois e KIT e nenhum e PAR: sao unitarios de um lado so. Pela regra geral (GR e unitario, numero par e direito, impar e esquerdo) os dois ja estao certos como estao. Nada foi alterado. Aguardando o dono confirmar se mantem ou troca.
+
+## 46.4 DESCOBERTA: batch-online-sku e assincrono
+
+O endpoint responde code 0 com msg success e uma chave de tarefa no campo data, tipo PRODUCT:MERCADO_USER_PRODUCTACTION_PRODUCT_BATCH_SKUONLINE:3161:64000.
+
+Ou seja, code 0 significa apenas que a tarefa foi enfileirada, NAO que o SKU foi gravado. Sempre reconsultar a lista depois para confirmar. Isso explica os falsos sucessos das secoes anteriores.
+
+## 46.5 DESCOBERTA: oldReplaceStr diferencia maiuscula de minuscula
+
+O SKU sts704cv-mh27, gravado em minusculo, nao foi atingido pela regra STS704CV-MH27 em maiusculo. Antes de montar o job, conferir a caixa exata do SKU como esta gravado.
+
+## 46.6 Estados que continuam bloqueando gravacao
+
+Anuncio em revisao (under_review) segue recusando alteracao de SKU. No Celta sobraram 9 nesse estado.
+
+Alem disso apareceu um caso novo: MLB4127196406 (STS742CV), pausado, sem variacao, recusa gravar nos dois endpoints e nos dois niveis de isVariantSku. Caso isolado, tratar na mao.
+
+## 46.7 Efeito colateral a revisar
+
+O anuncio 4398047682551480, titulo Kit Farol Auxiliar Onix Prisma Lt 2018 Super Led 6k E Pingo Branco, entrou na varredura porque o titulo tem a palavra Prisma, e o SKU foi de STS704CV-MH27 para GRX704CV-MH27.
+
+E um anuncio de ONIX, linha que o dono mandou deixar para depois. A troca so aplicou a regra STS vira GRX, entao nao ficou errado, mas fica registrado caso ele queira reverter.
+
+Licao: filtrar por CELTA sozinho nao serve, porque Prisma aparece tanto no Celta quanto no Onix.
+
+## 46.8 Pendencias do Celta
+
+Nove anuncios em revisao: ATP710CV, STS710CV-XHB4 (2), STS710CV-X8HB4 (2), STS730CV, STS735CV-LH1-TIC, STS736CV, STS742CV, STS742CV-MHB4, STS763CV.
+
+Um pausado teimoso: MLB4127196406 (STS742CV).
+
+Definir GR702CV e GR703CV (secao 46.3).
+
+Confirmar se GRX765CV, que e Celta 1999 a 2005 com Kit Super Led 6000k no titulo, precisa de sufixo -M mais encaixe.
+
+Confirmar qual kit e qual entre GRX702CV, GRX703CV, GRX707CV e GRX710CV, porque hoje os titulos se misturam entre milha, neblina e auxiliar.
+
+
+
+
 # 45. LINHA CV DO CELTA AJUSTADA
 
 Sessao 09/08/2026, rodada 5. O dono confirmou que o Celta esta bem na linha CV e que sao os unicos da linha GM que ja estao ok.
