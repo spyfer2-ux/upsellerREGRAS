@@ -1,3 +1,57 @@
+# 47. COROLLA PAUSADO EM TODAS AS PLATAFORMAS
+
+Sessao 10/08/2026. O dono mandou pausar os Corollas.
+
+## 47.1 Escopo levantado
+
+544 anuncios estavam no ar com Corolla no titulo: 126 ativos no Mercado Livre, 389 com productStatus NORMAL na Shopee e 29 no TikTok (28 ativos mais 1 em revisao).
+
+Fora do ar e nao mexidos: 135 pausados e 127 em revisao no ML, 12 UNLIST e 104 SELLER_DELETE na Shopee, 19 em retificacao no TikTok.
+
+Por tipo: 282 farol/milha/farolete, 200 lampada e kit LED/xenon, 41 moldura e grade, 20 tapete, 1 outro.
+
+Conferido que nenhum dos 544 era anuncio universal citando Corolla junto de outros carros. Todos eram especificos de Corolla.
+
+## 47.2 Resultado
+
+Pausados 543: 126 no Mercado Livre, 389 na Shopee e 28 no TikTok. Zero falha.
+
+Verificado revarrendo as tres plataformas: 0 anuncio de Corolla ativo no ML, 0 com status NORMAL na Shopee, 0 ativo no TikTok.
+
+Sobrou 1 anuncio de Corolla no TikTok em Revisando, que nao foi tocado.
+
+## 47.3 Endpoints de pausa (mapeados nesta sessao)
+
+Mercado Livre: POST /api/mercado/product/one-update-unlist, form-urlencoded, campos flag=false e productId com o id interno. Um anuncio por chamada, efeito imediato.
+
+Shopee: POST /api/shopee/product/updateUnlist, form-urlencoded, campos flag=false e ids com varios ids separados por virgula. Aceita lote, usei 20 por chamada. Pausado na Shopee aparece como productStatus UNLIST.
+
+TikTok: POST /api/tiktok/product/one-update-unlist, corpo em JSON {flag:false, productId:"id"}. Nao aceita form-urlencoded, se mandar form devolve Error_failed. Um por chamada.
+
+Em todos, flag=false pausa. Para republicar a expectativa e flag=true, mas isso nao foi testado.
+
+CUIDADO: /api/mercado/product/updateBatch-product-status NAO e pausar, e encerrar o anuncio (close). No bundle o nome da funcao e mercadoProductBatchClose. Nao usar para pausa.
+
+## 47.4 DESCOBERTA: o filtro productState quebra a listagem da Shopee
+
+O endpoint /api/shopee/product/index aceita o parametro productState sem reclamar, mas devolve total=0 e lista vazia. Nao da erro, so retorna nada.
+
+O jeito certo e mandar apenas pageNum, pageSize e state=online, e depois filtrar pelo campo productStatus do resultado (NORMAL, UNLIST, SOLDOUT, SELLER_DELETE, SHOPEE_DELETE).
+
+Isso invalida as consultas da Shopee feitas nas secoes 45 e 46, onde a conclusao foi "nao existe esse SKU na Shopee". A consulta estava furada. Precisa revarrer a linha CV do Celta na Shopee.
+
+O pageSize maximo e 300, mesmo pedindo 500.
+
+## 47.5 Como identificar o modelo pelo titulo
+
+Nao usar busca por substring: FIT casa dentro de GRAFITE, o que gerou 60 falso positivos de "anuncio universal" na primeira contagem. Usar limite de palavra, tipo (inicio ou caractere nao alfanumerico) + MODELO + (fim ou caractere nao alfanumerico), e testar o criterio em exemplos conhecidos antes de confiar.
+
+## 47.6 Pendencias
+
+Um anuncio de Corolla no TikTok em Revisando.
+
+Revarrer a linha CV do Celta na Shopee com o metodo correto da secao 47.4.
+
 # 46. CELTA LINHA CV - RODADA 2 (ATP710CV, STS710CV-UHB4, GR702CV/GR703CV)
 
 Sessao 10/08/2026. Continuacao da secao 45, com tres regras novas ditadas pelo dono.
