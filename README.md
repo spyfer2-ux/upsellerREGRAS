@@ -10,6 +10,8 @@ STS710CV-UHB4 pode pausar. E da linha ULTRALED, que o dono nao vende mais.
 
 GR702CV: se o anuncio for KIT vira GRX702CV; se for PAR vira GR102-103.
 
+Definicao final do dono (10/08/2026): GR702CV e o GR102 (direito) e GR703CV e o GR103 (esquerdo). O sufixo CV cai, porque a numeracao 102/103 ja e a do Celta.
+
 ## 46.2 O que foi aplicado
 
 ATP710CV virou GRX710CV. Como o servidor faz replace por regex, a mesma regra corrigiu o sufixo junto. Dois anuncios alvo: MLB3454482259 (ATP710CV-XHB4 virou GRX710CV-XHB4, pausado) gravou; MLB4586688273 (ATP710CV) esta em revisao e ficou bloqueado.
@@ -24,13 +26,15 @@ X8HB4 continua sendo normalizado para XHB4.
 
 Na Shopee e no TikTok nao existe nenhum desses SKUs. Tudo era do Mercado Livre.
 
-## 46.3 GR702CV e GR703CV - pendente de decisao
+## 46.3 GR702CV e GR703CV - RESOLVIDO
 
 MLB4586678093, SKU GR702CV, titulo Farolete Celta 2007 a 2015 Direito, ativo.
 
 MLB4586703821, SKU GR703CV, titulo Farolete Celta 2007 a 2015 Esquerdo, ativo.
 
-Nenhum dos dois e KIT e nenhum e PAR: sao unitarios de um lado so. Pela regra geral (GR e unitario, numero par e direito, impar e esquerdo) os dois ja estao certos como estao. Nada foi alterado. Aguardando o dono confirmar se mantem ou troca.
+Nenhum dos dois era KIT nem PAR: sao unitarios de um lado so. O dono decidiu que GR702CV e o GR102 (direito) e GR703CV e o GR103 (esquerdo), sem o sufixo CV.
+
+Aplicado e verificado em 10/08/2026: 4398048078645984 (MLB4586678093) virou GR102 e 4398048078645985 (MLB4586703821) virou GR103. Os dois seguem ativos. Nao existia esse SKU na Shopee nem no TikTok.
 
 ## 46.4 DESCOBERTA: batch-online-sku e assincrono
 
@@ -62,7 +66,7 @@ Nove anuncios em revisao: ATP710CV, STS710CV-XHB4 (2), STS710CV-X8HB4 (2), STS73
 
 Um pausado teimoso: MLB4127196406 (STS742CV).
 
-Definir GR702CV e GR703CV (secao 46.3).
+GR702CV e GR703CV: RESOLVIDO, viraram GR102 e GR103 (secao 46.3).
 
 Confirmar se GRX765CV, que e Celta 1999 a 2005 com Kit Super Led 6000k no titulo, precisa de sufixo -M mais encaixe.
 
