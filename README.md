@@ -1,3 +1,43 @@
+# 43. REGRAS NOVAS DO DONO E PAUSA NO TIKTOK
+
+Sessao 09/08/2026, continuacao da rodada 3.
+
+## 43.1 Regras confirmadas pelo dono
+
+Uno em kit usa a familia FUN240, ou seja o codigo fica GRX240FT. Se for par segue a regra normal de par.
+
+Punto em kit tambem fica GRX240FT.
+
+Kangoo 1.6 Sce 2024 e 2025 em kit fica GRX905RN.
+
+Fit 2015 a 2021 em par fica GR100-101. Atencao: GR181-182 e do Fit 2003 a 2006 e nao serve.
+
+Fiat Titano 2025 em par fica GR100-101.
+
+Palio Siena El 2008 a 2012 kit ficou como pular por enquanto.
+
+## 43.2 Anuncios que o dono mandou pausar
+
+Farol De Milha Barra Slim 12 Led 36w, dois anuncios. Farol Milha Auxiliar 9 Leds Quadrado 27w Amarelo Universal, um anuncio. Kit Fiat Fast Back 2022 a 2026 full led, um anuncio. Kit Fiat Pulse Drive 1.3 At Audace, um anuncio. Kit farol de Milha Neblina Auxiliar Lente de Vidro 2020 a 2023 sem modelo no titulo, dois anuncios. Total de sete anuncios pausados.
+
+## 43.3 Endpoint de pausa do TikTok
+
+Para pausar um anuncio de cada vez use /api/tiktok/product/one-update-unlist com corpo JSON contendo flag false e productId como string.
+
+O endpoint /api/tiktok/product/update-unlist e a versao em massa e responde Common_Error.Select_at_least_one quando recebe productId, entao em script vale usar o one-update-unlist em laco.
+
+Depois de pausar, o anuncio sai da aba Ativo, aparece na aba Arquivado e o productStatus na listagem passa a ser inactive.
+
+## 43.4 Gravacoes desta rodada
+
+Treze anuncios gravados e conferidos: GRX905RN em tres Kangoo, GRX240FT em quatro Uno Vivace Way Attractive, GRX240FT em tres Punto, GRX240FT em um Uno 2011 a 2016 sem led, GR100-101 no par do Fit 2015 a 2021 e GR100-101 no par do Titano 2025.
+
+Situacao da loja TikTok depois desta rodada: 527 anuncios ativos, sendo 414 com SKU valido e 113 pendentes. Os pendentes se dividem em linha GM 49, acessorios 29, moldura e suporte 23 e farol 12.
+
+## 43.5 Farois que ainda dependem do dono
+
+March 2011 a 2020 unitario com duas variantes de lado. Civic 2015 a 2021 par. Palio Siena El 2008 a 2012 kit. Aircross Citroen 2011 a 2018 kit. Aircross 2018 e 2019 botao alternativo, dois anuncios. Uno 2011 a 2016 com led, dois anuncios, falta definir o sufixo de encaixe. Fiesta New 2015 a 2017 par com super led 6k. Amarok 2015 e 2016 com Jetta 2011 a 2014 par. Honda HRV 2019 e 2020 lado direito. Civic 2017 a 2019 lado direito unitario, onde pela regra de paridade cairia em GR192 mas esse codigo ainda nao existe na base.
+
 # 42. API DO UPSELLER REMAPEADA E RODADA 3 DO TIKTOK
 
 Sessao 09/08/2026. Reconstrucao total do estado depois que a navegacao apagou as variaveis da sessao anterior.
