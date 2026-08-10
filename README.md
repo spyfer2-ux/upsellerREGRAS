@@ -1,3 +1,53 @@
+# 45. LINHA CV DO CELTA AJUSTADA
+
+Sessao 09/08/2026, rodada 5. O dono confirmou que o Celta esta bem na linha CV e que sao os unicos da linha GM que ja estao ok.
+
+## 45.1 Conversoes aplicadas
+
+STS702CV, STS707CV e STS710CV, com todos os sufixos, viraram GRX mantendo numero e sufixo.
+
+FGS0707CV virou GRX707CV.
+
+STS710CV-X8HB4 virou GRX710CV-XHB4, seguindo a regra de que X8 mais encaixe e o mesmo que X mais encaixe.
+
+GRX707CV-XBH4 era erro de digitacao e virou GRX707CV-XHB4.
+
+GRX102-103 virou GR102-103, porque numeracao de par nao pode ter o X.
+
+## 45.2 Resultado
+
+Trinta e um registros gravados: 15 no Mercado Livre, 5 na Shopee e 11 na TikTok. Dez ficaram bloqueados.
+
+## 45.3 DESCOBERTA sobre estados que bloqueiam gravacao
+
+No Mercado Livre, anuncio em revisao nao aceita alteracao de SKU. Foram 5 casos.
+
+Na TikTok, anuncio congelado e anuncio em retificacao tambem nao aceitam. Foram 5 casos. Anuncio inativo aceita normalmente.
+
+Em todos esses casos a API responde code 0 com success e nao grava nada. Confirmar sempre relistando.
+
+## 45.4 DESCOBERTA sobre os dois niveis de SKU
+
+O SKU pode estar no nivel do anuncio ou no nivel da variante. O campo isVariantSku decide qual dos dois e alterado. Para garantir, mandar a mesma substituicao duas vezes, uma com isVariantSku 0 e outra com 1.
+
+## 45.5 Endpoints da Shopee
+
+Listagem: POST em api barra shopee barra product barra index, form-urlencoded, com searchType igual 4 para buscar por SKU e productState igual NORMAL ou UNLIST ou BANNED. No Mercado Livre o searchType do SKU e 5.
+
+Gravacao: POST em api barra shopee barra product barra batch-online-sku, mesmo corpo JSON do Mercado Livre.
+
+## 45.6 Pendencias do Celta
+
+Convivem quatro codigos de kit: GRX702CV, GRX703CV, GRX707CV e GRX710CV. Falta o dono dizer qual e qual, por tipo de botao, para poder corrigir os anuncios que hoje tem MLB ou numero no lugar do SKU.
+
+STS735CV para Celta 1999 a 2006, STS742CV e STS765CV nao tem equivalente GRX na base. Aguardando definicao.
+
+ATP710CV e ATP710CV-XHB4 usam prefixo desconhecido.
+
+STS710CV-UHB4 e ultraled, produto que o dono nao tem mais.
+
+GR702CV e GR703CV estao em anuncio de farol unitario direito e esquerdo, mas o unitario do Celta deveria ser GR102 e GR103.
+
 # 44. PARRN99 RESOLVIDO E REGEX NA GRAVACAO DO MERCADO LIVRE
 
 Sessao 09/08/2026, rodada 4.
