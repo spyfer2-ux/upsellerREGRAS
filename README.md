@@ -1,3 +1,43 @@
+# 44. PARRN99 RESOLVIDO E REGEX NA GRAVACAO DO MERCADO LIVRE
+
+Sessao 09/08/2026, rodada 4.
+
+## 44.1 Regra do dono
+
+PARRN99 e o GR100-101. O sufixo LED2D quer dizer LED, ou seja e o M de MH8 e MHB4. Portanto PARRN99 mais LED2D e o GR100-101-MH8.
+
+Regra pratica: PARRN99 com LED no titulo vira GR100-101-MH8. PARRN99 sem LED no titulo vira GR100-101 limpo.
+
+## 44.2 O que foi aplicado
+
+Doze anuncios do Mercado Livre tinham PARRN99. Nove viraram GR100-101-MH8 e tres viraram GR100-101. Sobrou zero PARRN99 na base. Os tres sem LED eram Sandero Stepway 2011 a 2015, Ford Ranger 2013 a 2015 e Peugeot 307 2011 a 2012.
+
+## 44.3 Tela nova do Mercado Livre
+
+As lojas AUTOPLUS, Jz acessorios, Ama Ecommerce, MACHADO e FAROIS BR migraram para User Product. A tela antiga mostra so 149 ativos. A tela nova fica em barra pt barra products barra mercado barra up-active e mostra 5406 ativos, 4877 pausados e 4757 em revisao.
+
+## 44.4 Endpoints do User Product
+
+Listagem: POST em api barra mercado barra user-product barra index. Corpo form-urlencoded. Campos: dataType igual 2, hasCatalogProduct igual 0, sortName igual 3, sortValue igual 0, vagueSearchType igual 0 para busca exata, searchType igual 5 para buscar por SKU, searchValue, productState igual active ou paused ou under_review, state igual online, pageNum e pageSize.
+
+Gravacao de SKU: POST em api barra mercado barra user-product barra batch-online-sku. Corpo JSON com type 1, startNumber vazio, isVariantSku 1, prefixType 0, suffixType 0, idList com os ids internos, oldReplaceStr e newReplaceStr.
+
+O id do idList nao e o MLB. E o campo id ou idStr que vem da listagem.
+
+## 44.5 DESCOBERTA IMPORTANTE sobre o oldReplaceStr
+
+O campo oldReplaceStr e tratado como expressao regular pelo servidor. Caractere especial precisa ser escapado com barra invertida. O sinal de mais enviado cru nunca casa, e a resposta ainda assim volta code 0 com success sem gravar nada. Foi isso que travou o PARRN99 mais LED2D. Depois de escapar o sinal de mais funcionou na hora. Regra: sempre relistar depois de gravar para confirmar, nunca confiar so no code 0.
+
+## 44.6 Numero azul da TikTok
+
+O numero que comeca com 1734 ou 1735 na tela da TikTok e o item id da TikTok Shop, nao e SKU e nao da para editar. Quando o SKU aparece como traco e porque o anuncio tem variacao e o SKU esta dentro da variante.
+
+## 44.7 Pendente
+
+Duzentos e quarenta registros com GRX mais numeracao de par, sendo 121 no Mercado Livre e 119 na Shopee. A correcao e tirar o X. O maior grupo e GRX100-101-LH8 com 204 registros. Aguardando liberacao do dono.
+
+Existem tambem 23 anuncios ativos na TikTok com SKU do produto pai ainda errado, herdado do Mercado Livre, sendo que em 5 deles a variante ja esta correta.
+
 # 43. REGRAS NOVAS DO DONO E PAUSA NO TIKTOK
 
 Sessao 09/08/2026, continuacao da rodada 3.
