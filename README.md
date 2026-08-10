@@ -1,3 +1,63 @@
+# 42. API DO UPSELLER REMAPEADA E RODADA 3 DO TIKTOK
+
+Sessao 09/08/2026. Reconstrucao total do estado depois que a navegacao apagou as variaveis da sessao anterior.
+
+## 42.1 Paginacao das listagens
+
+O parametro pageNum precisa ir na QUERY STRING da URL e nao no corpo do POST. Se pageNum for enviado dentro do corpo a API devolve sempre a pagina 1 e a loja parece muito menor do que e. Isso vale para TikTok, Mercado Livre e Shopee.
+
+## 42.2 Formato do corpo das requisicoes
+
+Os endpoints de catalogo do Mercado Livre e da Shopee usam corpo form-urlencoded e nao JSON. Enviando JSON o total sempre volta zero. Ja os endpoints do TikTok aceitam JSON normalmente.
+
+## 42.3 Endpoints de catalogo que funcionam
+
+O Mercado Livre migrou as lojas AUTOPLUS, Jz acessorios, Ama Ecommerce, MACHADO e FAROIS BR para User Product. A tela antiga mostra so 149 anuncios. O endpoint certo agora e /api/mercado/user-product/index com os campos dataType 2, hasCatalogProduct 0, sortName 3, sortValue 0, pageSize, productState e state online. Sem o dataType 2 o total volta zero.
+
+Shopee usa /api/shopee/product/index com sortName 3, sortValue 0, productState NORMAL e state online.
+
+TikTok usa /api/tiktok/product/index com state online, sortName 3, sortValue 0 e vagueSearchType 0. O titulo no TikTok vem no campo itemTitle e nao no campo title como nas outras plataformas.
+
+## 42.4 Tamanho atual da base
+
+Mercado Livre ativo 5406, pausado 4877 e em revisao 4757. Shopee NORMAL 14066. Somando da 29106 registros de referencia. TikTok tem 1373 registros no total sendo 534 ativos.
+
+## 42.5 Contrato correto para gravar SKU no TikTok
+
+Endpoint /api/tiktok/product/batch-online-sku com corpo JSON e os campos type 1, startNumber vazio, isVariantSku espelhando hasVariation, prefixType 0, suffixType 0, idList com a lista de ids, oldReplaceStr e newReplaceStr.
+
+O campo se chama idList. Usando productId, productIds, ids ou productIdList a API responde Error.Select_one_product. Faltando prefixType e suffixType a API responde code zero e success mas nao grava nada, que era exatamente a falha silenciosa que estava atrapalhando.
+
+O oldReplaceStr continua sendo interpretado como expressao regular pelo servidor, entao caractere especial precisa de escape. A gravacao e assincrona, entao vale esperar cerca de tres segundos antes de reler a variation-list. Quando uma variante falha, repetir a mesma chamada costuma resolver.
+
+Esse contrato foi obtido interceptando a propria tela do UpSeller em Acoes em Massa e depois Editar SKU e depois a aba Modificar SKU.
+
+## 42.6 Regra de lado em uso
+
+Unitario direito recebe numero par e unitario esquerdo recebe numero impar. Aplicado no Corolla 2009 a 2014 onde direito ficou GR334 e esquerdo ficou GR333.
+
+## 42.7 Sandero confirmado pelo dono
+
+O codigo antigo PARRN99+LED2D equivale a GR100-101-MH8. O par de farol de milha do Sandero com super led fica GR100-101-MH8 e o kit continua GRX905RN ou GRX905RN-MH8 quando tem led.
+
+## 42.8 Importancia do ano no funil de sugestao
+
+O funil que so comparava palavras do titulo errou o HB20, sugerindo GRX036HY que e da geracao 2016 a 2019 para um anuncio de 2012 a 2015. Depois de exigir sobreposicao de ano entre o titulo do anuncio e o titulo dos anuncios do catalogo, a sugestao correta apareceu sozinha, GRX033HY-XH11. Ano agora e criterio obrigatorio antes de aceitar qualquer sugestao automatica.
+
+O mesmo cuidado derrubou a sugestao GR181-182 para o Fit 2015 a 2021, porque GR181-182 e do Fit 2003 a 2006. Esse anuncio ficou pendente de decisao.
+
+## 42.9 Correcoes gravadas nesta rodada
+
+Foram 16 anuncios do TikTok corrigidos e conferidos um por um relendo a variation-list.
+
+MDM475-476 no suporte do Fiorino. MDM371-372 no acabamento do C4 Pallas. GR102-103 no par Celta Prisma em dois anuncios. GRX710CV no kit Celta Prisma. GRX706CV no kit Montana em dois anuncios. GRX731CV no kit S10. GRX901RN no kit Clio 2003 a 2012. GRX402FD no kit Ranger. GR100-101-MH8 no par Ranger com led 6k. GR100-101 no par Ranger 2012 a 2021. GRX905RN no kit Duster Oroch. GRX033HY-XH11 no kit HB20 com xenon. GR334 e GR333 no Corolla em dois anuncios.
+
+A loja TikTok saiu de 385 para 401 anuncios com SKU valido de um total de 534.
+
+## 42.10 Pendentes do TikTok
+
+Linha GM com 49 anuncios, que o dono pediu para deixar por ultimo. Acessorios como barra de led, lampada, tapete e afins com 29 anuncios. Moldura e suporte com 23 anuncios. Farol de milha ainda sem codigo definido com 32 anuncios, esses dependem de resposta do dono sobre modelos como Kangoo 2024, Titano 2025, Fast Back, Pulse, Uno Vivace, Punto, Aircross, Amarok com Jetta, Fiesta New, March, Civic e Fit.
+
 # 41. TIKTOK SHOP RODADA 2: oldReplaceStr E REGEX E REGRA DA STRADA
 
 Sessao 09/08/2026. Pedido do dono: A ESTRADA SE FOR 2020 E GRX132FT SE NAO E ESSE GRX126FT QUE VC ACHOU MESMO, PODE ALTERAR O RESTANTE DOS SKU DO tik tok.
