@@ -1,3 +1,54 @@
+# 49. REPLICA DO SSS905RN-DLT622-MH8 (5 COPIAS, TETO DE 6) E FLUXO DE DUPLICACAO NA SHOPEE
+
+Sessao 01/10/2026. Loja JhonJhon Parts, que e a unica loja Shopee da empresa nova. O dono pediu 20 ou mais replicas. Foi alertado da secao 29 (duplicado na mesma loja conta como spam na Shopee) e escolheu ficar no teto de 6 da regra 29.3.
+
+## 49.1 Resultado
+
+O MH8 tem agora 6 anuncios ativos (NORMAL), todos com 6 fotos e preco R$ 849,88:
+- 58269527410, o original
+- 58269544077, XEi 2.0
+- 58269544084, Altis
+- 58269548857, XRS 2.0
+- 58219534473, GLi Upper
+- 58219534483, Sedan
+Os titulos foram conferidos contra os 412 da loja: nenhum repete.
+
+## 49.2 Fluxo que funcionou
+
+1. Na listagem, Mais e depois "Duplicar como Novo Anuncio". Marcar a loja, colocar a quantidade e Confirmar. As copias vao para Rascunhos, com o mesmo titulo, as mesmas fotos e o mesmo SKU.
+2. Para listar os rascunhos: POST /api/shopee/product/index (form) com state=draft.
+3. Para trocar o titulo do rascunho: abrir /pt/products/shopee/edit/<idStr> num iframe (mesmo metodo da 48.3), interceptar o /api/shopee/product/add e trocar so o segmento name=. O botao a clicar e "Salvar". A tela de rascunho tem os botoes Salvar e Publicar.
+4. Para publicar: POST /api/shopee/product/batch-publish (form), com ids separados por virgula e anyway=false. Os 5 ficaram NORMAL e ganharam itemId em cerca de 25 s.
+
+## 49.3 Titulos reservas do MH8 (validados, ate 120 caracteres, nenhum repete na loja)
+
+So usar se o anuncio for para OUTRA loja ou para substituir algum dos 6. Nao passar de 6 na JhonJhon Parts.
+
+- Kit Farol de Milha Super LED 6000K Toyota Corolla GLi 1.8 2018 2019 Moldura Daylight DRL com Seta Completo (106)
+- Kit Completo Farol de Milha Super LED 6000K + Daylight DRL Seta LED Toyota Corolla 2018 2019 Moldura (100)
+- Kit Farol Auxiliar Super LED 6000K Corolla GLi 2018 19 com Moldura Daylight DRL Seta LED Chicote Relé Botão (107)
+- Kit Farol de Milha Toyota Corolla XEi 2018 2019 Moldura DRL Daylight Seta LED e Lâmpada Super LED 6000K (103)
+- Kit Farol Neblina Corolla Altis 2.0 2018 19 Daylight DRL com Seta LED + Super LED 6000K Moldura Completa (104)
+- Kit Farol Milha Toyota Corolla 1.8 2.0 2018 2019 Super LED 6000K Luz Diurna DRL Seta Moldura Plug and Play (106)
+- Kit Farol de Milha Neblina Super LED 6000K Toyota Corolla XRS 2018 2019 Moldura Daylight DRL Seta Completo (106)
+- Kit Moldura Daylight DRL Seta LED + Farol de Milha Super LED 6000K Toyota Corolla 2018 2019 Kit Completo (104)
+- Kit Farol Auxiliar Neblina Toyota Corolla GLi Upper 2018 19 Daylight DRL Seta Super LED 6000K Moldura (101)
+- Kit Farol de Milha Corolla 2018 2019 Toyota Super LED 6000K com Moldura DRL Luz Diurna e Seta Chicote Relé (106)
+- Kit Farol Milha Super LED Branco 6000K Toyota Corolla XEi 2.0 2018 19 Daylight DRL Seta Moldura Completa (104)
+- Kit Farol Neblina Daylight DRL Seta LED Toyota Corolla GLi 1.8 2018 19 Super LED 6000K Moldura Botão Relé (105)
+- Kit Farol de Milha Auxiliar Corolla Altis 2018 2019 Moldura Daylight DRL Seta LED Super LED 6000K Completo (106)
+- Kit Completo Farol Neblina Super LED 6000K Toyota Corolla XRS 2.0 2018 19 Moldura Daylight DRL com Seta (103)
+- Kit Farol Milha + Moldura DRL Daylight Seta LED Toyota Corolla Sedan 2018 2019 Super LED 6000K Chicote Relé (107)
+- Kit Farol de Milha Neblina Toyota Corolla 2018 19 Super LED 6000K Daylight DRL Seta LED Moldura Plug and Play (109)
+- Kit Farol Auxiliar Milha Corolla XEi GLi Altis 2018 2019 Super LED 6000K Moldura Daylight DRL Seta LED (102)
+
+## 49.4 Pendencias
+
+- O SSS905RN-DLT622 tem 21 anuncios na mesma loja, bem acima do teto de 6. Isso e risco de spam na Shopee e precisa de decisao do dono.
+- Um titulo do DLT622 diz "Corolla 17 2018 2019". 2017 esta fora da faixa do produto. Corrigir.
+
+---
+
 # 48. TROCA DA FOTO DE CAPA EM MASSA NA SHOPEE (LOJA NOVA, PREFIXO SSS)
 
 Sessao 01/10/2026. Loja JhonJhon Parts (empresa nova, SKU com prefixo SSS). O dono subiu a capa certa num anuncio e pediu para replicar nos outros com o mesmo SKU.
