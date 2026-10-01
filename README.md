@@ -1,3 +1,37 @@
+# 48. TROCA DA FOTO DE CAPA EM MASSA NA SHOPEE (LOJA NOVA, PREFIXO SSS)
+
+Sessao 01/10/2026. Loja JhonJhon Parts (empresa nova, SKU com prefixo SSS). O dono subiu a capa certa num anuncio e pediu para replicar nos outros com o mesmo SKU.
+
+## 48.1 O que foi feito
+
+SKU SSS905RN-DLT622 (Corolla 2018/2019, farol de milha + moldura DRL com seta): 21 anuncios ativos.
+Modelo: itemId 58269531579, que ja estava com a capa certa.
+Os outros 20 tiveram SO a primeira foto trocada. As outras 4 fotos de cada um continuaram como estavam. Zero falha, todos seguem NORMAL.
+O SSS905RN-DLT622-MH8 (itemId 58269527410, versao LED) ja estava com as fotos certas, subidas pelo dono, e nao foi mexido.
+
+## 48.2 Endpoints
+
+Ler o anuncio completo: POST /api/shopee/product/edit, form-urlencoded, id=<idStr>. Devolve data.product com mainImage, que sao as URLs separadas por |, sendo a primeira a capa.
+Salvar o anuncio: POST /api/shopee/product/add, form-urlencoded, com id preenchido. E o mesmo endpoint de criar. O corpo e montado pela tela de edicao, com cerca de 40 campos. Os campos attributes, logistics e brandInfo vao num formato DIFERENTE do que o /edit devolve, entao NAO da para montar o corpo a partir do /edit.
+Reenviar o corpo fora da tela (fetch ou XHR limpo) deu HTTP 501 do nginx. Nao insistir nisso.
+
+## 48.3 Metodo que funcionou (interceptar a propria tela)
+
+1. Na pagina da listagem, abrir /pt/products/shopee/edit/<idStr> num iframe invisivel do mesmo dominio.
+2. Esperar aparecer o botao "Atualizar" e aguardar uns 2,5 s para o formulario carregar.
+3. Trocar o XMLHttpRequest.prototype.send DO IFRAME. Quando a URL for /api/shopee/product/add, trocar no corpo so o segmento mainImage=, colocando a URL da capa nova no lugar da primeira. O resto do corpo segue intacto.
+4. Clicar no botao. Resposta {"code":0} = ok. O iframe e removido depois.
+Cada anuncio leva uns 6 a 8 segundos. Dentro de uma chamada de tool cabem uns 4 anuncios, entao rodar o loop em segundo plano (sem await) e ir consultando o andamento.
+
+## 48.4 Armadilhas
+
+- A Shopee hospeda de novo a imagem que voce manda. A capa nova volta com um ID diferente do anuncio modelo (exemplo: mtsikg93hceebe virou mtsiug740qv494). Isso e normal. Para conferir, olhe se a capa mudou em relacao a antiga e compare visualmente, nao pelo ID.
+- A tela de edicao tem beforeunload. Para sair dela via JS: window.onbeforeunload=null e depois location.replace(...).
+- Na listagem o campo id vem como numero e perde precisao (passa de 2^53). Usar sempre idStr.
+- Se um interceptor que BLOQUEIA o envio for instalado na aba principal, a tela fica travada no spinner. Recarregar antes de tentar de novo.
+
+---
+
 # 47. COROLLA PAUSADO EM TODAS AS PLATAFORMAS
 
 Sessao 10/08/2026. O dono mandou pausar os Corollas.
