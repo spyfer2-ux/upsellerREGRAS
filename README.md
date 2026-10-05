@@ -1,3 +1,95 @@
+# 50. COPIA DA SHOPEE PARA O MERCADO LIVRE (LOJA ISADORA ML): TITULO 60, GARANTIA 90 DIAS, COMPATIBILIDADE POR ANO
+
+Sessao 05/10/2026. Empresa nova (prefixo SSS). Loja nova no Mercado Livre: Isadora ML, shopId 1104549. O dono tinha 30 rascunhos do SSS1306HY (Kit Creta 2020 a 2024, grade preta com DRL + pisca, lampada H8, R$ 887,00) copiados da Shopee, com titulo de 69 a 120 caracteres.
+
+## 50.1 Regras novas do dono (05/10/2026)
+
+- GARANTIA: sempre 90 dias, em todo anuncio. No ML foi gravado como Garantia do Vendedor, 90 dias, que e o que os anuncios da loja sslight ja usam.
+- COMPATIBILIDADE: sempre preencher os veiculos compativeis de acordo com o ano.
+- PADRAO DE TITULO NO ML: em cada palavra a primeira letra e maiuscula e as restantes sao minusculas, que e como o proprio ML padroniza (DRL vira Drl, de vira De, a vira A). Palavras do dono: "a primeira letra sempre e maiuscula e as restantes sao minusculas".
+- O teto de 6 anuncios por SKU por loja (regra 29.3) valeu tambem no ML: dos 30 rascunhos, so 6 foram publicados.
+- O kit SSS1306HY serve nas duas carrocerias do Creta. Palavras do dono: "Serve nas duas".
+- Atributos obrigatorios do ML: Marca SSS LIGHT, Numero de peca igual ao SKU, Tipo de veiculo Carro/Caminhonete.
+- Forma de entrega: Mercado Envios 2 com Mercado Envios Agencias (unica logistica que a conta Isadora ML oferece), sem frete gratis oferecido pelo vendedor e sem retirada pessoal.
+
+## 50.2 Limite de titulo no ML (User Product)
+
+O limite de 60 vale para o Nome da Familia. O campo do UpSeller aceita ate 200, mas o ML corta em 60 no meio da palavra (visto na loja sslight: "...Seta Sequencial Bran") e ainda acrescenta atributos como cor e lado no fim do titulo publico. Contar 60 antes de salvar.
+O ML padroniza a caixa por conta propria: os 6 titulos foram digitados com DRL, de e a, e ficaram no ar com Drl, De e A. Por isso o padrao da regra 50.1 ja deve ser usado na digitacao.
+
+## 50.3 SEO: palavras mais buscadas da categoria
+
+Na edicao individual, ao clicar no campo Nome da Familia, o UpSeller abre o painel "Palavras mais buscadas por Categoria". Em Farois de Milha sao 44 termos. "farol de milha hyundai creta" esta entre os 10 primeiros. 39 dos 44 usam "milha", 1 usa "neblina", 1 usa "auxiliar", 11 trazem o ano exato e 3 trazem "drl".
+Regra pratica: usar a frase exata Farol de Milha + Marca + Modelo sempre que couber, e o ano por extenso quando couber.
+Por vendas nao deu para decidir: os 81 anuncios do Creta na JhonJhon Parts tinham 0 vendas nesta data.
+
+## 50.4 Versoes do Creta e anos
+
+Conferido no catalogo de veiculos do ML: Attitude 2020 e 2021. Limited 2021 a 2024. Comfort e Platinum 2022 a 2024. Action 2021 a 2024 (o catalogo nao tem Action 2020).
+Pelas noticias de lancamento, sem conferir ano a ano no catalogo: Prestige 2020 e 2021. Ultimate e N Line 2022 a 2024.
+NAO usar Smart no titulo: dos 3 anuncios com Smart na JhonJhon Parts, 2 foram excluidos pela propria Shopee, e sao as unicas exclusoes da loja.
+NAO usar Sport de 2020 em diante: o catalogo do ML nao lista essa versao de 2020 a 2024.
+Sem LED no titulo quando o SKU nao tem o sufixo M. Sem Original e sem Farolete.
+
+## 50.5 Publicado: 6 anuncios ativos na Isadora ML (SKU SSS1306HY, R$ 887,00)
+
+| Anuncio | Titulo no ar | Compatibilidade gravada |
+|---|---|---|
+| MLB7751477154 | Kit Farol De Milha Hyundai Creta 2020 A 2024 Grade Drl Seta | Creta 2020 a 2024, todas as versoes, 51 veiculos |
+| MLB5336161739 | Kit Farol De Milha Creta Action 2020 2021 2022 2023 2024 Drl | Action 2021 a 2024, 8 veiculos |
+| MLB7751481564 | Kit Farol De Milha Hyundai Creta Comfort 2022 2023 2024 Drl | Comfort 2022 a 2024, 5 veiculos |
+| MLB5336161773 | Kit Farol De Milha Hyundai Creta Attitude 2020 2021 Drl Seta | Attitude 2020 e 2021, 10 veiculos |
+| MLB5336219757 | Kit Farol Milha Neblina Creta Limited 2021 A 2024 Drl Pisca | Limited 2021 a 2024, 7 veiculos |
+| MLB5336161877 | Kit Farol De Milha Hyundai Creta Platinum 2022 2023 2024 Drl | Platinum 2022 a 2024, 5 veiculos |
+
+Todos ativos, sem revisao e sem erro, conferidos relendo do servidor. Garantia do Vendedor de 90 dias nos 6. O ML marcou os 6 como Frete Gratis mesmo com a opcao de nao oferecer.
+Os outros 24 rascunhos ficaram intocados, com titulo longo e atributos vazios. Nao publicar na Isadora ML.
+
+## 50.6 Fluxo que funcionou no UpSeller (ML User Product)
+
+1. Rascunho so salva com Marca, Numero de peca, Tipo de veiculo e Forma de entrega preenchidos. Os erros sao "O Atributos nao pode estar vazio" e "O Forma de entrega nao pode estar vazio". Vale na edicao individual e na edicao em massa.
+2. Edicao em massa: marcar os rascunhos e clicar em Editar em Massa, que abre aba nova. Marcar so os campos que vai mexer. O lapis no cabecalho da coluna aplica em todas as linhas (Atributos, Forma de entrega, Tipo de Garantia). O titulo se edita clicando na celula. Usar o botao Salvar. O botao ao lado e Salvar & Publicar, cuidado.
+3. Publicar: em Rascunhos, Mais e Publicar para um, ou Publicar em Massa para varios. Foi 1 primeiro para testar e depois os outros 5. Todos ficaram ativos em seguida.
+4. Compatibilidade so existe para anuncio ATIVO: em Ativo, Mais e "Adicionar Compatilidades de Autopecas", ou direto em /pt/products/mercado/auto-parts-create/ID com upType=item. Adicionar Manualmente, filtrar Marca, Modelo, Ano e Versao, Confirmar e depois "Atualize ao Mercado Livre". O ML pode aceitar menos veiculos do que os selecionados: 54 viraram 51 e 6 viraram 5.
+5. Conferencia: GET /api/mercado/user-product/edit com id e dataType=2 para rascunho ou anuncio, e GET /api/mercado/product/get-vehicle com id para a compatibilidade.
+
+## 50.7 Reserva de titulos validados do SSS1306HY (ate 60 caracteres, ja no padrao de maiusculas, para OUTRAS lojas)
+
+- Kit Farol Milha Hyundai Creta 2020 2021 2022 2023 2024 Drl
+- Kit Farol De Milha Creta 2020 2021 2022 2023 2024 Drl Seta
+- Kit Farol De Milha Hyundai Creta 2020 A 2024 Drl Com Pisca
+- Kit Farol De Milha H8 Hyundai Creta 2020 A 2024 Moldura Drl
+- Kit Farol De Milha Hyundai Creta 2020 21 22 23 24 Drl Seta
+- Kit Completo Farol De Milha Hyundai Creta 2020 A 2024 Drl
+- Kit Farol Milha Neblina Hyundai Creta 2020 A 2024 Drl E Seta
+- Kit Farol De Neblina Hyundai Creta 2020 A 2024 Drl Com Seta
+- Kit Farol Neblina Creta 2020 2021 2022 2023 2024 Grade Drl
+- Kit Farol Milha Auxiliar Hyundai Creta 2020 A 2024 Grade Drl
+- Kit Farol De Milha Creta 2020 A 2024 Chicote Relé Botão Drl
+- Kit Farol De Milha Hyundai Creta 2020 A 2024 Luz Diurna Drl
+- Kit Farol De Milha Hyundai Creta N Line 2022 2023 2024 Drl
+- Kit Farol Milha Neblina Creta N Line 2022 A 2024 Drl E Seta
+- Kit Farol De Milha Hyundai Creta Ultimate 2022 2023 2024 Drl
+- Kit Farol Milha Neblina Creta Ultimate 2022 A 2024 Drl Seta
+- Kit Farol De Milha Hyundai Creta Prestige 2020 2021 Drl Seta
+- Kit Farol Milha Neblina Creta Prestige 2020 2021 Grade Drl
+- Kit Farol De Milha Hyundai Creta Action 2020 A 2024 Drl Seta
+- Kit Farol Milha Neblina Creta Action 2020 A 2024 Grade Drl
+- Kit Farol Milha Creta Comfort 2022 2023 2024 Grade Drl Seta
+- Kit Farol Milha Neblina Creta Attitude 2020 2021 Drl E Pisca
+- Kit Farol De Milha Hyundai Creta Limited 2021 2022 2023 2024
+- Kit Farol Milha Neblina Creta Platinum 2022 A 2024 Drl Seta
+
+## 50.8 Pendencias
+
+- A loja sslight esta com os 14 anuncios em revisao, status suspended_for_prevention.
+- Na JhonJhon Parts (Shopee) o SSS1306HY tem 29 anuncios ativos, o SSS1306HY-MH8 tem 30 e o SSS1306HY-XH8 tem 20, todos acima do teto de 6.
+- Sobram 24 rascunhos do SSS1306HY na Isadora ML.
+- Atributos opcionais vazios nos 6 anuncios: conector da lampada, tipo de luz, lado e origem.
+- O titulo do anuncio Action diz 2020, mas o catalogo do ML so tem Action de 2021 em diante.
+
+---
+
 # 49. REPLICA DO SSS905RN-DLT622-MH8 (5 COPIAS, TETO DE 6) E FLUXO DE DUPLICACAO NA SHOPEE
 
 Sessao 01/10/2026. Loja JhonJhon Parts, que e a unica loja Shopee da empresa nova. O dono pediu 20 ou mais replicas. Foi alertado da secao 29 (duplicado na mesma loja conta como spam na Shopee) e escolheu ficar no teto de 6 da regra 29.3.
