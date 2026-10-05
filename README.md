@@ -1,3 +1,47 @@
+# 51. REGRA DO FULL LED: PRODUTO CONSTRUIDO EM LED (SSS1305HY NA SHOPEE)
+
+Sessao 05/10/2026. Regra dada pelo dono durante a replica do SSS1305HY nas lojas Shopee JhonJhon Parts e SSS Shopee.
+
+## 51.1 A regra
+
+Produto CONSTRUIDO em LED leva "Full LED" no titulo, mesmo quando o SKU nao tem o sufixo M. O dono mandou usar "Full LED" em vez de "Led", porque o produto e construido em LED.
+
+Sao duas coisas diferentes e as duas regras valem juntas:
+- LED, Super LED, LED 6000K, LED 6K: e a lampada LED que acompanha o kit. Continua valendo o item 3.4: so entra no titulo se o SKU tiver o sufixo M.
+- Full LED: a propria peca e de LED, como o DRL e a seta do SSS1305HY. Entra no titulo por causa do produto, nao do SKU. Nao gera sufixo M e nao muda o SKU.
+
+Como escrever:
+- "Full LED" uma unica vez no titulo, junto da parte da peca que e LED. Exemplos: "DRL Full LED", "DRL Daylight e Seta Full LED", "Daylight DRL Full LED".
+- Nao escrever "LED" solto, "Led" nem "Super LED" nesses produtos.
+- So usar quando a descricao do anuncio de origem ou o dono confirmar que a peca e de LED. Na duvida, perguntar antes de publicar.
+
+## 51.2 Onde foi aplicada: SSS1305HY
+
+Par de farol auxiliar Hyundai Creta 2020 a 2024 com grade e moldura, DRL e seta, R$ 499,88. A descricao do anuncio de origem diz "DRL FULL LED" e o titulo dele ja trazia "Drl E Seta Full Led" (itemId 58269786068, JhonJhon Parts, nao foi mexido).
+
+Publicados em 05/10/2026: 20 anuncios, 10 na JhonJhon Parts e 10 na SSS Shopee, com os 10 titulos da 51.3. E o mesmo conjunto nas duas lojas e nenhum repete dentro da loja. O dono foi avisado do teto de 6 por SKU por loja (regra 29.3) e autorizou os 10 em cada loja. A JhonJhon Parts ficou com 11 anuncios desse SKU contando o original.
+
+itemIds na ordem dos titulos da 51.3:
+- JhonJhon Parts: 58269795379, 58219776765, 58269801022, 58269801036, 58269795875, 58269795886, 58219776802, 58269795907, 58219776824, 58219776833
+- SSS Shopee: 58219776701, 58269795958, 58219776880, 58219776888, 58269795983, 58219776905, 58219776914, 58269796007, 58219776937, 58269796025
+
+## 51.3 Titulos validados com Full LED (ate 120 caracteres, servem de modelo)
+
+- Par Farol de Milha Hyundai Creta 2020 2021 2022 2023 2024 Grade Moldura DRL Daylight e Seta Full LED Plug and Play (114)
+- Par Farol Milha Neblina Creta 2020 21 22 23 24 Hyundai Moldura Grade Luz Diurna DRL Full LED com Pisca Plug and Play (116)
+- Par Farol Auxiliar Neblina Hyundai Creta 2020 a 2024 Grade Moldura DRL Daylight Full LED com Seta Lente Policarbonato (117)
+- Par Farol de Milha Creta Attitude 2020 2021 Hyundai Moldura Grade DRL Full LED Luz Diurna e Pisca Chicote Plug and Play (119)
+- Par Farol Neblina Hyundai Creta Action 2021 2022 2023 2024 Grade Moldura Daylight DRL Full LED Seta Lente Policarbonato (119)
+- Par Farol Milha Auxiliar Creta Limited 2021 a 2024 Hyundai Moldura Grade DRL Full LED Luz Diurna e Pisca Plug and Play (118)
+- Par Farol de Milha Hyundai Creta Comfort 2022 2023 2024 Grade Moldura DRL Daylight Full LED com Seta Integrada Chicote (118)
+- Par Farol Neblina Creta Platinum 2022 23 24 Hyundai Moldura Grade Luz Diurna DRL Full LED e Pisca Lente Policarbonato (117)
+- Par Farol Auxiliar Milha Hyundai Creta 2020 2021 2022 2023 2024 Moldura Grade DRL Full LED Função Pisca Plug and Play (117)
+- Par Farol de Neblina Creta 2020 21 22 23 24 Hyundai Grade Moldura Daylight DRL Full LED e Seta Lente Policarbonato (114)
+
+Versoes e anos do Creta conforme a 50.4.
+
+---
+
 # 50. COPIA DA SHOPEE PARA O MERCADO LIVRE (LOJA ISADORA ML): TITULO 60, GARANTIA 90 DIAS, COMPATIBILIDADE POR ANO
 
 Sessao 05/10/2026. Empresa nova (prefixo SSS). Loja nova no Mercado Livre: Isadora ML, shopId 1104549. O dono tinha 30 rascunhos do SSS1306HY (Kit Creta 2020 a 2024, grade preta com DRL + pisca, lampada H8, R$ 887,00) copiados da Shopee, com titulo de 69 a 120 caracteres.
@@ -29,7 +73,7 @@ Conferido no catalogo de veiculos do ML: Attitude 2020 e 2021. Limited 2021 a 20
 Pelas noticias de lancamento, sem conferir ano a ano no catalogo: Prestige 2020 e 2021. Ultimate e N Line 2022 a 2024.
 NAO usar Smart no titulo: dos 3 anuncios com Smart na JhonJhon Parts, 2 foram excluidos pela propria Shopee, e sao as unicas exclusoes da loja.
 NAO usar Sport de 2020 em diante: o catalogo do ML nao lista essa versao de 2020 a 2024.
-Sem LED no titulo quando o SKU nao tem o sufixo M. Sem Original e sem Farolete.
+Sem LED no titulo quando o SKU nao tem o sufixo M. Sem Original e sem Farolete. Excecao: produto construido em LED leva "Full LED" (secao 51).
 
 ## 50.5 Publicado: 6 anuncios ativos na Isadora ML (SKU SSS1306HY, R$ 887,00)
 
@@ -1328,7 +1372,7 @@ Travas obrigatorias:
 - Ano completo (2003 2004 2005 2006) ou abreviado (2003 04 05 06), alternando. Sempre dentro da faixa do catalogo.
 - Titulo NUNCA se repete dentro da mesma loja. Entre lojas pode.
 - PROIBIDO: frete gratis, parcelamento, desconto, promocao, brinde como chamariz, cor/tamanho como enfeite, veiculo que o produto nao atende.
-- LED so entra se estiver no SKU (M = super led 6000k, X = xenon, L = lampada comum). Pingo T10 nunca.
+- LED so entra se estiver no SKU (M = super led 6000k, X = xenon, L = lampada comum). Pingo T10 nunca. Excecao: produto construido em LED leva "Full LED", sem sufixo M (secao 51).
 - Limpeza obrigatoria antes de publicar: "Origina" truncado, "2cibie" colado, dois-pontos solto, CamelCase grudado, palavra "Farol" repetida. 24% dos titulos herdados tinham pelo menos um desses defeitos.
 
 ## 32.11 EXCLUSOES ATIVAS NESTE PROGRAMA
@@ -1585,7 +1629,7 @@ GERACAO ANTES DO ANO. As buscas relacionadas do ML mostram que o comprador procu
 muito mais que por ano solto: gol g2, g3, g4, g5, g6, g7, g8, gol bola, saveiro g7, onix joy.
 Formato de ano: completo (2003 2004 2005 2006) ou abreviado (2003 04 05 06), alternando entre
 titulos, SEMPRE dentro da faixa que o catalogo autoriza. Nunca inventar ano.
-LED so entra no titulo se entrar no SKU pela regra do item 3.4 (Super LED / 6000K sim, pingo T10 nunca).
+LED so entra no titulo se entrar no SKU pela regra do item 3.4 (Super LED / 6000K sim, pingo T10 nunca). Excecao: produto construido em LED leva "Full LED", sem sufixo M (secao 51).
 
 Proibido no titulo: frete gratis, parcelamento, desconto, promocao, cor, tamanho, dado pessoal, e
 enfileirar modelos ou anos que o produto nao atende.
@@ -1988,7 +2032,7 @@ O que NAO CONTA como LED e NUNCA gera M:
 - NUNCA criar sufixo -PINGOT10, -T10 ou parecido. Codigos como STS165FT-LH1-PINGOT10 e
   STS903RN-LH11-PINGOT10 estao errados por construcao (ja foram pausados, ver item 14).
 
-Resumo: 6000k / 6k = LED de verdade = M. Pingo T10 = acessorio = ignorar no SKU.
+Resumo: 6000k / 6k = LED de verdade = M. Pingo T10 = acessorio = ignorar no SKU. Produto construido em LED leva "Full LED" no titulo e nao gera M (secao 51).
 
 ---
 
