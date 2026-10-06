@@ -1,3 +1,47 @@
+# 52. PESO E MEDIDAS PADRAO DO PACOTE NA SHOPEE (0,85 KG E 35 X 25 X 30 CM)
+
+Sessao 06/10/2026. Lojas Shopee JhonJhon Parts e SSS Shopee. Regras dadas pelo dono durante a correcao de 28 anuncios que estavam em Falhou com o erro "Campo obrigatorio em falta: [Numero da Peca (Part Number)]".
+
+## 52.1 Regras do dono (06/10/2026)
+
+- PESO PADRAO DO PACOTE: 0,85 kg (850 g).
+- MEDIDAS PADRAO DA EMBALAGEM: 35 x 25 x 30 cm. No UpSeller a ordem dos campos e Largura 35, Comprimento 25, Altura 30.
+- O peso e as medidas acima sao o padrao quando o dono nao informar outro valor.
+- METODO DE ENVIO: marcar todos, menos Retirada pelo Comprador. Hoje isso da Shopee Xpress e Expresso Aereo na JhonJhon Parts e Correios na SSS Shopee.
+- NUMERO DA PECA (PART NUMBER) NA SHOPEE: numero aleatorio de ate 6 digitos. Palavras do dono: "isso nao e importante".
+- COMPATIBILIDADE DE AUTOPECAS: nao e usada na Shopee. Palavras do dono: "desconsidere por enquanto". A regra 50.1 de preencher por ano continua valendo no Mercado Livre.
+- GARANTIA: continua 90 dias em todo anuncio (regra 50.1).
+- QUANTIDADE: o dono escolheu 10 para este lote. Nao foi dada como padrao.
+
+## 52.2 O que foi feito
+
+28 anuncios, 14 produtos em cada loja. Em todos: Part Number aleatorio de 6 digitos (um diferente por anuncio), peso 0,85 kg, medidas 35 x 25 x 30, envio conforme a 52.1 com Envio Gratis desmarcado, e quantidade 10. O Part Number foi conferido nos 28 relendo a tela de edicao.
+
+Publicados e ativos (productStatus NORMAL): 27, sendo 14 na JhonJhon Parts e 13 na SSS Shopee.
+
+Ficou em Falhou: 1, na SSS Shopee, "Par Farol De Milha Celta Prisma 2007 2008 2009 2010 2011 2012 2013 2014 2015" (SKU FUN102-103). Na primeira tentativa deu "Erro de API de imagem, por favor, reapresentar mais tarde". Na segunda o UpSeller avisou que o anuncio se repete com outro da loja e a publicacao foi cancelada.
+
+Garantia: nas 14 descricoes conferidas (uma por produto) o prazo aparece como 3 meses ou 90 dias, ou nao e citado. Os 21 anuncios ativos do SKU SSS712CV tambem foram conferidos e estao com "Garantia de fabrica: 90 dias".
+
+## 52.3 Fluxo que funcionou no UpSeller (Shopee, aba Falhou)
+
+- O botao Salvar da edicao individual e o da tela Editar em Massa NAO gravam enquanto Quantidade, Peso do Pacote e Envio estiverem vazios ("O Quantidade nao pode estar vazio"). Nao adianta preencher so o atributo.
+- Acoes em Massa grava um campo por vez, sem validar o resto do anuncio:
+  - Editar Atributos: uma aba por loja e um grupo por categoria. Marcar a caixa do atributo para liberar o campo. O valor vale para todos os anuncios do grupo, entao para dar um numero diferente a cada anuncio e preciso selecionar um de cada loja por vez.
+  - Editar envio: uma aba por loja, com Peso do Pacote, Tamanho do Pacote e os metodos de envio. Marcar o metodo clicando no NOME dele. A linha marcada cresce e empurra as de baixo, entao conferir a tela antes de clicar na proxima.
+  - Editar Quantidade: campo Nova Quantidade.
+- Depois, Publicar em Massa. O anuncio passa por Publicando e cai em Ativo ou volta para Falhou.
+- A mensagem de erro da aba Falhou e a da ultima tentativa de publicar. Ela nao some ao corrigir o campo, so ao publicar de novo.
+- Ao republicar um anuncio igual a outro ja ativo na loja, o UpSeller pergunta "Voce quer mesmo publicar?". No lote de 28 esse aviso nao apareceu e titulos iguais subiram juntos.
+
+## 52.4 Pendencias
+
+- Titulos repetidos na mesma loja entre os publicados (secao 29: duplicado na mesma loja conta como spam na Shopee):
+  - "Par Farol De Milha Neblina Gol Voyage G6 2012 2013 2014 2015 2016": itemIds 58219853372 e 58269877161 na JhonJhon Parts, 58269877168 e 58269877143 na SSS Shopee.
+  - "Par Farol De Milha Celta Prisma 2007 2008 2009 2010 2011 2012 2013 2014 2015": itemIds 58269872398 e 58219853280 na JhonJhon Parts. Na SSS Shopee o ativo e o 58219853272 e o repetido e o que ficou em Falhou.
+- 17 dos 27 ativos mostram a etiqueta vermelha "Esgotado" ao lado do SKU no UpSeller (SKUs SSS702CV, SSS702CV-MHB4, SSS002VW-MH8, FUN102-103, FUN104-105 e FUN975-976). Os dados do anuncio dizem productStatus NORMAL e estoque 10. O armazem do UpSeller esta vazio e a Sincronizacao de Estoque esta desativada. Nao foi conferido na Shopee, porque a pagina do produto pediu captcha.
+- Continuam em Falhou outros 208 anuncios das duas lojas, a maioria com "Campo obrigatorio em falta:Atributos".
+
 # 51. REGRA DO FULL LED: PRODUTO CONSTRUIDO EM LED (SSS1305HY NA SHOPEE)
 
 Sessao 05/10/2026. Regra dada pelo dono durante a replica do SSS1305HY nas lojas Shopee JhonJhon Parts e SSS Shopee.
