@@ -1,3 +1,52 @@
+# 53. COPIA DO MERCADO LIVRE PARA A SHOPEE - FLUXO RAPIDO (SSS713CV)
+
+Sessao 14/10/2026. Pedido do dono: todos os anuncios iguais em todas as lojas, copiando do ML (SS LIGHT e Isadora ML) para a Shopee (JhonJhon Parts shopId 1099666 e SSS Shopee shopId 1108318). Primeiro SKU feito: SSS713CV e variantes. Resultado: 36 anuncios NORMAL, 6 por SKU por loja.
+
+## 53.1 Decisoes do dono (14/10/2026)
+- 6 anuncios por SKU em cada loja Shopee (teto da 29.3).
+- Preco na Shopee = preco do ML, sem mudar centavos.
+- Estoque 10 em cada anuncio.
+- Peso, medidas, envio e Part Number seguem a 52.1. Garantia 90 dias (50.1) vai na descricao.
+- Mesmo conjunto de titulos nas duas lojas. Titulo nunca repete dentro da loja.
+
+## 53.2 Fluxo que funcionou (na ordem)
+1. Levantar o SKU no ML: POST /api/mercado/user-product/index (form) com searchType=5, searchValue=SKU, vagueSearchType=1, productState=active, state=online, dataType=2. Agrupar por itemSku e shopName para ver variantes e precos.
+2. Conferir que nao existe na Shopee: POST /api/shopee/product/index (form) com searchType=4, searchValue=SKU, vagueSearchType=1, state=online e state=draft.
+3. Copiar 1 anuncio de origem por variante: Produtos > Migracao de Anuncios > Mercado Livre > User Product. Busca por SKU fica no icone de lista (Pesquisar em Massa, um SKU por linha). "Copiar para..." na linha, marcar JhonJhon Parts e SSS Shopee, Confirmar. Cai em Rascunhos da Shopee.
+4. A copia vem com problemas fixos: descricao VAZIA (o ML do SSS nao tem descricao), categoria as vezes errada (o kit basico veio como "Bolsas de Gelo", id 100712), peso, medidas, envio e Part Number vazios, estoque 50 e titulo com "Brindes".
+5. Rascunhos da Shopee > selecionar > Acoes em Massa:
+   - Editar Quantidade: 10.
+   - Editar Categoria: "Farois e Kit Frontal" (id 102297, Pecas e Acessorios para Veiculos > Pecas de Reposicao para Automoveis > Iluminacao). Marca "Sem marca". Ja abre o Part Number.
+   - Editar Atributos: Part Number. Um anuncio por loja por vez, porque o valor vale para o grupo.
+   - Editar envio: ja abre preenchido com 0,85 kg, 35x25x30 e os metodos certos. So Confirmar.
+6. Titulo e descricao: abrir /pt/products/shopee/edit/<idStr>, setar o input do titulo e a textarea com o setter nativo + eventos input/change/blur (os contadores 114/120 atualizam) e clicar Salvar. Toast "Com sucesso".
+7. Publicar: POST /api/shopee/product/batch-publish (form) ids=<idStr separados por virgula>&anyway=false. Fica em "publishing" de 1 a 3 minutos e depois NORMAL. Durante o publishing o /api/shopee/product/edit pode falhar: conferir pelo index com state=publishing e state=online.
+8. Duplicar ate 6: POST /api/shopee/product/copy-shopee-product, corpo JSON {"id":"<idStr do anuncio ATIVO>","shopCountVoList":[{"count":"5","shopId":"<shopId>"}]}. Responde uma chave PRODUCT:SHOPEE_COPY_PRODUCT. As copias vao para Rascunhos com tudo igual: estoque, peso, envio, categoria, descricao, fotos e o MESMO Part Number.
+9. Nas 5 copias, trocar titulo e Part Number juntos: iframe invisivel com /pt/products/shopee/edit/<idStr>, esperar a textarea e o input do titulo, mais 2,5 s (em 2 de 30 o Part Number nao tinha carregado: com 6 s funcionou). Achar o Part Number como o unico input com 6 digitos. Setar, clicar Salvar, remover o iframe e reler o /edit. Cerca de 7 s por anuncio, rodar em segundo plano.
+10. Publicar as copias em um batch-publish so e conferir pelo index: 36 NORMAL.
+
+## 53.3 Checagens que valeram
+- Titulos contra TODOS os anuncios online das duas lojas (672 em 14/10/2026, cabem em 3 paginas de 300): zero colisao.
+- Por anuncio: estoque 10, peso 0,85, categoria 102297, descricao com mais de 1000 caracteres, titulo de 85 a 120 e Part Number unico (36 de 36).
+- LED so no titulo do -M, Xenon so no -X.
+- Saida de JS com "=" ou "&" e bloqueada pela ferramenta ("Cookie/query string data"): trocar esses caracteres antes de devolver o resultado.
+
+## 53.4 Modelo de descricao (o ML do SSS nao tem descricao)
+Linha de abertura com o titulo curto. Paragrafo "Kit de farois auxiliares de milha completo, desenvolvido para instalacao no <modelo> <anos>". "Compativel com:" um ano por linha. "Caracteristicas:" Produto Novo, encaixe da lampada, chicote com conectores originais. "Conteudo da Embalagem:" conforme as fotos. "Importante:" valor do kit completo, brindes sem garantia, instalacao por profissional, mau uso fora da garantia, "Garantia de fabrica: 90 dias contra defeitos de fabricacao".
+Conteudo do SSS713CV pelas fotos: 2 farois com suportes, chicote, rele, botao, kit de parafusos e presilhas, 2 pingos LED T10 (brinde). No basico vao 2 halogenas H3 (brinde). No -MH3 vao 2 Super LED 6000K H3. No -XH3 vai o kit xenon H3 com 2 reatores. Os "4 brindes" dos titulos do ML sao as 2 H3 e os 2 T10. Brinde nao entra no titulo.
+
+## 53.5 Publicado: SSS713CV (Corsa Classic 2010 a 2016)
+| Loja | SKU | itemIds |
+|---|---|---|
+| JhonJhon Parts | SSS713CV | 23695383025, 23699879661, 58220457234, 58220461789, 58220461815, 58270474351 |
+| SSS Shopee | SSS713CV | 23995373207, 58220461860, 58270473444, 58270474364, 58270474370, 58270474381 |
+| JhonJhon Parts | SSS713CV-MH3 | 58270473468, 58270474491, 58270474499, 58270474510, 58270474523, 58270477939 |
+| SSS Shopee | SSS713CV-MH3 | 58220457337, 58220461753, 58270474257, 58270474273, 58270474290, 58270474300 |
+| JhonJhon Parts | SSS713CV-XH3 | 58220461899, 58270473453, 58270474401, 58270474409, 58270474419, 58270474431 |
+| SSS Shopee | SSS713CV-XH3 | 58220461929, 58270473460, 58270474458, 58270474482, 58270477872, 58270477894 |
+
+Precos: R$ 229,98, R$ 249,98 e R$ 269,98. Os 6 titulos de cada SKU sao os mesmos nas duas lojas.
+
 # 52. PESO E MEDIDAS PADRAO DO PACOTE NA SHOPEE (0,85 KG E 35 X 25 X 30 CM)
 
 Sessao 06/10/2026. Lojas Shopee JhonJhon Parts e SSS Shopee. Regras dadas pelo dono durante a correcao de 28 anuncios que estavam em Falhou com o erro "Campo obrigatorio em falta: [Numero da Peca (Part Number)]".
