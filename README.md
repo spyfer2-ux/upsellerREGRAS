@@ -1,3 +1,30 @@
+# 54. COPIA ML PARA SHOPEE - RODADA 2 (18 SKUs, 174 ANUNCIOS NOVOS)
+
+Sessao 14/10/2026, continuacao da secao 53. Dono: "pode continuar com as copias".
+
+## 54.1 Resultado
+18 SKUs SSS completados para 6 anuncios em CADA loja (JhonJhon Parts e SSS Shopee): SSS002VW, SSS002VW-MH8, SSS004VW, SSS013VW, SSS013VW-MH3, SSS014VW, SSS036VW, SSS044VW-MH3, SSS126FT, SSS702CV, SSS702CV-MHB4, SSS710CV, SSS710CV-MHB4, SSS710CV-XHB4, SSS1103CT, SSS240FT-4, SSS707CV-MHB4, SSS1105CT-MH8.
+174 copias publicadas, todas NORMAL, conferidas uma a uma (titulo, Part Number, estoque 10, peso 0,85, descricao). Online nas duas lojas: 880 anuncios.
+Nenhum titulo novo repete dentro da loja. Os 3 grupos repetidos que existem sao antigos (secao 52.4).
+
+## 54.2 Atalho: SKU que ja tem 1 anuncio ativo na Shopee
+Nao precisa da Migracao. Usar o anuncio ativo da propria loja como origem do copy-shopee-product (53.2 passo 8) com count = 6 menos o que ja existe. A copia herda descricao, categoria, peso, envio, estoque e preco. Depois so trocar titulo e Part Number (53.2 passo 9). Preco das origens conferido contra o ML: todos iguais.
+
+## 54.3 Licoes tecnicas novas
+- Part Number nem sempre tem 6 digitos: o SSS014VW e outros vinham com 9 (ex.: 252353253). Achar o input do Part Number pelo VALOR atual lido do /api/shopee/product/edit (atributo 102293, campo original_value_name), nao por regex de 6 digitos. Se vier vazio, achar pelo rotulo "Part Number".
+- O campo attributes do /edit as vezes vem como STRING JSON. Tratar os dois formatos.
+- O script de edicao fica salvo em localStorage na chave __DOONE do app.upseller.com: em aba nova basta eval(localStorage.__DOONE) e chamar __runQ(lista, 2). Lista = [{id, title, pn}]. Ele pula quem ja esta certo.
+- Rodar 2 workers em paralelo (cerca de 15 anuncios por minuto). Com 3 a aba travou. Ao terminar, matar o iframe com src about:blank antes de remover.
+- A ferramenta de JS cai se a chamada passar de uns 45 s (await longo ou loop grande): rodar em segundo plano e consultar o progresso em chamadas curtas.
+- Publicar em blocos de 50 com 20 s entre blocos. Leva uns 5 minutos para todos sairem de "publishing".
+- 2 de 174 voltaram para Falhou com "Error.Image_API_error". Republicar o mesmo id resolveu na hora.
+
+## 54.4 Pendencias (ainda sem 6 por loja)
+- Universais com aplicacoes diferentes: SSS905RN-MH8 (2 por loja), SSS905RN-V (3), SSS907RN (2). Cada copia precisa da origem da aplicacao certa (Logan, Sandero, Kwid, Duster, Mobi, Argo, C4 Pallas, Master, Oroch, Clio).
+- SSS sem nenhum anuncio na Shopee (precisa Migracao + descricao): SSS069VW, SSS126FT-MH1, SSS414FD-LHB4, SSS117-118, SSS189-190, SSS218HD.
+- Fora do padrao SSS nas lojas do ML: FUN205-206, FUN249-250, FUN240-4, FUN100-101-MH8, FUN240-2, FUN975-976, FUN240-2-LH1, FUN102-103, FUN104-105, FUN955-956, FUN240, MDM371-372, SFM405-406, GRDL01, GRDL08, GR97CV, GR110HD. Esperando o dono dizer se entram.
+- 6 anuncios do ML com SKU vazio ou MLBU no lugar do SKU: corrigir o SKU antes de copiar.
+
 # 53. COPIA DO MERCADO LIVRE PARA A SHOPEE - FLUXO RAPIDO (SSS713CV)
 
 Sessao 14/10/2026. Pedido do dono: todos os anuncios iguais em todas as lojas, copiando do ML (SS LIGHT e Isadora ML) para a Shopee (JhonJhon Parts shopId 1099666 e SSS Shopee shopId 1108318). Primeiro SKU feito: SSS713CV e variantes. Resultado: 36 anuncios NORMAL, 6 por SKU por loja.
