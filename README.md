@@ -1,3 +1,40 @@
+# 55. COPIA ML PARA SHOPEE - RODADA 3 (UNIVERSAIS, FUN/MDM E SSS NOVOS)
+
+Sessao 14/10/2026. Decisoes do dono nesta rodada:
+- FUN e MDM entram na copia. SFM405-406, GRDL01, GRDL08, GR97CV e GR110HD NAO entram.
+- Universais (SSS905RN-MH8, SSS905RN-V, SSS907RN): pode fazer um anuncio por aplicacao veicular ate 6 por loja.
+- SSS sem nenhum anuncio na Shopee: pode copiar, mesmo fluxo da 53.
+
+## 55.1 Resultado (tudo NORMAL, 6 por SKU em cada loja)
+- Universais: SSS905RN-MH8 (+4: Sandero Logan, Duster, Kwid, Mobi), SSS905RN-V (+3: Mobi, Logan Sandero 2015-2019, Kwid), SSS907RN (+4: Sandero e Logan 2008-2013).
+- FUN/MDM: FUN205-206, FUN240-2, FUN240-2-LH1, FUN240-4, FUN104-105, FUN975-976, FUN249-250, FUN955-956, FUN240, MDM371-372, FUN100-101-MH8 e +1 FUN102-103 na SSS Shopee.
+- FUN100-101 (23 por loja) e MDM343-MDM344 (23/21) ja passavam do teto: nao foram mexidos.
+- SSS novos via Migracao: SSS069VW, SSS126FT-MH1, SSS414FD-LHB4, SSS117-118, SSS189-190, SSS218HD.
+
+## 55.2 Como escolher a origem nos universais e FUN
+- Cada titulo novo usa a aplicacao (carro e anos) que aparece nos titulos do ML do mesmo SKU. Nunca inventar carro.
+- Origem = anuncio Shopee ativo do mesmo SKU cuja descricao ja traz a lista de compatibilidade com aquele carro. Ex.: SSS905RN-MH8 copiou o anuncio Argo/Cronos, cuja descricao lista Kwid, Logan, Sandero, Duster e Mobi.
+- Quando a descricao da origem e de um carro so (SSS905RN-V Oroch, Master), a copia recebe descricao nova escrita para a aplicacao do titulo. O script __DOONE aceita o campo desc.
+- FUN104-105 e MDM371-372 tem duas origens diferentes no mesmo SKU (Ka/Fiesta x Ecosport; moldura C4 Pallas x grade C4 Hatch/VTR). Copiar de cada origem so os titulos daquela aplicacao.
+
+## 55.3 SSS novos pela Migracao: o que corrigir
+- Selecionar 1 anuncio por SKU na Migracao (Pesquisar em Massa por SKU) e usar o "Copiar para Lojas" do topo.
+- Categoria veio errada em 4 de 6 (100712 e 102010): Editar Categoria para "Farois e Kit Frontal". Nessa tela o Part Number vale para o grupo inteiro, entao colocar um valor provisorio (111111) e trocar depois pelo script.
+- Estoque veio 50, 100 e ate 1000: Editar Quantidade 10.
+- SSS189-190 veio com preco diferente do ML (156,28 x 169,88): Editar Preco.
+- SSS218HD e SSS069VW vieram sem descricao: descricao escrita pelas fotos. Os outros 4 ja tinham descricao do ML.
+- SSS117-118 veio com variacao (1 variante). O script funcionou igual.
+- Ordem: Quantidade, Categoria + Part Number provisorio, Envio, Preco; depois titulo + Part Number + descricao pelo script; publicar o original; copiar 5 por loja com copy-shopee-product; trocar titulo e Part Number das copias; publicar.
+
+## 55.4 Travamento da aba (licao importante)
+- A aba que roda o script trava sozinha depois de algumas dezenas de anuncios (a ferramenta de JS deixa de responder). Provavel dialogo da pagina de edicao dentro do iframe.
+- O que ajudou: iframe com sandbox (allow-scripts allow-same-origin allow-forms allow-popups), remover o iframe sem navegar para about:blank, e no maximo 2 workers.
+- Se travar: fechar a aba, abrir outra no app.upseller.com, eval(localStorage.__DOONE) e rodar de novo a mesma lista. O script pula quem ja esta certo, entao e seguro repetir.
+- Conferir o progresso por outra aba, lendo o servidor (titulo e Part Number de cada id), nunca confiando so no contador do script.
+
+## 55.5 Fora do escopo por decisao do dono
+SFM405-406, GRDL01, GRDL08, GR97CV, GR110HD. Anuncios do ML com SKU vazio ou MLBU continuam sem copia ate o SKU ser corrigido.
+
 # 54. COPIA ML PARA SHOPEE - RODADA 2 (18 SKUs, 174 ANUNCIOS NOVOS)
 
 Sessao 14/10/2026, continuacao da secao 53. Dono: "pode continuar com as copias".
