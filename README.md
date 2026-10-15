@@ -1,3 +1,56 @@
+# 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
+
+Sessao 15/10/2026. O dono pediu um diagnostico completo e depois escolheu a ordem: C (garantia ML) > D (compatibilidade ML) > E (categoria Shopee). G (promocoes) o dono ja fez. H (titulos repetidos) e prioridade: nao pode existir. No meio da sessao o dono mandou PAUSAR tudo que comeca com MLB (Mercado Livre) para ver depois: os itens de ML abaixo ficaram como estavam.
+
+## 56.1 Numeros do diagnostico (15/10/2026, antes das correcoes)
+- ML: 729 ativos (SS LIGHT 364, Isadora ML 365), 60 pausados, 36 em revisao (19 SSS126FT-MH1 bloqueados pelo ML como identicos entre si, 17 por "fotos com marca d'agua"), 432 sem compatibilidade, 158 sem descricao, 162 titulos com mais de 60 caracteres, 94 sem garantia, 7 SKUs errados (vazio ou MLBU), 10 vendas no total.
+- Shopee: 1036 NORMAL (JhonJhon 519, SSS 517), 23 UNLIST; 602 fora das categorias de iluminacao (578 em "Grade de Farol de Milha" 102295 sem ser MDM + 24 em "Bolsas de Gelo" 100712); 14 SKUs acima do teto de 6; 234 titulos com menos de 85; 11 anuncios com SKU numerico; 0 vendas, 63 visitas.
+- TikTok: 310 ativos, 60 SKUs, 13 em revisao, 116 titulos curtos, 6 com id no lugar do SKU.
+
+## 56.2 H - Titulos repetidos na Shopee (feito)
+- Conferir sempre pelo index com state=online, pageSize=300 (4 paginas), agrupando por nome dentro de cada loja.
+- Tinha 3 repetidos: renomeados pelo __DOONE. Resultado: 0 grupos repetidos em 1061 anuncios.
+
+## 56.3 C - Garantia do ML em 94 anuncios (feito)
+- O "Editar em Massa" do ML (family-product/save-batch-edit) falha nesses anuncios ("Falha na atualizacao do anuncio"). Nao usar.
+- O que funciona: POST /api/mercado/user-product/batch-warranty, JSON {"idList":[idStr...],"warrantyType":"SELLER_WARRANTY","warrantyTimeUnit":"DAY","warrantyValue":90,"isOnline":1}. Responde code 0 com chave de tarefa; e assincrono.
+- Conferir relendo o index: saleTerms (string JSON) tem que trazer "90 dias". No primeiro lote 16 de 94 nao pegaram: reenviar um por um (2 precisaram de um terceiro envio). Final: 94 de 94 com "Garantia do vendedor: 90 dias".
+- Os 7 SKUs errados ficaram PAUSADOS pelo dono (ver 56.7).
+
+## 56.4 D - Compatibilidade do ML em 432 anuncios (feito, 427 enviados)
+Endpoints (todos JSON, mesma origem app.upseller.com):
+- Marcas/modelos/anos: POST /api/mercado/product-vehicle/vehicle {"site":"BR","type":1|2|3,"paramMap":{"BRAND":[id],"MODEL":[id]}} (1 marcas, 2 modelos, 3 anos). Mapas salvos em localStorage __VBR (marca->id) e __VMD ("modelo-marca"->id).
+- Versoes/veiculos: POST /api/mercado/product-vehicle/list {"site":"BR","paramMap":{"BRAND":[b],"MODEL":[m],"VEHICLE_YEAR":[ids dos anos],"SHORT_VERSION":[],"ENGINE":[]}} -> data[].vehicleList[].vehicleId (MLB...) e versionName.
+- Gravar: POST /api/mercado/product/add-vehicle {"compatibilities":"[{\"vehicleId\":\"MLB...\",\"position\":\"[]\",\"note\":\"\"}]","id":idStr}. Substitui a lista inteira e ja envia ao ML. Ler: GET /api/mercado/product/get-vehicle?id=idStr (null quando nao tem).
+- Sincronizar do ML: POST /api/mercado/product/sync (form) ids=idStr,idStr,... (aceita varios).
+- Regra usada: carro e anos vem do TITULO do anuncio (nunca inventar). Geracao do VW (G3/G4/G5/G6) limita os anos. Versao filtrada quando o titulo cita (Fiesta Supercharger, Creta Ultimate, Corolla Xrs...).
+- Conferido no site do ML: MLB7813287378 mostra "Compativel com seu veiculo" para Honda Civic 1999 1.6 Ex 4p e o titulo ganhou "Compativel com Honda Civic 1999".
+- Depois do sync o index mostra compatibilitiesState 2, mas a tag incomplete_compatibilities do ML pode demorar para sumir.
+- Ficaram de fora (precisam do dono): FUN975-976 Polo/Golf (MLB5358844539, MLB7777005760, MLB5358822873, MLB7777005544) e FUN240-2-LH1 "Fiat Universal" (MLB5358266743, MLB5357808221). Prisma foi limitado a 2012 nos titulos "Celta/Prisma 2012 a 2016". PAUSADO pelo dono.
+
+## 56.5 E - Categoria da Shopee: 602 anuncios para "Farois de Neblina" (102299)
+- Categorias Shopee: 102299 Iluminacao > Farois de Neblina (certa para farol de milha); 102297 Farois e Kit Frontal; 102295 Carroceria > Grade de Farol de Milha (so para MDM, que e grade/moldura); 102287 Grades de Para-choques; 100712 Casa e Decoracao > Bolsas de Gelo (errada).
+- O index da Shopee NAO traz categoryId: ler cada anuncio com POST /api/shopee/product/edit (form id=idStr) -> data.product.categoryId e attributes (string JSON: attribute_id 102293 = Part Number, valor em attribute_value_list[0].original_value_name).
+- So o Part Number e obrigatorio em 102299 (POST /api/shopee/product/get-category-attribute, form shopId e categoryId).
+- Salvar um anuncio ATIVO = POST /api/shopee/product/add (form) com o produto inteiro: id (idStr), shopId, site, categoryId, itemSku, name, preOrder (0/1), daysToShip, conditionInfo NEW, sourceUrl, description, descriptionType, brandInfo {"brand_id":"0","original_brand_name":"Sem marca"}, attributes (so o Part Number), hasVariation 0, price, stock, gtinCode, isPromotion, promotionId (so quando tem promocao), salePrice, salePriceDiscount (% inteiro), purchaseLimit, promotionStockSet 0, wholesales [], mainImage (urls com |), sizeChart, videoUrl, weight, packageLength/Width/Height, logistics (JSON), compatibilityInfo [], ncm, originDetail, measureUnit, cest, cfopDiff, cfopSame, csosn, op 2, state online, anyway false. Tudo vem igual do /edit; null vira vazio.
+- Conferir do lado da Shopee: POST /api/shopee/product/sync (form) ids=idStr,idStr e GET /api/check-process?uuid=<chave>; depois reler o /edit. Categoria, Part Number e promocao continuaram certos.
+- Anuncios com variacao (Direito/Esquerdo) pedem "transferir variacao da Shopee para variacao personalizada" na troca de categoria: 16 ficaram de fora para o dono decidir.
+- Script __EC (ecat.js): __EC.one(idStr) le, monta e salva; __EC.runK(chave, lista, 1500) roda uma fila; progresso em localStorage __ECAT_DONE (seguro repetir). 4 filas em paralelo deram conta.
+- Resultado: 586 de 586 trocados para 102299 (JhonJhon 294, SSS Shopee 292), 0 falhas no add. Na conferencia pelo sync 19 ainda estavam em 102295: reenviados um a um (3 s entre eles), sincronizados e confirmados. 1 ficou em REVIEWING na Shopee depois da troca (FUN205-206 JhonJhon id 27379420215329245, titulo antigo com "Farolete"). Index final: 1061 online, 0 titulos repetidos.
+- Fora da troca: 16 com variacao (lista em localStorage __ECAT_LIST.V) e 7 UNLIST.
+- Tempo: 4 filas em paralelo, cerca de 35 min para 586. Cada add demora de 3 a 8 s (a Shopee reprocessa as fotos: os ids das imagens mudam, e normal).
+
+## 56.6 Lambancas e licoes desta sessao
+- A pagina de edicao da Shopee prende a aba com "sair sem salvar": antes de navegar, rodar window.onbeforeunload = null e um listener de beforeunload em captura com stopImmediatePropagation, ou abrir outra aba.
+- Abas abertas pelo agente somem sozinhas as vezes (id muda). Guardar tudo em localStorage e conferir tabs_context antes de cada acao.
+- Um teste de compatibilidade pela tela sobrescreveu MLB7775813298 com um unico ano: o add-vehicle substitui a lista inteira, entao sempre mandar a lista completa.
+- Part Numbers repetidos nos anuncios antigos do dono (12333 em 76, 12333223 em 158, 12312223321 em 21): mantidos como estavam na troca de categoria.
+
+## 56.7 Pendente para o dono (nao mexer sem resposta)
+- ML (PAUSADO): 7 SKUs errados (MLB7634801400 -> GRDL01?, MLB7767070474 -> SSS1306HY-XH8?, MLB7758765398 MLBU3885476516 -> FUN240-2-LH1?, MLB5342935201 MLBU607695834 -> FUN102-103?, MLB5339094649 moldura Onix -> ?, MLB5266536537 MLBU607930871 -> FUN205-206 ou MDM341-342?, MLB7586072048 -> SSS710CV?); compatibilidade de FUN975-976 e FUN240-2-LH1; 36 em revisao; 158 sem descricao; 162 titulos longos.
+- Shopee: 11 anuncios com SKU numerico (23098712818 x2 e 22494220824 x2 = par Gol/Voyage G6 2012-2016 -> FUN249-250?; 58254055500 x2 = par + moldura Gol/Voyage G6 branco -> ?; 22299450082 x2 = kit Ducato/Jumper/Boxer -> ?; 58208081527 x2 e 58204365785 = kit Palio/Siena Celebration -> ?); 16 anuncios com variacao fora da troca de categoria; 234 titulos curtos (F); 14 SKUs acima do teto (J).
+- TikTok: 13 SKUs da Shopee faltando, 38 SKUs abaixo de 6, 6 com id no lugar do SKU (I).
+
 # 55. COPIA ML PARA SHOPEE - RODADA 3 (UNIVERSAIS, FUN/MDM E SSS NOVOS)
 
 Sessao 14/10/2026. Decisoes do dono nesta rodada:
