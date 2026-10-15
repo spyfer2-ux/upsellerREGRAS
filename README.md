@@ -19,6 +19,7 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - Proximo passo: dono escolher o proximo item (F titulos curtos da Shopee, J SKUs acima do teto na Shopee) ou responder as pendencias da 57.4 e da 56.7.
 - Depois (57.5): SKU do par aplicado nos anuncios de dois lados (FUN253-254, FUN341-342, FUN100-101, FUN104-105): 8 no TikTok e 14 na Shopee. MDM343-MDM344 virou MDM343-344 em 79 anuncios (ML, Shopee, TikTok).
 - 57.6: SKUs numericos do TikTok/Shopee corrigidos (FUN249-250, SSS101FT, SSS707CV-XHB4); Ducato e par+moldura Gol G6 PAUSADOS ate o dono dar o SKU.
+- 57.8: regra policarbonato FUN100-101 / vidro FUN100-101-V. Descricoes com vidro trocadas para policarbonato no TikTok (12). ML: 4 em revisao, PENDENTE rodar update-description quando sairem.
 
 ## 0.4 Como retomar na aba do UpSeller
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
@@ -90,6 +91,15 @@ Pedido do dono: "pegue os SKU da Shopee e do ML e confira os do TikTok". Confere
 - Dono decidiu (15/10/2026): NAO converter. Deixar os 168 como estao.
 - Dono (15/10/2026): "o kit SSS716CV ja tenho em estoque, pode ativar". Ativados no TikTok os 3 kits S10 (SSS716CV): 27379422146581570 e 27379422146578318 estao active/activate; 27379422146580861 (o do teste) ficou em REVISAO do TikTok (reviewing, seller_deactivated) por causa do Atualizar; o one-update-unlist flag true responde All.Error_failed_product_status enquanto estiver em revisao. Reativar quando sair da revisao. Ativar: one-update-unlist com flag true.
 - CONCLUSAO: nao converter anuncio ativo do TikTok para Simples pelo UpSeller. Se o dono quiser a coluna preenchida, o caminho e criar anuncio novo Simples (copia) e pausar o antigo, o que precisa de decisao dele. NUNCA clicar Atualizar na tela de edicao de anuncio pausado do TikTok: reativa.
+
+## 57.8 REGRA DO DONO: lente de policarbonato e FUN100-101, lente de vidro e FUN100-101-V (15/10/2026)
+- Palavras do dono: "policarbonato FUN100-101 / vidro FUN100-101-V". Conferir titulo E descricao em todas as lojas.
+- Conferencia em 15/10/2026 (139 anuncios FUN100-101 e FUN100-101-MH8): nenhum titulo cita vidro. Descricao: ML 46 (40 policarbonato, 4 vidro, 2 sem material: ASX MLB7764678856 e MLB7764666008); Shopee 58 (todas policarbonato); TikTok 29 (13 policarbonato, 12 vidro, 4 sem material: C3 Picasso, Toro, Fiesta 2011-13, Duster).
+- Decisao do dono: opcao 1, trocar "vidro" por "policarbonato" na descricao e manter FUN100-101 (a Shopee dos mesmos produtos ja dizia policarbonato; as descricoes com vidro eram antigas).
+- TikTok: 12 corrigidos e conferidos (Fiesta 2010-12, Renegade 2016-19, Renegade 2015-19, Fluence 2011-17, Fluence 2011-18, Ranger 2012-16, Frontier 2007-18, City/Civic 2015-19, Peugeot 207, Ecosport 2013-17, Citroen C3 2010-13, Farolete Logan). Todos continuaram active/activate (a atualizacao de descricao de anuncio ATIVO nao manda para revisao). Metodo: abrir /pt/products/tiktok/edit/<id>, interceptar o XMLHttpRequest do /api/tiktok/product/add e trocar so o campo description do corpo (form), clicar Atualizar (op 2, state online). Script em localStorage __VIDROFIX e __VSTEP (fila __VQ, progresso __VDONE).
+- ML: 4 anuncios com vidro na descricao, todos EM REVISAO no ML (MLB5348100113 e MLB5348100037 Farolete Logan, "Vidro Aro Prata"; MLB7764668290 e MLB7764681114 Ranger 2012-16, "Lente lisa de vidro"). Endpoint POST /api/mercado/product/update-description (form id e description, texto puro) responde Error.Error_failed_product_status enquanto o anuncio esta em revisao. PENDENTE: rodar quando sairem da revisao (lista em localStorage __VIDRO_ML_PEND). Descricao do ML se le em GET /api/mercado/user-product/edit?id=&dataType=1 (com dataType=2 nao vem).
+- Shopee: nada a corrigir.
+- Os 6 sem material na descricao ficaram como estavam (nao foi pedido).
 
 # 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
 
