@@ -17,7 +17,7 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - 194 anuncios novos no TikTok, todos publicados (online, em revisao do TikTok): 139 completando SKUs que ja existiam + 10 SKUs novos vindos da Shopee + 45 copias desses novos.
 - Titulos curtos antigos do TikTok: NAO mexidos (decisao do dono).
 - Proximo passo: dono escolher o proximo item (F titulos curtos da Shopee, J SKUs acima do teto na Shopee) ou responder as pendencias da 57.4 e da 56.7.
-- Depois (57.5): SKU do par aplicado nos anuncios de dois lados (FUN253-254, FUN341-342, FUN100-101, FUN104-105): 8 no TikTok e 14 na Shopee.
+- Depois (57.5): SKU do par aplicado nos anuncios de dois lados (FUN253-254, FUN341-342, FUN100-101, FUN104-105): 8 no TikTok e 14 na Shopee. MDM343-MDM344 virou MDM343-344 em 79 anuncios (ML, Shopee, TikTok).
 
 ## 0.4 Como retomar na aba do UpSeller
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
@@ -64,6 +64,8 @@ Sessao 15/10/2026. Item I do diagnostico 56.1. Loja TikTok: SSS LIGHT TIKTOK, sh
 - TikTok: 8 anuncios. FUN341-342 em 3 (27379422146578022, 27379422146581367 e o rascunho 27379422213502802), FUN253-254 em 2 (27379422146579943 e o rascunho 27379422213502805), FUN100-101 em 2 (27379422146580451, 27379422146582397), FUN104-105 em 1 (27379422146582941). Os 2 rascunhos foram publicados (online/reviewing); na categoria 930696 o TikTok pede o atributo ANATEL: marcado Nao.
 - Shopee: 14 anuncios (todos NORMAL). FUN100-101 em 6, FUN104-105 em 2, FUN341-342 em 4, FUN253-254 em 2.
 - Como: POST /api/shopee/product/batch-online-sku e /api/tiktok/product/batch-online-sku (JSON, type 1, isVariantSku 1, prefixType 0, suffixType 0, idList) em 2 passos por par: oldReplaceStr FUN253 -> FUN253-254 e depois FUN254 -> FUN253-254. O oldReplaceStr aceita ancora (^FUN100$), use para nao pegar SKU maior. Em 2 da Shopee o primeiro passo nao pegou: repetir resolveu. Conferido relendo variation-list (TikTok) e /api/shopee/product/edit (Shopee). batch-online-sku NAO grava em rascunho do TikTok: rascunho so pela tela de edicao (campo SKU de cada variante).
+- Revisao 15/10/2026 (ML liberado): no Mercado Livre nao existe anuncio com variacao de lado (o User Product nao tem variacoes); o unico SKU de unitario e o FUN240 (2 anuncios), que fica como esta.
+- Mesmo padrao aplicado no formato do SKU: MDM343-MDM344 virou MDM343-344 em 79 anuncios (ML 12 ativos, Shopee 44 NORMAL, TikTok 23 ativos). Conferido relendo cada anuncio. Regra: SKU de par se escreve PREFIXO + numero-numero (FUN253-254, MDM343-344), nunca repetindo o prefixo. Nenhum outro SKU no formato PREFIXO123-PREFIXO124 nas 3 plataformas (anuncio e variacao).
 
 # 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
 
