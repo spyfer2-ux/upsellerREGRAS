@@ -1,3 +1,27 @@
+# 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
+
+Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
+
+## 0.1 Ultima sessao concluida
+- Secao 56 (15/10/2026): H titulos repetidos Shopee FEITO, C garantia ML FEITO (94/94), D compatibilidade ML FEITO (427 enviados), E categoria Shopee FEITO (586 para 102299). G promocoes o dono ja fez.
+- Tudo que comeca com MLB (Mercado Livre) esta PAUSADO por ordem do dono: nao mexer no ML ate ele liberar.
+
+## 0.2 Proximos itens possiveis (do diagnostico 56.1)
+- F: 234 titulos da Shopee com menos de 85 caracteres (alongar para 85 a 120, sem repetir dentro da loja).
+- J: 14 SKUs acima do teto de 6 anuncios por loja na Shopee (precisa decisao do dono: pausar excedentes?).
+- I: TikTok: 13 SKUs da Shopee faltando, 38 SKUs abaixo de 6, 6 com id no lugar do SKU, 116 titulos curtos, 13 em revisao.
+- Respostas do dono pendentes na 56.7 (SKUs numericos da Shopee, 16 anuncios com variacao, SKUs errados do ML).
+
+## 0.3 Em andamento agora
+- 15/10/2026: sessao retomada. Aguardando o dono escolher o proximo item (F, J, I ou responder a 56.7).
+
+## 0.4 Como retomar na aba do UpSeller
+- Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
+- Conferir sempre lendo o servidor (index/edit), nunca so o contador do script.
+- Nao navegar a aba do UpSeller do dono: abrir aba nova para scripts.
+
+---
+
 # 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
 
 Sessao 15/10/2026. O dono pediu um diagnostico completo e depois escolheu a ordem: C (garantia ML) > D (compatibilidade ML) > E (categoria Shopee). G (promocoes) o dono ja fez. H (titulos repetidos) e prioridade: nao pode existir. No meio da sessao o dono mandou PAUSAR tudo que comeca com MLB (Mercado Livre) para ver depois: os itens de ML abaixo ficaram como estavam.
