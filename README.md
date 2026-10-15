@@ -59,14 +59,14 @@ Sessao 15/10/2026. Item I do diagnostico 56.1. Loja TikTok: SSS LIGHT TIKTOK, sh
 
 ## 57.5 Regra do dono: anuncio com os dois lados usa o SKU do par (15/10/2026)
 - Palavras do dono: "FUN253-254 e o FUN253-FUN254. O padrao e FUN253-254, pode alterar os outros que achar nesse padrao."
-- Regra: anuncio com variacao de lado (Direito Passageiro / Esquerdo Motorista) cujas variantes tinham SKU de unitario (FUN253 e FUN254) passa a ter o SKU do par (FUN253-254) nas DUAS variantes. FUN240 continua como esta (ver 40.6). Mercado Livre nao foi mexido (pausado).
+- Regra: anuncio com variacao de lado (Direito Passageiro / Esquerdo Motorista) cujas variantes tinham SKU de unitario (FUN253 e FUN254) passa a ter o SKU do par (FUN253-254) nas DUAS variantes. FUN240 continua como esta (ver 40.6). Mercado Livre nao foi mexido nesta rodada (na hora estava pausado; o dono liberou o ML depois, em 15/10/2026).
 - TikTok: 8 anuncios. FUN341-342 em 3 (27379422146578022, 27379422146581367 e o rascunho 27379422213502802), FUN253-254 em 2 (27379422146579943 e o rascunho 27379422213502805), FUN100-101 em 2 (27379422146580451, 27379422146582397), FUN104-105 em 1 (27379422146582941). Os 2 rascunhos foram publicados (online/reviewing); na categoria 930696 o TikTok pede o atributo ANATEL: marcado Nao.
 - Shopee: 14 anuncios (todos NORMAL). FUN100-101 em 6, FUN104-105 em 2, FUN341-342 em 4, FUN253-254 em 2.
 - Como: POST /api/shopee/product/batch-online-sku e /api/tiktok/product/batch-online-sku (JSON, type 1, isVariantSku 1, prefixType 0, suffixType 0, idList) em 2 passos por par: oldReplaceStr FUN253 -> FUN253-254 e depois FUN254 -> FUN253-254. O oldReplaceStr aceita ancora (^FUN100$), use para nao pegar SKU maior. Em 2 da Shopee o primeiro passo nao pegou: repetir resolveu. Conferido relendo variation-list (TikTok) e /api/shopee/product/edit (Shopee). batch-online-sku NAO grava em rascunho do TikTok: rascunho so pela tela de edicao (campo SKU de cada variante).
 
 # 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
 
-Sessao 15/10/2026. O dono pediu um diagnostico completo e depois escolheu a ordem: C (garantia ML) > D (compatibilidade ML) > E (categoria Shopee). G (promocoes) o dono ja fez. H (titulos repetidos) e prioridade: nao pode existir. No meio da sessao o dono mandou PAUSAR tudo que comeca com MLB (Mercado Livre) para ver depois: os itens de ML abaixo ficaram como estavam.
+Sessao 15/10/2026. O dono pediu um diagnostico completo e depois escolheu a ordem: C (garantia ML) > D (compatibilidade ML) > E (categoria Shopee). G (promocoes) o dono ja fez. H (titulos repetidos) e prioridade: nao pode existir. No meio da sessao o dono mandou PAUSAR tudo que comeca com MLB (Mercado Livre) para ver depois: os itens de ML abaixo ficaram como estavam. ATUALIZACAO 15/10/2026: o dono suspendeu essa pausa, o ML esta liberado de novo.
 
 ## 56.1 Numeros do diagnostico (15/10/2026, antes das correcoes)
 - ML: 729 ativos (SS LIGHT 364, Isadora ML 365), 60 pausados, 36 em revisao (19 SSS126FT-MH1 bloqueados pelo ML como identicos entre si, 17 por "fotos com marca d'agua"), 432 sem compatibilidade, 158 sem descricao, 162 titulos com mais de 60 caracteres, 94 sem garantia, 7 SKUs errados (vazio ou MLBU), 10 vendas no total.
@@ -81,7 +81,7 @@ Sessao 15/10/2026. O dono pediu um diagnostico completo e depois escolheu a orde
 - O "Editar em Massa" do ML (family-product/save-batch-edit) falha nesses anuncios ("Falha na atualizacao do anuncio"). Nao usar.
 - O que funciona: POST /api/mercado/user-product/batch-warranty, JSON {"idList":[idStr...],"warrantyType":"SELLER_WARRANTY","warrantyTimeUnit":"DAY","warrantyValue":90,"isOnline":1}. Responde code 0 com chave de tarefa; e assincrono.
 - Conferir relendo o index: saleTerms (string JSON) tem que trazer "90 dias". No primeiro lote 16 de 94 nao pegaram: reenviar um por um (2 precisaram de um terceiro envio). Final: 94 de 94 com "Garantia do vendedor: 90 dias".
-- Os 7 SKUs errados ficaram PAUSADOS pelo dono (ver 56.7).
+- Os 7 SKUs errados ficaram para depois (ver 56.7); o ML esta liberado desde 15/10/2026.
 
 ## 56.4 D - Compatibilidade do ML em 432 anuncios (feito, 427 enviados)
 Endpoints (todos JSON, mesma origem app.upseller.com):
@@ -92,7 +92,7 @@ Endpoints (todos JSON, mesma origem app.upseller.com):
 - Regra usada: carro e anos vem do TITULO do anuncio (nunca inventar). Geracao do VW (G3/G4/G5/G6) limita os anos. Versao filtrada quando o titulo cita (Fiesta Supercharger, Creta Ultimate, Corolla Xrs...).
 - Conferido no site do ML: MLB7813287378 mostra "Compativel com seu veiculo" para Honda Civic 1999 1.6 Ex 4p e o titulo ganhou "Compativel com Honda Civic 1999".
 - Depois do sync o index mostra compatibilitiesState 2, mas a tag incomplete_compatibilities do ML pode demorar para sumir.
-- Ficaram de fora (precisam do dono): FUN975-976 Polo/Golf (MLB5358844539, MLB7777005760, MLB5358822873, MLB7777005544) e FUN240-2-LH1 "Fiat Universal" (MLB5358266743, MLB5357808221). Prisma foi limitado a 2012 nos titulos "Celta/Prisma 2012 a 2016". PAUSADO pelo dono.
+- Ficaram de fora (precisam do dono): FUN975-976 Polo/Golf (MLB5358844539, MLB7777005760, MLB5358822873, MLB7777005544) e FUN240-2-LH1 "Fiat Universal" (MLB5358266743, MLB5357808221). Prisma foi limitado a 2012 nos titulos "Celta/Prisma 2012 a 2016". (Estava pausado; liberado pelo dono em 15/10/2026.)
 
 ## 56.5 E - Categoria da Shopee: 602 anuncios para "Farois de Neblina" (102299)
 - Categorias Shopee: 102299 Iluminacao > Farois de Neblina (certa para farol de milha); 102297 Farois e Kit Frontal; 102295 Carroceria > Grade de Farol de Milha (so para MDM, que e grade/moldura); 102287 Grades de Para-choques; 100712 Casa e Decoracao > Bolsas de Gelo (errada).
@@ -113,7 +113,7 @@ Endpoints (todos JSON, mesma origem app.upseller.com):
 - Part Numbers repetidos nos anuncios antigos do dono (12333 em 76, 12333223 em 158, 12312223321 em 21): mantidos como estavam na troca de categoria.
 
 ## 56.7 Pendente para o dono (nao mexer sem resposta)
-- ML (PAUSADO): 7 SKUs errados (MLB7634801400 -> GRDL01?, MLB7767070474 -> SSS1306HY-XH8?, MLB7758765398 MLBU3885476516 -> FUN240-2-LH1?, MLB5342935201 MLBU607695834 -> FUN102-103?, MLB5339094649 moldura Onix -> ?, MLB5266536537 MLBU607930871 -> FUN205-206 ou MDM341-342?, MLB7586072048 -> SSS710CV?); compatibilidade de FUN975-976 e FUN240-2-LH1; 36 em revisao; 158 sem descricao; 162 titulos longos.
+- ML (pausa SUSPENSA pelo dono em 15/10/2026, o ML esta liberado): 7 SKUs errados (MLB7634801400 -> GRDL01?, MLB7767070474 -> SSS1306HY-XH8?, MLB7758765398 MLBU3885476516 -> FUN240-2-LH1?, MLB5342935201 MLBU607695834 -> FUN102-103?, MLB5339094649 moldura Onix -> ?, MLB5266536537 MLBU607930871 -> FUN205-206 ou MDM341-342?, MLB7586072048 -> SSS710CV?); compatibilidade de FUN975-976 e FUN240-2-LH1; 36 em revisao; 158 sem descricao; 162 titulos longos.
 - Shopee: 11 anuncios com SKU numerico (23098712818 x2 e 22494220824 x2 = par Gol/Voyage G6 2012-2016 -> FUN249-250?; 58254055500 x2 = par + moldura Gol/Voyage G6 branco -> ?; 22299450082 x2 = kit Ducato/Jumper/Boxer -> ?; 58208081527 x2 e 58204365785 = kit Palio/Siena Celebration -> ?); 16 anuncios com variacao fora da troca de categoria; 234 titulos curtos (F); 14 SKUs acima do teto (J).
 - TikTok: 13 SKUs da Shopee faltando, 38 SKUs abaixo de 6, 6 com id no lugar do SKU (I).
 
