@@ -84,6 +84,11 @@ Pedido do dono: "pegue os SKU da Shopee e do ML e confira os do TikTok". Confere
 - Rascunho 27379422213502799 (xenon Celta com variantes numericas) continua em rascunho, sem publicar.
 - Pausar: TikTok POST /api/tiktok/product/one-update-unlist JSON {flag:false,productId}; Shopee POST /api/shopee/product/updateUnlist FORM flag=false&ids=a,b (vira UNLIST).
 
+## 57.7 TikTok: anuncio com variantes mostra "-" na coluna SKU (15/10/2026)
+- O traco na coluna SKU do TikTok NAO e SKU vazio: e anuncio com variantes, e o SKU fica dentro de cada variante (44.6). Em 15/10/2026 sao 168 anuncios assim, todos com o mesmo SKU nas variantes (conferido pela variation-list).
+- O dono pediu para converter esses anuncios para "Simples" (perdendo a escolha de lado/cor) para o SKU aparecer na coluna. TESTE em 1 anuncio inativo (27379422146580861, S10): na tela de edicao, marcar Tipo "Simples" e clicar Atualizar responde code 0 mas NAO converte: o anuncio continua com variacao (hasVariation 1), o SKU principal fica "-1" e, pior, o anuncio foi REATIVADO no TikTok (platformActiveStatus activate). Repausado com one-update-unlist (precisou de 2 chamadas) e conferido: inactive / seller_deactivated. O TikTok nao deixa tirar as variantes de um anuncio ja publicado.
+- CONCLUSAO: nao converter anuncio ativo do TikTok para Simples pelo UpSeller. Se o dono quiser a coluna preenchida, o caminho e criar anuncio novo Simples (copia) e pausar o antigo, o que precisa de decisao dele. NUNCA clicar Atualizar na tela de edicao de anuncio pausado do TikTok: reativa.
+
 # 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
 
 Sessao 15/10/2026. O dono pediu um diagnostico completo e depois escolheu a ordem: C (garantia ML) > D (compatibilidade ML) > E (categoria Shopee). G (promocoes) o dono ja fez. H (titulos repetidos) e prioridade: nao pode existir. No meio da sessao o dono mandou PAUSAR tudo que comeca com MLB (Mercado Livre) para ver depois: os itens de ML abaixo ficaram como estavam. ATUALIZACAO 15/10/2026: o dono suspendeu essa pausa, o ML esta liberado de novo.
