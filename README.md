@@ -80,7 +80,7 @@ Pedido do dono: "pegue os SKU da Shopee e do ML e confira os do TikTok". Confere
 - PAUSADOS por duvida (regra do dono: na duvida, pausado):
   - Kit Ducato/Jumper/Boxer 2005-2012 (TikTok 27379422149688903; Shopee 27379420215329416/417, SKU 22299450082): nao existe no ML; SSS240FT e dos kits Fiat pequenos (Uno, Doblo, Punto, Idea).
   - Par farol + moldura Gol/Voyage G6 branco (TikTok 27379422149688895; Shopee 27379420215329364/365, SKU 58254055500): nenhum SKU de par com moldura no ML.
-- Ja estavam inativos e ficam assim: 3 kits S10 2017-2024 no TikTok com SSS744CV (a Shopee usa SSS716CV; o ML usa os DOIS, SSS744CV e SSS716CV, para S10 2017 a 2024). O dono precisa dizer qual e qual.
+- REGRA DO DONO (15/10/2026): S10 2017-2024 e SSS716CV. SSS744CV nao existe mais: trocado por SSS716CV em 12 anuncios do ML (SS LIGHT e Isadora ML) e nas variantes de 3 anuncios do TikTok (27379422146581570, 27379422146580861, 27379422146578318), que continuam inativos como estavam. CUIDADO: o batch-online-sku do TikTok mudou o productStatus de inactive para active no UpSeller (no TikTok seguia seller_deactivated); repausado com one-update-unlist. Depois de gravar SKU em anuncio pausado, conferir o status.
 - Rascunho 27379422213502799 (xenon Celta com variantes numericas) continua em rascunho, sem publicar.
 - Pausar: TikTok POST /api/tiktok/product/one-update-unlist JSON {flag:false,productId}; Shopee POST /api/shopee/product/updateUnlist FORM flag=false&ids=a,b (vira UNLIST).
 
