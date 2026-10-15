@@ -18,6 +18,7 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - Titulos curtos antigos do TikTok: NAO mexidos (decisao do dono).
 - Proximo passo: dono escolher o proximo item (F titulos curtos da Shopee, J SKUs acima do teto na Shopee) ou responder as pendencias da 57.4 e da 56.7.
 - Depois (57.5): SKU do par aplicado nos anuncios de dois lados (FUN253-254, FUN341-342, FUN100-101, FUN104-105): 8 no TikTok e 14 na Shopee. MDM343-MDM344 virou MDM343-344 em 79 anuncios (ML, Shopee, TikTok).
+- 57.6: SKUs numericos do TikTok/Shopee corrigidos (FUN249-250, SSS101FT, SSS707CV-XHB4); Ducato e par+moldura Gol G6 PAUSADOS ate o dono dar o SKU.
 
 ## 0.4 Como retomar na aba do UpSeller
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
@@ -67,7 +68,21 @@ Sessao 15/10/2026. Item I do diagnostico 56.1. Loja TikTok: SSS LIGHT TIKTOK, sh
 - Revisao 15/10/2026 (ML liberado): no Mercado Livre nao existe anuncio com variacao de lado (o User Product nao tem variacoes); o unico SKU de unitario e o FUN240 (2 anuncios), que fica como esta.
 - Mesmo padrao aplicado no formato do SKU: MDM343-MDM344 virou MDM343-344 em 79 anuncios (ML 12 ativos, Shopee 44 NORMAL, TikTok 23 ativos). Conferido relendo cada anuncio. Regra: SKU de par se escreve PREFIXO + numero-numero (FUN253-254, MDM343-344), nunca repetindo o prefixo. Nenhum outro SKU no formato PREFIXO123-PREFIXO124 nas 3 plataformas (anuncio e variacao).
 - LAMBANCA corrigida (15/10/2026): na Shopee o batch-online-sku com isVariantSku 1 e oldReplaceStr FUN100 (sem ancora) tambem alterou o SKU PRINCIPAL do anuncio, que era FUN100-101 e virou FUN100-101-101 (14 anuncios: FUN100-101-101 x6, FUN104-105-105 x2, FUN341-342-342 x4, FUN253-254-254 x2). Corrigido com o mesmo endpoint, isVariantSku 0 e oldReplaceStr ancorado (^FUN100-101-101$ -> FUN100-101): com isVariantSku 0 ele grava o SKU principal sem mexer nas variantes. Conferido nos 14. LICAO: oldReplaceStr SEMPRE com ^ e $, e conferir o SKU principal alem das variantes.
-- Dono avisou (15/10/2026) que o SKU do TikTok esta errado; relendo os 528 anuncios do TikTok os SKUs batem com os da Shopee. Aguardando o dono dizer qual e o problema.
+- Dono avisou (15/10/2026) que havia SKUs numericos no TikTok: resolvido na 57.6.
+
+## 57.6 SKUs numericos do TikTok e da Shopee (15/10/2026)
+Pedido do dono: "pegue os SKU da Shopee e do ML e confira os do TikTok". Conferencia: cada anuncio do TikTok foi ligado ao da Shopee pelo externalProductId (itemId da Shopee) e ao do ML pelo titulo. Dos 528 do TikTok, so 5 nao batiam.
+- Corrigidos (ML e Shopee concordam):
+  - Par Gol/Voyage G6 2012-2016 (TikTok 27379422149688901 e 27379422149689181; Shopee 27379420215329408/409/410/411): 23098712818 e 22494220824 -> FUN249-250 (o ML usa FUN249-250 nos 4 anuncios desse par).
+  - Kit Palio/Siena Celebration Fire 2008-2011 (TikTok 27379422149689175; Shopee 27379420215329222/446/447): 58208081527 e 58204365785 -> SSS101FT (o ML usa SSS101FT em "Siena Celebration 2008 A 2011").
+  - Kit Celta/Prisma 2012-2014 xenon (TikTok 27379422146587381; Shopee 27379420215329384/385): variantes 58204302622-6000k/10000k -> SSS707CV-XHB4 (o SKU principal da Shopee ja era SSS707CV-XHB4).
+  - Fiesta Rocam (TikTok 27379422146582996, estava em rectification, por isso escapou da 57.5): FUN100/FUN101 -> FUN100-101.
+- PAUSADOS por duvida (regra do dono: na duvida, pausado):
+  - Kit Ducato/Jumper/Boxer 2005-2012 (TikTok 27379422149688903; Shopee 27379420215329416/417, SKU 22299450082): nao existe no ML; SSS240FT e dos kits Fiat pequenos (Uno, Doblo, Punto, Idea).
+  - Par farol + moldura Gol/Voyage G6 branco (TikTok 27379422149688895; Shopee 27379420215329364/365, SKU 58254055500): nenhum SKU de par com moldura no ML.
+- Ja estavam inativos e ficam assim: 3 kits S10 2017-2024 no TikTok com SSS744CV (a Shopee usa SSS716CV; o ML usa os DOIS, SSS744CV e SSS716CV, para S10 2017 a 2024). O dono precisa dizer qual e qual.
+- Rascunho 27379422213502799 (xenon Celta com variantes numericas) continua em rascunho, sem publicar.
+- Pausar: TikTok POST /api/tiktok/product/one-update-unlist JSON {flag:false,productId}; Shopee POST /api/shopee/product/updateUnlist FORM flag=false&ids=a,b (vira UNLIST).
 
 # 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
 
