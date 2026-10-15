@@ -13,15 +13,22 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - Respostas do dono pendentes na 56.7 (SKUs numericos da Shopee, 16 anuncios com variacao, SKUs errados do ML).
 
 ## 0.3 Em andamento agora: I (TikTok), escolhido pelo dono em 15/10/2026
-Diagnostico relido em 15/10/2026 (loja TikTok shopId 1111840):
-- 330 anuncios: 310 ativos, 13 revisando, 7 inativos. 77 tem variacao (SKU fica na variation-list, ver 40.2).
-- 116 ativos com titulo abaixo de 85 caracteres (60 abaixo de 60).
-- 14 SKUs ativos na Shopee que NAO existem no TikTok: SSS091VW-MH3, SSS117-118, SSS414FD-LHB4, SSS069VW, SSS126FT-MH1, SSS189-190, SSS218HD, SSS713CV, SSS713CV-MH3, SSS713CV-XH3, SSS707CV-XHB4, FUN341-342, FUN253-254, 58204365785.
-- 49 SKUs com menos de 6 anuncios no TikTok (maioria com 1 ou 2).
-- 6 anuncios com numero no lugar do SKU (mesmos casos da 56.7 da Shopee, precisam do dono): 27379422146587381 (58204302622 Celta Prisma 2012-2014 xenon, variantes 6000k/10000k), 27379422149688901 e 27379422149689181 (Gol Voyage G6 par), 27379422149688895 (par + moldura Gol Voyage G6 branco), 27379422149688903 (Ducato Jumper Boxer), 27379422149689175 (Palio Siena Celebration).
-- Listagem TikTok: POST /api/tiktok/product/index?pageNum=N com corpo FORM (state online, productState active/reviewing/inactive, sortName 3, sortValue 0, vagueSearchType 0, pageSize 100). Com JSON o productState e ignorado e pageSize trava em 50. Titulo no campo itemTitle.
-- Dados do diagnostico salvos em localStorage __TT_DIAG do app.upseller.com.
-- Proximo passo: dono confirmar a meta (6 por SKU no TikTok? alongar titulos para 85+?) antes de criar ou editar anuncios.
+Decisoes do dono (15/10/2026): TikTok com 6 anuncios por SKU, igual a Shopee. Titulos curtos ja existentes do TikTok: NAO mexer agora.
+
+Diagnostico (loja TikTok SSS LIGHT TIKTOK, shopId 1111840): 330 anuncios (310 ativos, 13 revisando, 7 inativos); 77 com variacao (SKU na variation-list, ver 40.2); 116 ativos com titulo abaixo de 85; 14 SKUs da Shopee sem nenhum anuncio no TikTok; 49 SKUs com menos de 6.
+
+ETAPA 1 (EM ANDAMENTO): completar ate 6 os SKUs que JA existem no TikTok
+- 32 SKUs, 139 anuncios novos. Origem = anuncio ativo do proprio SKU no TikTok. Titulos novos = titulos da Shopee do mesmo SKU que ainda nao existem no TikTok (sem a palavra "Original"). 91 a 117 caracteres, nenhum repete.
+- Fora: SKUs numericos (esperam o dono, 56.7), SFM405-406 (fora por decisao do dono, 55.5), unitarios FUN100/101/104/105/253/254/341/342 e 58204302622 (nao tem na Shopee, sem titulos de referencia).
+- FUN104-105 so tinha 3 titulos livres (fica com 5). Teste SSS002VW: 1 copia publicada (27379422213283806), foi para revisao do TikTok.
+- Passo a passo: (a) POST /api/tiktok/product/copy JSON {"id":idStr,"shopCountVoList":[{"count":"N","shopId":"1111840"}]} -> copias em Rascunhos com o mesmo titulo da origem. FEITO para os 32 (localStorage __TTCOPIED). (b) achar os rascunhos pelo titulo da origem -> fila em localStorage __TTQ [{id,sku,title}]. FEITO, 139. (c) trocar o titulo de cada rascunho: eval(localStorage.__TTDO); __ttRun(JSON.parse(localStorage.__TTQ),2). Progresso em localStorage __TTDO_DONE (seguro repetir, pula os ok). EM ANDAMENTO. (d) publicar: POST /api/tiktok/product/batch-publish FORM ids=id,id&anyway=false; depois de ~30 s fica state online e productStatus reviewing. (e) conferir pelo index.
+- Rascunho que NAO e nosso: 27379422204555142 (Frontier, SKU MLBU2966387389). Nao publicar nem mexer.
+
+ETAPA 2 (DEPOIS): 14 SKUs que nao existem no TikTok (SSS091VW-MH3, SSS117-118, SSS414FD-LHB4, SSS069VW, SSS126FT-MH1, SSS189-190, SSS218HD, SSS713CV, SSS713CV-MH3, SSS713CV-XH3, SSS707CV-XHB4, FUN341-342, FUN253-254, 58204365785). Precisa achar o caminho de copiar da Shopee para o TikTok.
+
+Pendente do dono no TikTok: 6 anuncios com numero no lugar do SKU: 27379422146587381 (58204302622 Celta Prisma 2012-2014 xenon, variantes 6000k/10000k), 27379422149688901 e 27379422149689181 (Gol Voyage G6 par), 27379422149688895 (par + moldura Gol Voyage G6 branco), 27379422149688903 (Ducato Jumper Boxer), 27379422149689175 (Palio Siena Celebration).
+
+Tecnico TikTok: listagem POST /api/tiktok/product/index?pageNum=N com corpo FORM (state online|draft, productState active/reviewing/inactive, sortName 3, sortValue 0, vagueSearchType 0, pageSize 100). Com JSON o productState e ignorado. Ler um anuncio: GET /api/tiktok/product/edit?id=. Salvar: tela /pt/products/tiktok/edit/<id>, input do Nome (ate 500), botao Salvar -> POST /api/tiktok/product/add (form) code 0.
 
 ## 0.4 Como retomar na aba do UpSeller
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
