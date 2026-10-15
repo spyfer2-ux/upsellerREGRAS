@@ -13,13 +13,9 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - I: TikTok: FEITO em 15/10/2026 (secao 57).
 - Respostas do dono pendentes na 56.7 (SKUs numericos da Shopee, 16 anuncios com variacao, SKUs errados do ML).
 
-## 0.3 Ultimo trabalho: I (TikTok) - CONCLUIDO em 15/10/2026 (detalhes na secao 57)
-- 194 anuncios novos no TikTok, todos publicados (online, em revisao do TikTok): 139 completando SKUs que ja existiam + 10 SKUs novos vindos da Shopee + 45 copias desses novos.
-- Titulos curtos antigos do TikTok: NAO mexidos (decisao do dono).
-- Proximo passo: dono escolher o proximo item (F titulos curtos da Shopee, J SKUs acima do teto na Shopee) ou responder as pendencias da 57.4 e da 56.7.
-- Depois (57.5): SKU do par aplicado nos anuncios de dois lados (FUN253-254, FUN341-342, FUN100-101, FUN104-105): 8 no TikTok e 14 na Shopee. MDM343-MDM344 virou MDM343-344 em 79 anuncios (ML, Shopee, TikTok).
-- 57.6: SKUs numericos do TikTok/Shopee corrigidos (FUN249-250, SSS101FT, SSS707CV-XHB4); Ducato e par+moldura Gol G6 PAUSADOS ate o dono dar o SKU.
-- 57.8: regra policarbonato FUN100-101 / vidro FUN100-101-V. Descricoes com vidro trocadas para policarbonato no TikTok (12). ML: 4 em revisao, PENDENTE rodar update-description quando sairem.
+## 0.3 EM ANDAMENTO AGORA: secao 58, igualar 6 por SKU em todas as lojas (15/10/2026)
+- Ler a 58.3 para ver em que etapa parou. Decisoes do dono na 58.1, contagem e faltas na 58.2.
+- Antes disso (15/10): TikTok 6 por SKU (57), SKU do par (57.5), SKUs numericos (57.6), S10 = SSS716CV, policarbonato x vidro (57.8). ML liberado.
 
 ## 0.4 Como retomar na aba do UpSeller
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
@@ -27,6 +23,30 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - Nao navegar a aba do UpSeller do dono: abrir aba nova para scripts.
 
 ---
+
+# 58. IGUALAR: 6 ANUNCIOS POR SKU EM TODAS AS LOJAS (15/10/2026, EM ANDAMENTO)
+
+## 58.1 Decisoes do dono (15/10/2026)
+- Meta: 6 por SKU em cada loja ONDE FALTA. NAO pausar os que passam de 6.
+- Entram todos os SKUs, inclusive os que so existem no ML (SSS303NS, SSS303NS-MH8, SSS303NS-XH8, SSS726CV, SSS726CV-MH3, SSS218HD-MH3, SSS218HD-XH3, SSS130FT, SSS132FT-MH8) e os que so existem na Shopee/TikTok (FUN253-254, FUN341-342, SSS707CV-XHB4, SSS091VW-MH3).
+- SSS716CV (S10, tem estoque): REATIVAR os pausados (ML 12+12, Shopee 4+4) ate 6; nao criar novos enquanto houver pausado.
+- SSS101FT: fica pausado e NAO entra na igualada.
+- No ML, anuncio EM REVISAO conta como existente (ex.: SSS126FT-MH1 tem 1+10 e 1+9, nao criar mais).
+- Continuam fora (decisoes antigas): SFM405-406, GRDL01, GRDL08, GR97CV, GR110HD (55.5); SKUs numericos, vazios e MLBU (56.7/57.6).
+
+## 58.2 Contagem de 15/10/2026 (ativos; ML ativos + em revisao) e o que falta
+Lojas: ML SS LIGHT, ML Isadora, Shopee JhonJhon (1099666), Shopee SSS (1108318), TikTok (1111840).
+- ML (falta por loja SS LIGHT/Isadora): FUN104-105 +1/+1; FUN240 +5/+5; FUN253-254 +6/+6 (vem da Shopee); FUN341-342 +6/+6 (Shopee); FUN955-956 +2/+2; MDM371-372 +3/+3; SSS069VW +3/+3; SSS091VW-MH3 +6/+6 (Shopee); SSS1103CT +4/+4; SSS1105CT-MH8 +2/+2; SSS117-118 +5/+6; SSS130FT +5/+1; SSS132FT-MH8 +1/+5; SSS189-190 +5/+6; SSS240FT-4 +4/+4; SSS414FD-LHB4 +5/+5; SSS707CV-XHB4 +6/+6 (Shopee); SSS907RN +1/+1; SSS716CV reativar 6/6. Total ~142 novos.
+- Shopee (JhonJhon/SSS): FUN253-254 +5/+5; FUN341-342 +4/+4; SSS091VW-MH3 +5/+6; SSS707CV-XHB4 +5/+5; SSS716CV reativar 4/4 e +2/+2; do ML: SSS130FT, SSS132FT-MH8, SSS218HD-MH3, SSS218HD-XH3, SSS303NS, SSS303NS-MH8, SSS303NS-XH8, SSS726CV, SSS726CV-MH3 +6/+6 cada. Total ~151 novos.
+- TikTok: FUN249-250 +3; FUN253-254 +5; FUN341-342 +4; SSS004VW +1; SSS091VW-MH3 +5; SSS707CV-XHB4 +5; SSS716CV +2; os 9 SKUs do ML +6 cada (depois de existirem na Shopee). Total ~79 novos.
+- Ja iguais (6 nas 5 lojas): FUN100-101-MH8, FUN240-2, FUN240-2-LH1, FUN240-4, FUN975-976, SSS002VW, SSS002VW-MH8, SSS013VW, SSS014VW, SSS036VW, SSS126FT, SSS702CV, SSS702CV-MHB4, SSS707CV-MHB4, SSS710CV, SSS710CV-MHB4, SSS710CV-XHB4, SSS905RN-DLT622-MH8, SSS905RN-MH8, SSS905RN-V. Acima de 6 em alguma loja (ficam): FUN100-101, FUN249-250 (Shopee 8), MDM343-344, SSS055VW*, SSS091VW, SSS1305HY, SSS1306HY*, SSS218HD, SSS240FT, SSS303NS* (ML 10/11), SSS712CV, SSS713CV*, SSS726CV* (ML), SSS905RN-DLT622*.
+
+## 58.3 Ordem de trabalho e progresso
+1. Reativar SSS716CV: ML 6+6 e Shopee 4+4. [PENDENTE]
+2. Shopee, copias dentro da propria loja (copy-shopee-product + __DOONE): FUN253-254, FUN341-342, SSS091VW-MH3, SSS707CV-XHB4, SSS716CV +2. [PENDENTE]
+3. Shopee, 9 SKUs vindos do ML (Migracao ML > Copiar para Lojas; fluxo 55.3 + categoria 102299 + descricao 53.4 + titulos 85-120). [PENDENTE]
+4. TikTok: copias internas (57.3) e importacao dos 9 SKUs da Shopee (batch-collect + __ttFix/__ttPub). [PENDENTE]
+5. ML: copias dentro do ML (fluxo a descobrir: /api/mercado/user-product/copy; titulo ate 60, padrao 50.1) e importacao da Shopee para o ML dos 4 SKUs (FUN253-254, FUN341-342, SSS707CV-XHB4, SSS091VW-MH3) com atributos, garantia 90 dias e compatibilidade (50.1/50.6). [PENDENTE]
 
 # 57. TIKTOK: 6 ANUNCIOS POR SKU (15/10/2026)
 
