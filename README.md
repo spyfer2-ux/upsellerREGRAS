@@ -16,6 +16,7 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - 194 anuncios novos no TikTok, todos publicados (online, em revisao do TikTok): 139 completando SKUs que ja existiam + 10 SKUs novos vindos da Shopee + 45 copias desses novos.
 - Titulos curtos antigos do TikTok: NAO mexidos (decisao do dono).
 - Proximo passo: dono escolher o proximo item (F titulos curtos da Shopee, J SKUs acima do teto na Shopee) ou responder as pendencias da 57.4 e da 56.7.
+- Depois (57.5): SKU do par aplicado nos anuncios de dois lados (FUN253-254, FUN341-342, FUN100-101, FUN104-105): 8 no TikTok e 14 na Shopee.
 
 ## 0.4 Como retomar na aba do UpSeller
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
@@ -49,12 +50,19 @@ Sessao 15/10/2026. Item I do diagnostico 56.1. Loja TikTok: SSS LIGHT TIKTOK, sh
 - Arrumar esse rascunho importado: abrir /pt/products/tiktok/edit/<id>, Categoria > Usado Recentemente > "Carro e moto > Luzes do veiculo > Barras de luz e luzes de trabalho" (942344, a dos outros 305), OK no aviso, Tipo "Simples" quando vier como Variantes com 1 variante (SKU, preco e estoque continuam), botao Publicar da tela. O batch-publish NAO serve aqui (da Error.Category_empty); o Publicar da tela sobe as fotos para o TikTok. Script localStorage __TTFIX (__ttFix() e __ttPub()).
 
 ## 57.4 Pendencias do TikTok (precisam do dono)
-- 3 rascunhos importados da Shopee e NAO publicados, porque vieram com variacoes de outro SKU: 27379422213502799 (o anuncio Shopee com SKU SSS707CV-XHB4 traz variacoes 58204302622-6000k e 58204302622-10000k, Celta Prisma xenon), 27379422213502802 (FUN341-342 vem como variacoes FUN341/FUN342) e 27379422213502805 (FUN253-254 vem como FUN253/FUN254). Decidir se publica assim, corrige o SKU ou exclui.
+- 1 rascunho importado da Shopee e NAO publicado: 27379422213502799 (o anuncio Shopee com SKU SSS707CV-XHB4 traz variacoes 58204302622-6000k e 58204302622-10000k, Celta Prisma xenon). Os rascunhos de FUN341-342 e FUN253-254 foram resolvidos na 57.5.
 - SKU 58204365785 (Palio Siena Celebration) nao foi trazido: SKU numerico, ver 56.7.
 - 6 anuncios com numero no lugar do SKU: 27379422146587381 (58204302622 Celta Prisma 2012-2014 xenon, variantes 6000k/10000k), 27379422149688901 e 27379422149689181 (Gol Voyage G6 par), 27379422149688895 (par + moldura Gol Voyage G6 branco), 27379422149688903 (Ducato Jumper Boxer), 27379422149689175 (Palio Siena Celebration).
 - Fora da meta de 6: SFM405-406 (fora por decisao do dono, 55.5), unitarios FUN100, FUN101, FUN104, FUN105, FUN253, FUN254, FUN341, FUN342 (nao existem como anuncio na Shopee, sem titulos de referencia) e SSS091VW-MH3 (so 1 titulo).
 - Rascunho antigo que nao e nosso: 27379422204555142 (Frontier, SKU MLBU2966387389). Nao foi mexido.
 - 116 titulos curtos antigos do TikTok continuam como estavam (decisao do dono).
+
+## 57.5 Regra do dono: anuncio com os dois lados usa o SKU do par (15/10/2026)
+- Palavras do dono: "FUN253-254 e o FUN253-FUN254. O padrao e FUN253-254, pode alterar os outros que achar nesse padrao."
+- Regra: anuncio com variacao de lado (Direito Passageiro / Esquerdo Motorista) cujas variantes tinham SKU de unitario (FUN253 e FUN254) passa a ter o SKU do par (FUN253-254) nas DUAS variantes. FUN240 continua como esta (ver 40.6). Mercado Livre nao foi mexido (pausado).
+- TikTok: 8 anuncios. FUN341-342 em 3 (27379422146578022, 27379422146581367 e o rascunho 27379422213502802), FUN253-254 em 2 (27379422146579943 e o rascunho 27379422213502805), FUN100-101 em 2 (27379422146580451, 27379422146582397), FUN104-105 em 1 (27379422146582941). Os 2 rascunhos foram publicados (online/reviewing); na categoria 930696 o TikTok pede o atributo ANATEL: marcado Nao.
+- Shopee: 14 anuncios (todos NORMAL). FUN100-101 em 6, FUN104-105 em 2, FUN341-342 em 4, FUN253-254 em 2.
+- Como: POST /api/shopee/product/batch-online-sku e /api/tiktok/product/batch-online-sku (JSON, type 1, isVariantSku 1, prefixType 0, suffixType 0, idList) em 2 passos por par: oldReplaceStr FUN253 -> FUN253-254 e depois FUN254 -> FUN253-254. O oldReplaceStr aceita ancora (^FUN100$), use para nao pegar SKU maior. Em 2 da Shopee o primeiro passo nao pegou: repetir resolveu. Conferido relendo variation-list (TikTok) e /api/shopee/product/edit (Shopee). batch-online-sku NAO grava em rascunho do TikTok: rascunho so pela tela de edicao (campo SKU de cada variante).
 
 # 56. DIAGNOSTICO DA CONTA E CORRECOES EM MASSA (15/10/2026)
 
