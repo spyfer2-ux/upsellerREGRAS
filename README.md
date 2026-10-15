@@ -5,6 +5,7 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 ## 0.1 Ultima sessao concluida
 - Secao 56 (15/10/2026): H titulos repetidos Shopee FEITO, C garantia ML FEITO (94/94), D compatibilidade ML FEITO (427 enviados), E categoria Shopee FEITO (586 para 102299). G promocoes o dono ja fez.
 - ATUALIZADO 15/10/2026: o Mercado Livre (MLB) NAO esta mais pausado. O dono LIBEROU e esta mexendo no ML agora (duplicacao de anuncios SSS303NS-MH8/XH8, SSS726CV e SSS726CV-MH3 para SS LIGHT e Isadora ML, e correcao de titulos que violam as regras: brinde, farolete, original, Full LED em lampada LED, acima de 60 caracteres, Creta Smart/Sport). Pode trabalhar no ML seguindo as regras deste repo.
+- REGRA DO DONO (15/10/2026), vale para todas as plataformas: NA DUVIDA, SEMPRE DEIXAR PAUSADO. Anuncio com SKU, titulo, preco ou aplicacao incerta fica pausado (ou em rascunho, sem publicar) ate o dono responder.
 
 ## 0.2 Proximos itens possiveis (do diagnostico 56.1)
 - F: 234 titulos da Shopee com menos de 85 caracteres (alongar para 85 a 120, sem repetir dentro da loja).
