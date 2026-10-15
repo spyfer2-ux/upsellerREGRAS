@@ -12,8 +12,16 @@ Atualizado 15/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - I: TikTok: 13 SKUs da Shopee faltando, 38 SKUs abaixo de 6, 6 com id no lugar do SKU, 116 titulos curtos, 13 em revisao.
 - Respostas do dono pendentes na 56.7 (SKUs numericos da Shopee, 16 anuncios com variacao, SKUs errados do ML).
 
-## 0.3 Em andamento agora
-- 15/10/2026: sessao retomada. Aguardando o dono escolher o proximo item (F, J, I ou responder a 56.7).
+## 0.3 Em andamento agora: I (TikTok), escolhido pelo dono em 15/10/2026
+Diagnostico relido em 15/10/2026 (loja TikTok shopId 1111840):
+- 330 anuncios: 310 ativos, 13 revisando, 7 inativos. 77 tem variacao (SKU fica na variation-list, ver 40.2).
+- 116 ativos com titulo abaixo de 85 caracteres (60 abaixo de 60).
+- 14 SKUs ativos na Shopee que NAO existem no TikTok: SSS091VW-MH3, SSS117-118, SSS414FD-LHB4, SSS069VW, SSS126FT-MH1, SSS189-190, SSS218HD, SSS713CV, SSS713CV-MH3, SSS713CV-XH3, SSS707CV-XHB4, FUN341-342, FUN253-254, 58204365785.
+- 49 SKUs com menos de 6 anuncios no TikTok (maioria com 1 ou 2).
+- 6 anuncios com numero no lugar do SKU (mesmos casos da 56.7 da Shopee, precisam do dono): 27379422146587381 (58204302622 Celta Prisma 2012-2014 xenon, variantes 6000k/10000k), 27379422149688901 e 27379422149689181 (Gol Voyage G6 par), 27379422149688895 (par + moldura Gol Voyage G6 branco), 27379422149688903 (Ducato Jumper Boxer), 27379422149689175 (Palio Siena Celebration).
+- Listagem TikTok: POST /api/tiktok/product/index?pageNum=N com corpo FORM (state online, productState active/reviewing/inactive, sortName 3, sortValue 0, vagueSearchType 0, pageSize 100). Com JSON o productState e ignorado e pageSize trava em 50. Titulo no campo itemTitle.
+- Dados do diagnostico salvos em localStorage __TT_DIAG do app.upseller.com.
+- Proximo passo: dono confirmar a meta (6 por SKU no TikTok? alongar titulos para 85+?) antes de criar ou editar anuncios.
 
 ## 0.4 Como retomar na aba do UpSeller
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
