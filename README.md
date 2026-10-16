@@ -1,9 +1,10 @@
 # 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
 
-Atualizado 16/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
+Atualizado 16/10/2026 (tarde). Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
 
 ## 0.1 Ultima sessao concluida
 - Secao 59 (16/10/2026): pendencia 58.4 FECHADA. SSS091VW-MH3 e SSS707CV-XHB4 (so 6000K, simples) importados da Shopee para o ML por API, 6 por loja (SS LIGHT e Isadora ML), com atributos, garantia 90 dias, envio e compatibilidade. Unitarios FUN253-254 e FUN341-342 PAUSADOS na Shopee (24 UNLIST) e no TikTok (10 inativos; 2 em rectification nao aceitam pausa) porque o dono NAO vende unitario.
+- Secao 59.5 (16/10/2026): regra "nao vende unitario" aplicada ao resto do catalogo. Pausados: ML 12 (FUN240), Shopee 20 (FUN240 12, FUN100-101 com variacao de lado 6, FUN104-105 com variacao de lado 2), TikTok 9 (FUN240 5, FUN100-101 lado 3, FUN104-105 lado 1). Total pausado em 16/10 por ser unitario: ML 12, Shopee 44, TikTok 19.
 - Secao 58 (15-16/10/2026): igualar 6 por SKU em todas as lojas: FEITA (61 SKUs com 6 ou mais nas 5 lojas + os 2 SKUs da secao 59).
 - Secao 56 (15/10/2026): H titulos repetidos Shopee FEITO, C garantia ML FEITO (94/94), D compatibilidade ML FEITO (427 enviados), E categoria Shopee FEITO (586 para 102299). G promocoes o dono ja fez.
 - O Mercado Livre (MLB) esta LIBERADO desde 15/10/2026. Pode trabalhar no ML seguindo as regras deste repo.
@@ -17,7 +18,7 @@ Atualizado 16/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - 57.8: 4 anuncios do ML com "vidro" na descricao, em revisao no ML (lista em localStorage __VIDRO_ML_PEND): rodar o update-description quando sairem da revisao. 57.7: S10 27379422146580861 em revisao no TikTok, reativar quando sair.
 - Shopee: as 12 descricoes do SSS707CV-XHB4 (JhonJhon e SSS) citam a loja "Virtual Kar" e nao seguem o modelo 53.4. Regra: sem nome de loja. Trocar pela descricao nova da 59.2 (esta em localStorage __D707TXT).
 - ML: entre os 996 anuncios ativos (16/10) ha 1 titulo repetido dentro da mesma loja (995 titulos distintos). Localizar e renomear.
-- Outros unitarios que ainda existem (fora da regra de 16/10, confirmar com o dono): FUN240 (ML 2 + TikTok), FUN100/FUN101/FUN104/FUN105 no TikTok (57.4).
+- Censo de unitarios usou SKU sem par (FUN240, FUN253...) + titulo (Unitario, Avulso, Lado Direito ou Esquerdo, 1 Farol) + variacao de lado. Anuncio unitario sem nenhum desses sinais pode ter escapado: revisar quando sobrar tempo.
 
 ## 0.3 EM ANDAMENTO AGORA
 - Nada em andamento. Proximo passo: escolher com o dono um item da 0.2.
@@ -61,6 +62,14 @@ Sessao 16/10/2026. Fecha a pendencia 58.4 (os 4 SKUs que faltavam no ML).
 - Chamada de JS da ferramenta acima de ~30 s falha ("failed in the extension"): nao encadear fix + publish + espera de 10 s na mesma chamada. Dividir e guardar ids em localStorage.
 - Nenhum SSS707CV-MHB4 do ML tem compatibilidade gravada (get-vehicle null nos 12), apesar da 56.4: montar pelo catalogo.
 - Os SSS091VW (halogeno) da SS LIGHT (7 conferidos) tem compatibilidade Golf 1995 a 2005 (83 veiculos), 4 anos a mais que o titulo (1999 a 2005); os da Isadora nao tem nenhuma. Nao mexido.
+
+## 59.5 Unitarios restantes pausados nas 3 plataformas (16/10/2026)
+Palavras do dono: "pode pausar nao vendo unitario". Censo em 16/10 (ML 1062 ativos, Shopee 1201 online, TikTok 595): sinal de unitario = SKU sem par (PREFIXO+numero, ex. FUN240) OU titulo com Unitario / Avulso / Lado Direito ou Esquerdo / 1 Farol OU variacao de lado (temas "Lados", "Lado Produto", "Escolher o Lado"). Anuncio com "Par" no titulo foi tratado como par e NAO pausado.
+- ML: 12 FUN240 (6 SS LIGHT + 6 Isadora; Palio/Siena/Strada/Weekend G3 Zoiao, titulos Unitario/Avulso) -> paused. Endpoint certo: POST /api/mercado/product/one-update-unlist (form) flag=false e productId=idStr, um por chamada, efeito imediato (confirmado: 12 paused, 0 active). /api/mercado/user-product/one-update-unlist NAO existe (404).
+- Shopee: 20 -> UNLIST pelo updateUnlist (12 FUN240 a R$ 88,88; 6 FUN100-101 com variacao de lado a R$ 33 a 35: Fiesta Rocam, Toro universal, C3 Picasso universal; 2 FUN104-105 Ecosport 2008-2012 com variacao Lados a R$ 55,67). ids em localStorage __SPUNIT2_IDS.
+- TikTok: 9 -> inactive/seller_deactivated pelo one-update-unlist (5 FUN240 com tema Cor; Fiesta Rocam 27379422146582996; Ecosport 27379422146582941; C3 Picasso 27379422146582397; Toro universal 27379422146580451). ids em localStorage __TTUNIT2_IDS. Os 2 em rectification/failed (57.4) continuam sem aceitar pausa.
+- Somando com a 59.2, pausados hoje por ser unitario: ML 12, Shopee 44, TikTok 19.
+- "Par Farol Milha Auxiliar Avulso Fiesta 2011" (FUN100-101, R$ 56,37; ML 2, Shopee 2, TikTok 1): o dono confirmou em 16/10 que E PAR (vende os 2 farois sem o kit). Fica ativo.
 
 ---
 
