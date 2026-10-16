@@ -1,8 +1,9 @@
 # 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
 
-Atualizado 16/10/2026 (tarde). Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
+Atualizado 16/10/2026 (fim da tarde). Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
 
 ## 0.1 Ultima sessao concluida
+- Secao 60 (16/10/2026, tarde): os 24 modelos do menu Produtos > Modelo de Autopecas (ML) que o dono criou foram conferidos pela API. 5 corrigidos (GOLF SAPAO, CELTA 2011 A 2015, CORSA MONTANA MERIVA 2003 A 2012, STRADA 2020 A 2024, ONIX 2020) e 1 duplicado apagado (CRETA 2020 24). API dos modelos mapeada (index, detail, add, update, delete) e script __tpl salvo no localStorage. Pendencias que dependem do dono na 60.4.
 - Secao 59 (16/10/2026): pendencia 58.4 FECHADA. SSS091VW-MH3 e SSS707CV-XHB4 (so 6000K, simples) importados da Shopee para o ML por API, 6 por loja (SS LIGHT e Isadora ML), com atributos, garantia 90 dias, envio e compatibilidade. Unitarios FUN253-254 e FUN341-342 PAUSADOS na Shopee (24 UNLIST) e no TikTok (10 inativos; 2 em rectification nao aceitam pausa) porque o dono NAO vende unitario.
 - Secao 59.5 (16/10/2026): regra "nao vende unitario" aplicada ao resto do catalogo. Pausados: ML 12 (FUN240), Shopee 20 (FUN240 12, FUN100-101 com variacao de lado 6, FUN104-105 com variacao de lado 2), TikTok 9 (FUN240 5, FUN100-101 lado 3, FUN104-105 lado 1). Total pausado em 16/10 por ser unitario: ML 12, Shopee 44, TikTok 19.
 - Secao 58 (15-16/10/2026): igualar 6 por SKU em todas as lojas: FEITA (61 SKUs com 6 ou mais nas 5 lojas + os 2 SKUs da secao 59).
@@ -12,6 +13,7 @@ Atualizado 16/10/2026 (tarde). Esta secao e o ponto de retomada: se a tela do Cl
 - REGRA DO DONO (16/10/2026): NAO vende farol UNITARIO (um lado so). Anuncio unitario com escolha de lado fica pausado em todas as lojas e nao e copiado para loja nenhuma.
 
 ## 0.2 Proximos itens possiveis
+- Responder as pendencias da 60.4 (G5/G6 ano de transicao, Saveiro 2009, Parati/Saveiro no G3, Polo Sedan no POLO 03, Agile no Vectra, modelos faltando no UNiversal) e depois aplicar os modelos nos anuncios do ML marcados "Compatibilidades Incompletas" (ex.: SSS726CV-XH3 na Isadora ML): ler o detail do modelo e mandar os vehicleId no add-vehicle do anuncio (60.2).
 - F: 234 titulos da Shopee com menos de 85 caracteres (alongar para 85 a 120, sem repetir dentro da loja). Os 116 titulos curtos do TikTok ficam como estao (decisao do dono, 57.1).
 - Respostas do dono pendentes na 56.7: 7 SKUs errados do ML e 16 anuncios da Shopee com variacao fora da troca de categoria. (SKUs numericos ja resolvidos na 57.6.)
 - SSS126FT-MH1 no ML: SS LIGHT com 0 e Isadora com 1 ativo + 9 em revisao (58.4). Precisa decisao do dono.
@@ -21,13 +23,54 @@ Atualizado 16/10/2026 (tarde). Esta secao e o ponto de retomada: se a tela do Cl
 - Censo de unitarios usou SKU sem par (FUN240, FUN253...) + titulo (Unitario, Avulso, Lado Direito ou Esquerdo, 1 Farol) + variacao de lado. Anuncio unitario sem nenhum desses sinais pode ter escapado: revisar quando sobrar tempo.
 
 ## 0.3 EM ANDAMENTO AGORA
-- Nada em andamento. Proximo passo: escolher com o dono um item da 0.2.
+- Nada em andamento. Proximo passo: o dono responder a 60.4 e escolher um item da 0.2.
 
 ## 0.4 Como retomar na aba do UpSeller
+- Modelos de autopecas (ML): eval(localStorage.__TPLLIB) carrega __tpl.detail(id), __tpl.flat(detail), __tpl.summary(detail) e __tpl.update(id, nomeOuNull, fnQuemFica). Lista dos modelos em __TPL_LIST. Fluxo e endpoints na 60.2.
 - Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
 - Shopee -> ML por API: eval(localStorage.__ML091) carrega __mlEdit(id), __mlFix(id,{title}), __mlFixSimple(id,{title,description,mainImage}) e __mlPublish([fmIdStr]). Fluxo completo na 59.3.
 - Conferir sempre lendo o servidor (index/edit), nunca so o contador do script.
 - Nao navegar a aba do UpSeller do dono: abrir aba nova para scripts longos (mas chamadas curtas de fetch rodam bem na aba ativa).
+
+---
+
+# 60. MODELOS DE AUTOPECAS DO ML (MENU MODELO DE AUTOPECAS): CONFERENCIA E CORRECAO POR API (16/10/2026)
+
+Sessao 16/10/2026 (tarde). O dono criou 24 modelos de compatibilidade no menu Produtos > Modelo de Autopecas (Mercado Livre) e pediu conferencia. Depois escolheu corrigir os erros claros por API e quer que o Claude faca isso sozinho daqui em diante.
+
+## 60.1 O que e o menu Modelo de Autopecas
+- Telas: /pt/products/mercado/template/auto-parts (lista), /pt/products/mercado/auto-parts-template-create (criar) e /pt/products/mercado/auto-parts-template-edit/<id> (editar). O botao Editar da lista abre aba nova.
+- Um modelo e um nome + uma lista de veiculos do catalogo do ML (vehicleId MLB...). Serve para ser "citado" na tela de compatibilidade do anuncio (auto-parts-create/<id>, secao 50.6 passo 4) em vez de filtrar marca/modelo/ano/versao toda vez.
+- Aviso da propria tela: alterar ou excluir um modelo NAO muda os anuncios que ja usaram ele; so modelo ativo (state 1) pode ser citado.
+
+## 60.2 API dos modelos (mesma origem app.upseller.com, cookies da sessao; rodar no console ou via fetch na aba do UpSeller)
+- Listar: POST /api/mercado/product-vehicle-temple/index JSON {"pageNum":1,"pageSize":100,"siteId":"BR"} -> data[] {id, templateName, state, createTime, updateTime}. Parsear os ids grandes como string (regex "id":(\d{15,}) antes do JSON.parse).
+- Ler: POST /api/mercado/product-vehicle-temple/detail JSON {"id":"<id>"} -> data.mercadoVehicleTempleDetailList[] {brandId, brandName, modelId, modelName, yearList, versionList[] {vehicleId, versionId, versionName, engineId, engineName, yearId, yearName, position, note, otherMap}}.
+- Criar: POST /api/mercado/product-vehicle-temple/add JSON {"siteId":"BR","templateName":"...","state":1,"vehicleDetailAddVOList":[{"vehicleId":"MLB...","position":"[]","note":""}]}. A tela manda position como string JSON da lista de posicoes ("[]" quando nao tem).
+- Atualizar: POST /api/mercado/product-vehicle-temple/update JSON igual ao add mais "id":"<id>". SUBSTITUI a lista inteira (igual ao add-vehicle da 56.4): ler o detail, filtrar o que fica e reenviar tudo. Responde {"code":0}.
+- Apagar: POST /api/mercado/product-vehicle-temple/delete FORM id=<id> (responde code 0 e o modelo some do index). Ativar/desativar: POST /api/mercado/product-vehicle-temple/update-state (form).
+- Catalogo de veiculos para montar um modelo novo: os mesmos endpoints da 56.4 (product-vehicle/vehicle type 1 marcas, 2 modelos, 3 anos; product-vehicle/list -> vehicleId por versao).
+- Aplicar um modelo num anuncio por API: ler o detail do modelo e mandar os vehicleId no POST /api/mercado/product/add-vehicle do anuncio (56.4 e 59.3). Conferir com get-vehicle. A compatibilidade so existe em anuncio ATIVO.
+- Script salvo em localStorage do app.upseller.com: eval(localStorage.__TPLLIB) carrega __tpl.detail(id), __tpl.flat(detail) (lista plana com brand, model, versionName, yearName, engineName, vehicleId), __tpl.summary(detail) (veiculos por modelo e por ano) e __tpl.update(id, nomeOuNull, fnQuemFica) (le, filtra pela funcao e grava; devolve antes/depois e a lista do que saiu). Lista dos modelos em __TPL_LIST, resumo em __TPL_DET.
+- Conferencia que vale: reler o detail depois de gravar e comparar contagem e anos, nunca so o code 0.
+
+## 60.3 Conferencia dos 24 modelos (16/10/2026) e correcoes feitas
+Criterio: carro e anos do nome do modelo; regras do repo (41.1 Strada 2020+ e modelo novo, 50.4 Creta, 56.4 Prisma so ate 2012 nos Celta/Prisma, 59.4 Golf Sapao 1999 a 2005); e carroceria (versao de carroceria diferente nao entra, mesmo no mesmo ano).
+- GOLF SAPAO: tinha Golf 1995 a 1998 (Mk3, 4 veiculos). Removidos -> 79 veiculos, 1999 a 2005.
+- CELTA 2011 A 2015: tinha Prisma 2013 a 2015 (Prisma novo, base Onix, 14 veiculos). Removidos -> 50 veiculos (Celta 2011-2015 46 + Prisma 2011-2012 4).
+- CORSA MONTANA MERIVA 2003 A 2012: no Corsa Sedan entravam 8 veiculos da versao Classic 2003-2005 (carroceria antiga do Corsa). Removidos -> 148 veiculos (Meriva 2003-2012 45, Corsa Sedan 35, Corsa 42, Montana 2004-2012 26).
+- STRADA 2020 A 2024: tinha 5 veiculos 2020 da carroceria velha (Hard Working x3, Working, Aventura) e 2 lixos do catalogo do ML (C63 Touring e C63 Coupe 6.3). Removidos 7 -> 31 veiculos (versoes Resistencia, Vulcao, Freedom, Ranch, Ultra, Edizione 25, Edicao de abertura). O catalogo do ML traduz Endurance como Resistencia e Volcano como Vulcao. Freedom 2020 1.4 ficou (existe na carroceria nova).
+- ONIX 2020: tinha 2 Onix Joy 2020 (Onix antigo vendido como Joy). Removidos -> 64 veiculos, 2020 a 2024 (Full, Rs, Lt, Turbo, Ltz, Premier).
+- CRETA 2020 24 e CRETA 2020 2024 eram identicos (mesmos 54 vehicleId). Apagado o CRETA 2020 24 (criado 07/10); ficou o CRETA 2020 2024. A versao Smart FICOU: a regra 50.4 e sobre a palavra Smart no titulo (a Shopee excluiu anuncios), nao sobre compatibilidade, e o kit serve na carroceria toda.
+- Sem ressalva: S10 2016 A 2024 (125), CELTA 2006 A 2011 (Celta 2006-2011 78 + Prisma 2007-2011 18), CELTA 2007 2015 (Celta 100), G4 (Gol 2006-2014 210 + Parati 2006-2013 54), CIVIC 99 00 (10), CLASSIC 2010:2016 (10), POLO 2012 2014 (Polo 30 + Polo Sedan 28, 2012 a 2015), COROLLA 2018 2019 (12).
+
+## 60.4 Pendente para o dono (nao mexer sem resposta)
+- G5 (Gol 129, Voyage 58, Saveiro 52, todos 2009 a 2013): Saveiro 2009 (11 veiculos) e G4, a Saveiro G5 comeca em 2010. Gol/Voyage vao ate 2013, que os titulos tratam como G6. G6 (Gol 149, Voyage 71, 2012 a 2016) comeca em 2012, que os titulos tratam como G5 ("Gol G5 2008 a 2012" e "Gol/Voyage G6 2012 a 2016"): o ano de transicao esta nos dois modelos. A planilha antiga diz "GOL G5 09/13" (GRX019VW).
+- GOL G3 2003 2005 so tem Gol (104 veiculos): falta Parati e Saveiro G3? (o dono ja disse que o kit do Gol G3 serve em Gol/Parati/Saveiro G3 e vem com moldura).
+- POLO 03 so tem Polo hatch 2003 a 2006 (30): falta Polo Sedan?
+- NISSAN FRONTIER 2003 cobre 2003 a 2006 (31) e STRADA 14 A 20 cobre 2014 a 2019 (64, sem 2020): conteudo certo pelas regras, so o nome engana.
+- VECTRA 2006 2013: Vectra 2006-2012 (57), Vectra GT 2007-2012 (14), Vectra GT-X 2007-2011 (12) e Agile 2010-2014 (14). Confirmar se o kit serve no Agile.
+- PALIO (1160 veiculos, 16 modelos Fiat: Palio 2003-2017, Palio Weekend, Palio Adventure, Siena, Grand Siena, Strada 2002-2019, Punto, Idea, Stilo, Uno 2011-2021, Fiorino 2011-2021, Ducato 2004-2016, Jumper, Marea, Marea Weekend, Brava) e UNiversal (1397 veiculos, 23 modelos): ok como bloco, mas o UNiversal nao tem Fiorino, Ducato, Master, Ranger e EcoSport, que a 34.1 lista como aplicacao do GR100-101. Jumper tem buraco de anos (2006 a 2008 fora).
 
 ---
 
