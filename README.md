@@ -1,36 +1,75 @@
 # 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
 
-Atualizado 16/10/2026 (fim da tarde). Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
+Atualizado 19/10/2026 (manha). Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
 
 ## 0.1 Ultima sessao concluida
-- Secao 60 (16/10/2026, tarde): os 24 modelos do menu Produtos > Modelo de Autopecas (ML) que o dono criou foram conferidos pela API. 5 corrigidos (GOLF SAPAO, CELTA 2011 A 2015, CORSA MONTANA MERIVA 2003 A 2012, STRADA 2020 A 2024, ONIX 2020) e 1 duplicado apagado (CRETA 2020 24). API dos modelos mapeada (index, detail, add, update, delete) e script __tpl salvo no localStorage. Pendencias que dependem do dono na 60.4.
-- Secao 59 (16/10/2026): pendencia 58.4 FECHADA. SSS091VW-MH3 e SSS707CV-XHB4 (so 6000K, simples) importados da Shopee para o ML por API, 6 por loja (SS LIGHT e Isadora ML), com atributos, garantia 90 dias, envio e compatibilidade. Unitarios FUN253-254 e FUN341-342 PAUSADOS na Shopee (24 UNLIST) e no TikTok (10 inativos; 2 em rectification nao aceitam pausa) porque o dono NAO vende unitario.
-- Secao 59.5 (16/10/2026): regra "nao vende unitario" aplicada ao resto do catalogo. Pausados: ML 12 (FUN240), Shopee 20 (FUN240 12, FUN100-101 com variacao de lado 6, FUN104-105 com variacao de lado 2), TikTok 9 (FUN240 5, FUN100-101 lado 3, FUN104-105 lado 1). Total pausado em 16/10 por ser unitario: ML 12, Shopee 44, TikTok 19.
-- Secao 58 (15-16/10/2026): igualar 6 por SKU em todas as lojas: FEITA (61 SKUs com 6 ou mais nas 5 lojas + os 2 SKUs da secao 59).
-- Secao 56 (15/10/2026): H titulos repetidos Shopee FEITO, C garantia ML FEITO (94/94), D compatibilidade ML FEITO (427 enviados), E categoria Shopee FEITO (586 para 102299). G promocoes o dono ja fez.
-- O Mercado Livre (MLB) esta LIBERADO desde 15/10/2026. Pode trabalhar no ML seguindo as regras deste repo.
-- REGRA DO DONO (15/10/2026), vale para todas as plataformas: NA DUVIDA, SEMPRE DEIXAR PAUSADO. Anuncio com SKU, titulo, preco ou aplicacao incerta fica pausado (ou em rascunho, sem publicar) ate o dono responder.
-- REGRA DO DONO (16/10/2026): NAO vende farol UNITARIO (um lado so). Anuncio unitario com escolha de lado fica pausado em todas as lojas e nao e copiado para loja nenhuma.
+- Secao 61 (16 a 19/10/2026): MAGALU. Os 549 anuncios ativos da SS LIGHT (ML) tinham sido copiados para a loja SSS LIGHT MAGALU (shopId 1134187) e falhavam ("Descricao nao pode estar vazio" e "Tempo de Garantia"). Causa: o copiador nao traz descricao (200 anuncios do ML do SSS nao tem descricao), garantia, NCM, medidas, Modelo nem preco de venda. A Magalu NAO aceita 2 anuncios com o mesmo SKU ("Produto ja cadastrado com este SKU"). Decisao do dono (19/10): 1 anuncio por SKU na Magalu. Resultado: 69 SKUs publicados e ATIVOS no UpSeller (sync da Magalu confirma 69), titulos todos diferentes, descricao, garantia 3 meses (90 dias), NCM 85122011, pacote 0,85 kg 35x25x30, preco de venda = preco do ML, estoque igual ao do ML, fotos completas do ML (2 a 9). Do lado da Magalu 67 estao com subStatus BLOCKED, 1 NEW, 1 UNPUBLISHED: o motivo so aparece no Portal do Seller da Magalu (pendencia 61.6).
+- Secao 60 (16/10/2026, tarde): os 24 modelos do menu Produtos > Modelo de Autopecas (ML) conferidos pela API; 5 corrigidos e 1 duplicado apagado. Pendencias do dono na 60.4.
+- Secao 59 (16/10/2026): SSS091VW-MH3 e SSS707CV-XHB4 importados da Shopee para o ML por API; unitarios pausados em todas as lojas (dono NAO vende unitario).
+- O Mercado Livre (MLB) esta LIBERADO desde 15/10/2026.
+- REGRA DO DONO (15/10/2026), vale para todas as plataformas: NA DUVIDA, SEMPRE DEIXAR PAUSADO.
+- REGRA DO DONO (16/10/2026): NAO vende farol UNITARIO (um lado so).
+- REGRA DO DONO (19/10/2026): na Magalu e 1 anuncio por SKU (a plataforma nao aceita SKU repetido); os outros titulos do mesmo SKU ficam em rascunho no UpSeller.
 
 ## 0.2 Proximos itens possiveis
-- Responder as pendencias da 60.4 (G5/G6 ano de transicao, Saveiro 2009, Parati/Saveiro no G3, Polo Sedan no POLO 03, Agile no Vectra, modelos faltando no UNiversal) e depois aplicar os modelos nos anuncios do ML marcados "Compatibilidades Incompletas" (ex.: SSS726CV-XH3 na Isadora ML): ler o detail do modelo e mandar os vehicleId no add-vehicle do anuncio (60.2).
-- F: 234 titulos da Shopee com menos de 85 caracteres (alongar para 85 a 120, sem repetir dentro da loja). Os 116 titulos curtos do TikTok ficam como estao (decisao do dono, 57.1).
-- Respostas do dono pendentes na 56.7: 7 SKUs errados do ML e 16 anuncios da Shopee com variacao fora da troca de categoria. (SKUs numericos ja resolvidos na 57.6.)
-- SSS126FT-MH1 no ML: SS LIGHT com 0 e Isadora com 1 ativo + 9 em revisao (58.4). Precisa decisao do dono.
-- 57.8: 4 anuncios do ML com "vidro" na descricao, em revisao no ML (lista em localStorage __VIDRO_ML_PEND): rodar o update-description quando sairem da revisao. 57.7: S10 27379422146580861 em revisao no TikTok, reativar quando sair.
-- Shopee: as 12 descricoes do SSS707CV-XHB4 (JhonJhon e SSS) citam a loja "Virtual Kar" e nao seguem o modelo 53.4. Regra: sem nome de loja. Trocar pela descricao nova da 59.2 (esta em localStorage __D707TXT).
-- ML: entre os 996 anuncios ativos (16/10) ha 1 titulo repetido dentro da mesma loja (995 titulos distintos). Localizar e renomear.
-- Censo de unitarios usou SKU sem par (FUN240, FUN253...) + titulo (Unitario, Avulso, Lado Direito ou Esquerdo, 1 Farol) + variacao de lado. Anuncio unitario sem nenhum desses sinais pode ter escapado: revisar quando sobrar tempo.
+- 61.6: dono conferir no Portal do Seller da Magalu por que 67 anuncios estao BLOCKED (provavel analise/curadoria, EAN ou atributo da categoria) e se o SSS905RN-V esta duplicado la (a Magalu responde SKU_Name_Duplicate_Error ao atualizar esse anuncio; ele ficou com 1 foto).
+- 61.7: decidir o que fazer com os 480 anuncios Magalu que sobraram no UpSeller (203 rascunhos + 277 falhou): sao os outros titulos dos mesmos 69 SKUs, nao podem ir para a Magalu. Eles perderam SKU e 5 das 6 fotos entre 16 e 19/10 (nao foi o Claude; mapa id->SKU salvo em localStorage __MG_IDS e __MG_SKUMAP). Opcoes: restaurar SKU/fotos por API e deixar em rascunho, ou apagar.
+- 61.8: apagar no UpSeller os 58 registros "Excluidos pela Magalu" (sao as copias velhas dos 69 publicados; o sync criou registros novos com o id da Magalu). Precisa OK do dono (Excluir e irreversivel).
+- Responder as pendencias da 60.4 e aplicar os modelos nos anuncios do ML "Compatibilidades Incompletas".
+- F: 234 titulos da Shopee com menos de 85 caracteres (alongar para 85 a 120, sem repetir dentro da loja).
+- 56.7: 7 SKUs errados do ML e 16 anuncios da Shopee com variacao fora da troca de categoria. SSS126FT-MH1 no ML (58.4). 57.8: 4 anuncios do ML com "vidro" na descricao em revisao. Shopee: 12 descricoes do SSS707CV-XHB4 citam "Virtual Kar" (trocar pela 59.2). ML: 1 titulo repetido dentro da mesma loja (995 distintos em 996).
 
 ## 0.3 EM ANDAMENTO AGORA
-- Nada em andamento. Proximo passo: o dono responder a 60.4 e escolher um item da 0.2.
+- Nada em andamento. Proximo passo: o dono olhar a 61.6 (Portal do Seller) e decidir 61.7 e 61.8.
 
 ## 0.4 Como retomar na aba do UpSeller
-- Modelos de autopecas (ML): eval(localStorage.__TPLLIB) carrega __tpl.detail(id), __tpl.flat(detail), __tpl.summary(detail) e __tpl.update(id, nomeOuNull, fnQuemFica). Lista dos modelos em __TPL_LIST. Fluxo e endpoints na 60.2.
-- Scripts salvos em localStorage do app.upseller.com: __DOONE (titulo e Part Number Shopee: eval(localStorage.__DOONE) e __runQ(lista,2)), __EC (categoria Shopee, ecat.js), progresso em __ECAT_DONE. Sao seguros de repetir.
-- Shopee -> ML por API: eval(localStorage.__ML091) carrega __mlEdit(id), __mlFix(id,{title}), __mlFixSimple(id,{title,description,mainImage}) e __mlPublish([fmIdStr]). Fluxo completo na 59.3.
-- Conferir sempre lendo o servidor (index/edit), nunca so o contador do script.
-- Nao navegar a aba do UpSeller do dono: abrir aba nova para scripts longos (mas chamadas curtas de fetch rodam bem na aba ativa).
+- Magalu: eval(localStorage.__MGFIX) carrega __mgEdit(id), __mgBuild(d, sku, spd, sibs), __mgSave(body), __mgRun(ids, dry) e __mgStatus(). Dados: __MG_IDS (549 ids com SKU de 16/10), __MG_SKUMAP (27 que vieram sem SKU), __MG_SPDESC (descricoes da Shopee por SKU), __MG_SIBS (descricoes dos irmaos), __MG_PICKS (o anuncio escolhido por SKU), __MG_PUB (resultado da publicacao). Endpoints na 61.2.
+- Modelos de autopecas (ML): eval(localStorage.__TPLLIB). Scripts Shopee: __DOONE, __EC. Shopee -> ML por API: eval(localStorage.__ML091). Fluxos nas secoes 60.2 e 59.3.
+- Conferir sempre lendo o servidor (index/edit), nunca so o contador do script. Na Magalu, conferir depois de um Sincronizar (o sync e o que traz o estado real da Magalu).
+- Nao navegar a aba do UpSeller do dono: abrir aba nova para scripts longos. Chamada de JS acima de ~30 s derruba a extensao: lotes curtos e progresso em localStorage.
+
+---
+
+# 61. MAGALU: COPIA DO ML (SS LIGHT) PARA A LOJA SSS LIGHT MAGALU, 1 ANUNCIO POR SKU (16 a 19/10/2026)
+
+Sessao 16/10 (diagnostico e teste) e 19/10 (publicacao). Pedido do dono: "mande todos meus anuncios pra magalu sem repetir os titulos"; o copiador do UpSeller dava "Descricao nao pode estar vazio".
+
+## 61.1 Decisoes do dono
+- 16/10: descricao dos anuncios sem descricao vem da Shopee do mesmo SKU; estoque igual ao do ML; campo Modelo (obrigatorio na Magalu) = SKU; publicar com teste de 1 e depois em blocos. Ficam em rascunho os 4 anuncios cujo ML nao tem SKU e os SKUs fora (SFM405-406, GRDL08, GR97CV, GR110HD).
+- 19/10: a Magalu nao aceita 2 anuncios com o mesmo SKU. Dono escolheu 1 anuncio por SKU (a opcao de sufixo no SKU foi descartada).
+
+## 61.2 API da Magalu no UpSeller (mesma origem app.upseller.com, cookies da sessao)
+- Contagem: POST /api/magalu/product/get-product-count JSON {} -> {draft, publishing, fail, online}. POST /api/magalu/product/get-online-count JSON {"state":"online"} -> {active, deleted, inactive}.
+- Listar: POST /api/magalu/product/index FORM state=draft|fail|online[&productState=active|inactive|deleted]&sortName=5&sortValue=0&pageNum=N&pageSize=100. Campos: id/idStr, sku, title, description, mainImage (so a capa no index), price, salePrice, quantity, warrantyTime, ncm, state, productStatus, publishStatus, subStatus (estado na Magalu: NEW, DRAFT, BLOCKED, UNPUBLISHED), itemId (id do produto na Magalu, ex. 22a1b110010d9f254c546395), errMsg (JSON com msg, fica velho), sourceId "1079313|<id>" (origem ML), sourceImgUrl. Parsear ids grandes como string (regex "id":(\d{15,})).
+- Ler: GET /api/magalu/product/edit?id=<idStr> (mainImage completo com | entre as fotos).
+- Salvar/publicar: POST /api/magalu/product/add JSON com o anuncio inteiro: id, shopId "1134187", site "BR", title (ate 100), sku, description (HTML <p>/<ul>), sourceUrl "", brand "SSS LIGHT", warrantyTime 3 (meses), nbmOrigin "0", condition "NEW", ncm "85122011", taxReplacement 0, attributes (string JSON [{name,value}] com ANATEL, ANVISA e MAPA "Nao se aplica" (o UpSeller EXIGE os 3: All.Miss_required_field ANATEL), Modelo = SKU, mais os atributos que vieram do ML), hasVariation 0, price, salePrice (= price; se mandar 0 a tela mostra R$ 1,00), quantity, hasEan 0, dimensions (string JSON com package e product: 35x25x30 cm, 850 g), mainImage (urls com |), variationList null, op 1 (salvar rascunho) ou op 2 (publicar; em anuncio ja online e update na Magalu). A tela chama antes POST /api/magalu/product/check-edit-price com o mesmo corpo (so aviso).
+- Estoque: POST /api/magalu/product/batch-online-stock JSON {"type":0,"value":10,"idList":[idStr]} (= Acoes em Massa > Editar Quantidade > Atualizar para Magalu). Ativar/pausar: POST /api/magalu/product/product-state FORM id=<idStr>&state=true|false.
+- Sincronizar da Magalu: POST /api/magalu/product/sync FORM shopIds=1134187 -> chave; GET /api/check-process?uuid=<chave> ate processMsg.num >= totalNum. O sync traz o estado real (productStatus, subStatus, fotos, descricao sem quebras de linha).
+- Erros da Magalu vistos: "Produto ja cadastrado com este SKU" (SKU repetido), "SSS303NS-XH8:Not foundNot found." (update de registro que perdeu o itemId), Magalu.Listings.SKU_Name_Duplicate_Error (update do SSS905RN-V, provavel duplicado do lado da Magalu).
+
+## 61.3 Armadilhas (importante)
+- Depois de publicar (op 2) o UpSeller nem sempre grava o itemId da Magalu: em 19/10, de 68 publicados so 11 ficaram ligados; os outros 57 ficaram "online/inactive" sem itemId. O Sincronizar resolve: ele cria registros NOVOS (createSource 1, sourceId null) com o itemId da Magalu e marca os originais como "deleted" (aba Excluidos pela Magalu). Conferir sempre pelo sync e depois trabalhar nos registros novos.
+- Registro marcado deleted perde sku, quantity e dimensions; republicar ele da "Not found" e publicar outro registro com o mesmo SKU da "ja cadastrado". Nao insistir: rodar o sync.
+- Anuncio publicado com quantity 0 entra na Magalu como inactive/NEW: mandar batch-online-stock e depois product-state true (8 casos em 19/10).
+- Entre 16 e 19/10 TODOS os registros Magalu do UpSeller ficaram sem SKU e com 1 foto (sourceImgUrl continuou com as 5-6 fotos do ML). Nao foi feito pelo Claude. Por isso o script sempre manda sku e mainImage completos: fotos pelo GET /api/mercado/user-product/edit?id=<id do ML>&dataType=2 (userProductList[0].mainImage); descricao do ML pelo mesmo edit com dataType=1 (itemList[0].description, texto com quebras de linha).
+- A Magalu devolve a descricao sem quebras de linha e o sync grava isso no UpSeller: nunca reaproveitar a descricao lida do registro Magalu para reenviar; montar de novo da origem (ML, Shopee ou irmao) e converter para HTML (<p> por linha, <ul><li> para linhas com - ou •).
+- Chamada de JS acima de ~30 s derruba a extensao do Chrome (aconteceu em 16/10). Lotes curtos, loop em segundo plano com progresso em localStorage.
+- A tela de edicao do Magalu (/pt/products/magalu/edit/<id>) tem beforeunload: aba com formulario sujo nao navega mais (abrir outra aba).
+
+## 61.4 O que foi publicado (19/10/2026)
+- 69 SKUs, 1 anuncio cada, todos ativos no UpSeller e no sync (69). Escolha do anuncio por SKU: o de maior venda/visita no ML, trocado a mao em 22 SKUs por um titulo mais amplo ou sem termo ruim (Farolete, Transparente, "Auxili", "A 2022 Todos"). Lista em localStorage __MG_PICKS.
+- Descricao: 53 do proprio ML (texto -> HTML), 10 da Shopee (modelo 53.4), 4 de irmao, 1 Shopee antiga (SSS1306HY). Correcoes aplicadas em todas: "Codigo do Produto: STS744CV" -> SKU atual; "Garantia do vendedor: 30 dias" -> 90 dias (GRDL08); "loja de confianca" removido (FUN100-101).
+- Fotos: 68 com 2 a 9 fotos (do ML). SSS905RN-V ficou com 1 (SKU_Name_Duplicate_Error).
+- Fora: 4 sem SKU no ML (Creta 2020 2021 Com Drl; Moldura Onix Prisma 2016-2019 P; Celta 2007-2011 +4; Creta Modelo 2019+ Led Drl) e 6 anuncios dos SKUs SFM405-406, GRDL08, GR97CV, GR110HD.
+- SKU x titulo publicado: ver __MG_PICKS no localStorage ou a aba Ativo do Magalu no UpSeller (69 linhas).
+
+## 61.5 Regras da Magalu aprendidas
+- SKU unico por anuncio na loja. Titulo ate 100. Descricao obrigatoria (HTML simples). Garantia em meses (90 dias = 3). Modelo obrigatorio (= SKU). ANVISA/MAPA/ANATEL exigidos pelo UpSeller ("Nao se aplica"). EAN opcional ("Nao tenho agora", hasEan 0). Preco de venda <= preco original.
+- Estado do lado da Magalu vem em subStatus: NEW (recem criado), DRAFT, BLOCKED (bloqueado/em analise, motivo so no Portal do Seller), UNPUBLISHED, PUBLISHED.
+
+## 61.6 Pendente para o dono
+- Abrir o Portal do Seller da Magalu e ver o motivo de BLOCKED dos 67 (e se e so analise). Conferir se o SSS905RN-V aparece 2 vezes la.
+- Decidir 61.7 (480 anuncios extras no UpSeller) e 61.8 (apagar os 58 "Excluidos pela Magalu").
 
 ---
 
