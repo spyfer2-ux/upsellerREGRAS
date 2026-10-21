@@ -3426,3 +3426,58 @@ Terceiro: sobraram 47 SKUs de familia legada na Shopee e 507 no ML entre pausado
 Quarto: a aba do UpSeller RECARREGOU no fim desta sessao, entao os caches window.__ML,
 window.__SP e window.__LOTE9 se perderam. Precisa reconstruir antes de retomar. O trabalho
 gravado no servidor nao foi afetado.
+
+# 62. TETO DE DUPLICATAS ATUALIZADO PARA 10 POR LOJA (21/10/2026)
+
+Sessao 21/10/2026, Mercado Livre, lojas SS LIGHT e Isadora ML, pelo UpSeller.
+
+## 62.1 Regra nova do dono
+
+O teto de 6 copias por SKU na mesma loja da secao 49 passa a ser 10 copias por SKU por
+loja no Mercado Livre. O dono autorizou 10 por loja em tres rodadas seguidas nesta sessao.
+O teto de 12 anuncios do mesmo SKU na mesma loja no mesmo dia das secoes 32.8 e 35.6
+continua valendo e nao mudou. Na Shopee o teto de 6 continua, porque duplicar na mesma
+loja la conta como spam.
+
+## 62.2 Fluxo confirmado funcionando no UpSeller
+
+Produtos > User Product > buscar por SKU > Mais > Duplicar como Novo Anuncio > marcar as
+duas lojas > Numeros Duplicados 10 em cada > Confirmar > esperar 100% > Rascunho >
+selecionar todos > Editar em Massa > trocar os titulos um a um > Salvar e Publicar.
+Na tela de Editar em Massa a coluna que vale como titulo e a Nome da Familia do Anuncio.
+
+## 62.3 Lotes publicados nesta sessao
+
+| SKU | Anuncio de origem | Copias | Resultado |
+|---|---|---|---|
+| SSS313NS-MH8 | MLB5438615325 | 10 SS LIGHT + 10 Isadora ML | 20 de 20, 0 falhas |
+| SSS313NS-XH8 | MLB7860512530 | 10 SS LIGHT + 10 Isadora ML | 20 de 20, 0 falhas |
+| FUN100-101 | MLB5440019965 | 10 SS LIGHT + 10 Isadora ML | 20 de 20, 0 falhas |
+
+Todos os titulos ficaram entre 50 e 60 caracteres, sem repetir dentro da mesma loja, com
+ano de inicio e fim preservados. MH8 usou Led, XH8 usou Xenon, FUN100-101 nao levou termo
+de lampada porque o SKU nao tem sufixo M nem X.
+
+## 62.4 Versao Led do Pajero Full
+
+Do lote FUN100-101 saiu uma copia que virou a versao Led: MLB7862425028, SS LIGHT,
+titulo Par Farol Neblina Mitsubishi Pajero Full 2007 2016 Led, SKU FUN100-101-MH8.
+Na descricao as tres ocorrencias de Halogenas viraram Led. As 7 fotos antigas foram
+removidas e entraram 4 do Banco de Midias, nesta ordem: Pajero Full 2008 2013 Led.png,
+03_chicote_eletrico_, 04_botao_rele_fixacao_, led.png.
+
+Observacao do Banco de Midias: existem copias repetidas de 04_botao_rele_fixacao_ e
+03_chicote_eletrico_ e de led.png, com datas diferentes. Usar sempre a mais recente.
+Existem tambem as variantes Pajero Full 2008 2013 Halogena.png e Pajero Full 2008 2013
+Xenon.png para montar as outras versoes.
+
+## 62.5 Pendencia aberta - FUN100-101 esta em veiculos diferentes
+
+O SKU FUN100-101 estava em 51 anuncios ativos de veiculos sem relacao entre si: 21
+Mitsubishi L200, 1 Mitsubishi Pajero Full, e o resto Citroen C3, Ford EcoSport, Fiesta,
+Peugeot 207, Jeep Renegade e Honda City Civic. Depois das 20 copias desta sessao sao 71
+anuncios no mesmo SKU, 37 na SS LIGHT e 34 na Isadora ML.
+
+Isso quebra qualquer automacao por SKU, porque buscar FUN100-101 traz carro errado.
+Precisa separar por aplicacao em SKUs GRX distintos antes de duplicar mais nesse SKU.
+Decisao do dono pendente.
