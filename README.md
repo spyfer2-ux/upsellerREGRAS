@@ -1,8 +1,9 @@
 # 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
 
-Atualizado 19/10/2026 (manha). Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
+Atualizado 22/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
 
 ## 0.1 Ultima sessao concluida
+- Secao 63 (22/10/2026): REGRA DE PRECO POR LINHA DE LAMPADA. O dono definiu que a versao LED (-M<encaixe>) e o preco do kit + R$ 20,00 e a Xenon (-X<encaixe>) e o preco do kit + R$ 40,00, nas 5 lojas. Auditoria das 5 lojas por API (2.878 anuncios ativos com SKU): 63 pares SKU x loja dentro da regra (528 anuncios), 54 fora (524 anuncios) e 23 variantes sem kit base (127). As divergencias sao so 14 SKUs replicados entre lojas; tabela completa na 63.4.
 - Secao 61 (16 a 19/10/2026): MAGALU. Os 549 anuncios ativos da SS LIGHT (ML) tinham sido copiados para a loja SSS LIGHT MAGALU (shopId 1134187) e falhavam ("Descricao nao pode estar vazio" e "Tempo de Garantia"). Causa: o copiador nao traz descricao (200 anuncios do ML do SSS nao tem descricao), garantia, NCM, medidas, Modelo nem preco de venda. A Magalu NAO aceita 2 anuncios com o mesmo SKU ("Produto ja cadastrado com este SKU"). Decisao do dono (19/10): 1 anuncio por SKU na Magalu. Resultado: 69 SKUs publicados e ATIVOS no UpSeller (sync da Magalu confirma 69), titulos todos diferentes, descricao, garantia 3 meses (90 dias), NCM 85122011, pacote 0,85 kg 35x25x30, preco de venda = preco do ML, estoque igual ao do ML, fotos completas do ML (2 a 9). Do lado da Magalu 67 estao com subStatus BLOCKED, 1 NEW, 1 UNPUBLISHED: o motivo so aparece no Portal do Seller da Magalu (pendencia 61.6).
 - Secao 60 (16/10/2026, tarde): os 24 modelos do menu Produtos > Modelo de Autopecas (ML) conferidos pela API; 5 corrigidos e 1 duplicado apagado. Pendencias do dono na 60.4.
 - Secao 59 (16/10/2026): SSS091VW-MH3 e SSS707CV-XHB4 importados da Shopee para o ML por API; unitarios pausados em todas as lojas (dono NAO vende unitario).
@@ -20,7 +21,8 @@ Atualizado 19/10/2026 (manha). Esta secao e o ponto de retomada: se a tela do Cl
 - 56.7: 7 SKUs errados do ML e 16 anuncios da Shopee com variacao fora da troca de categoria. SSS126FT-MH1 no ML (58.4). 57.8: 4 anuncios do ML com "vidro" na descricao em revisao. Shopee: 12 descricoes do SSS707CV-XHB4 citam "Virtual Kar" (trocar pela 59.2). ML: 1 titulo repetido dentro da mesma loja (995 distintos em 996).
 
 ## 0.3 EM ANDAMENTO AGORA
-- Nada em andamento. Proximo passo: o dono olhar a 61.6 (Portal do Seller) e decidir 61.7 e 61.8.
+- Secao 63: aplicar os precos da tabela 63.4 nas 5 lojas (13 SKUs, 512 anuncios; o FUN100-101-MH8 fica de fora pela 63.5.3). Depois reconferir pela API relendo /index.
+- Proximo passo do dono: 61.6 (Portal do Seller), decidir 61.7 e 61.8, e responder as pendencias 63.5.1 (acrescimo da linha halogena -L) e 63.5.2 (variantes sem kit base).
 
 ## 0.4 Como retomar na aba do UpSeller
 - Magalu: eval(localStorage.__MGFIX) carrega __mgEdit(id), __mgBuild(d, sku, spd, sibs), __mgSave(body), __mgRun(ids, dry) e __mgStatus(). Dados: __MG_IDS (549 ids com SKU de 16/10), __MG_SKUMAP (27 que vieram sem SKU), __MG_SPDESC (descricoes da Shopee por SKU), __MG_SIBS (descricoes dos irmaos), __MG_PICKS (o anuncio escolhido por SKU), __MG_PUB (resultado da publicacao). Endpoints na 61.2.
@@ -3481,3 +3483,150 @@ anuncios no mesmo SKU, 37 na SS LIGHT e 34 na Isadora ML.
 Isso quebra qualquer automacao por SKU, porque buscar FUN100-101 traz carro errado.
 Precisa separar por aplicacao em SKUs GRX distintos antes de duplicar mais nesse SKU.
 Decisao do dono pendente.
+
+---
+
+# 63. REGRA DE PRECO POR LINHA DE LAMPADA - LED E XENON (22/10/2026)
+
+Regra nova do dono, vale para as 5 lojas de anuncio: SS LIGHT, Isadora ML, SSS Shopee,
+JhonJhon Parts e SSS LIGHT TIKTOK. A Magalu segue o preco do ML pela secao 61.
+
+## 63.1 A regra
+
+O preco de referencia e sempre o preco do KIT, ou seja o anuncio do SKU BASE, sem sufixo
+de lampada. As versoes com lampada saem do preco do kit mais um valor FIXO:
+
+| Linha | Sufixo do SKU | Significado | Preco de venda |
+|---|---|---|---|
+| LED | `-M<encaixe>` (MH3, MH8, MH11, MHB4...) | Super LED 6000K | preco do kit **+ R$ 20,00** |
+| XENON | `-X<encaixe>` (XH3, XH8, XHB4...) | Xenon | preco do kit **+ R$ 40,00** |
+| HALOGENA | `-L<encaixe>` (LH1, LH8, LHB4...) | Halogena | SEM regra definida (pendencia 63.5.1) |
+
+O que define o acrescimo e a LINHA (M ou X), NAO o encaixe. MH3, MH8, MH11 e MHB4 somam
+os mesmos R$ 20,00; XH3, XH8 e XHB4 somam os mesmos R$ 40,00. Encaixes validos continuam
+os da secao 3.4: H1, H3, H4, H7, H8, H11, H13, H16, H27, HB3, HB4, HB5.
+
+Formula:
+
+    preco(-M*) = preco(kit) + 20,00
+    preco(-X*) = preco(kit) + 40,00
+    preco(-X*) = preco(-M*) + 20,00
+
+O mesmo preco vale nas 5 lojas (o preco do ML e a referencia, igual a regra de copia da
+secao 62). Quando o preco do kit muda, as versoes LED e Xenon mudam no mesmo ato, nas 5
+lojas, senao a regra quebra na hora.
+
+Consequencias diretas: a versao LED NUNCA pode custar menos que o kit, e a Xenon NUNCA
+pode custar menos que a LED. Os dois casos aparecem no ar hoje (63.4) e sao erro.
+
+Exemplos conferidos no ar e CORRETOS em 22/10/2026:
+
+| Kit | Preco do kit | LED (+20) | Xenon (+40) |
+|---|---|---|---|
+| SSS726CV | 228,98 | SSS726CV-MH3 = 248,98 | SSS726CV-XH3 = 268,98 |
+| SSS218HD | 309,99 | SSS218HD-MH3 = 329,99 | SSS218HD-XH3 = 349,99 |
+| SSS303NS | 239,88 | SSS303NS-MH8 = 259,88 | SSS303NS-XH8 = 279,88 |
+| SSS313NS | 229,00 | SSS313NS-MH8 = 249,00 | SSS313NS-XH8 = 269,00 |
+| SSS405FD | 239,88 | SSS405FD-MHB4 = 259,88 | SSS405FD-XHB4 = 279,88 |
+| SSS126FT | 169,99 | SSS126FT-MH1 = 189,99 | - |
+| FUN100-101 (bloco Pajero/L200) | 139,99 | FUN100-101-MH8 = 159,99 | FUN100-101-XH8 = 179,99 |
+
+## 63.2 Como achar o preco do kit (preco base)
+
+Dentro da MESMA loja, o preco base e o preco MODAL do SKU base: o preco que aparece na
+maior parte dos anuncios daquele SKU. Isso evita que uma promocao ou um anuncio velho
+vire a referencia. Em caso de empate, vale o MAIOR preco.
+
+NUNCA usar como base um SKU que esta em veiculos diferentes (caso do FUN100-101, secao
+62.5): o SKU contaminado tem dois blocos de preco legitimos e a conta sai errada. Esses
+SKUs ficam FORA da regra automatica ate a separacao por aplicacao.
+
+So entra na conta anuncio ATIVO. Anuncio pausado nao serve de base nem e corrigido (ex.
+toda a familia SSS101FT esta pausada: kit 139,99 e SSS101FT-MH8 188,88, fora da regra,
+mas nao se mexe enquanto estiver pausado).
+## 63.3 Como auditar pela API
+
+As tres listagens, todas com `pageSize=50`. ATENCAO: o campo `pages` da resposta vem
+ZERADO; calcular `Math.ceil(total/50)` e paginar por `pageNum`.
+
+| Canal | Endpoint | Corpo (x-www-form-urlencoded) |
+|---|---|---|
+| ML | `POST /api/mercado/user-product/index` | `dataType=2&hasCatalogProduct=0&sortName=3&sortValue=0&pageNum=N&pageSize=50&productState=active&state=online` |
+| Shopee | `POST /api/shopee/product/index` | `sortName=3&sortValue=0&pageNum=N&pageSize=50&searchType=1&searchValue=&productState=NORMAL&state=online` |
+| TikTok | `POST /api/tiktok/product/index` | `sortName=3&sortValue=0&pageNum=N&pageSize=50&searchType=1&searchValue=&state=online&productState=ACTIVE` |
+
+Campos: ML e Shopee usam `itemSku` + `price` (a Shopee tambem traz `salePrice`); o TikTok
+usa `itemSku` + `price` e o titulo vem em `itemTitle`, nao em `name`.
+
+ARMADILHA NOVA: no TikTok `productState=NORMAL` e `productState=ACTIVATE` respondem
+total 0 sem dar erro. O valor certo e `ACTIVE` (omitir o campo traz 615, incluindo os
+nao ativos).
+
+Regex que separa base, linha e encaixe:
+
+    /^(.+?)-(M|X)(H(?:B)?\d+)$/
+
+O grupo 1 e o SKU base (pega tambem o `-V` de lente de vidro, ex. `GRX914RN-V-MH11` da
+base `GRX914RN-V`), o grupo 2 e a linha e o grupo 3 e o encaixe.
+
+## 63.4 Resultado da auditoria de 22/10/2026
+
+2.878 anuncios ativos com SKU nas 5 lojas (ML 1.324, Shopee 1.154, TikTok 400 - outros
+162 do TikTok estao sem SKU). Deram 140 pares SKU-variante por loja:
+
+| Situacao | Pares SKU x loja | Anuncios |
+|---|---|---|
+| Dentro da regra (+20 / +40) | 63 | 528 |
+| Fora da regra | 54 | 524 |
+| Variante no ar sem o kit base na mesma loja | 23 | 127 |
+
+Divergencias por loja: SS LIGHT 12 pares / 70 anuncios, Isadora ML 6 / 36,
+JhonJhon Parts 13 / 149, SSS Shopee 13 / 149, SSS LIGHT TIKTOK 10 / 120.
+
+Sao apenas 14 SKUs, replicados pela copia entre as lojas:
+
+| SKU | Kit | Preco do kit | No ar | Certo pela regra | Lojas |
+|---|---|---|---|---|---|
+| SSS091VW-MH3 | SSS091VW | 282,00 | 299,88 | 302,00 | 5 |
+| SSS1306HY-MH8 | SSS1306HY | 887,00 | 909,88 | 907,00 | 5 |
+| SSS1306HY-XH8 | SSS1306HY | 887,00 | 939,88 | 927,00 | 5 |
+| SSS057VW-MH3 | SSS057VW | 279,88 | 309,00 | 299,88 | 4 |
+| SSS057VW-XH3 | SSS057VW | 279,88 | 309,88 | 319,88 | 4 |
+| SSS905RN-MH8 | SSS905RN | 168,88 | 167,63 | 188,88 | 4 |
+| SSS002VW-MH8 | SSS002VW | 229,99 | 228,88 | 249,99 | 4 |
+| SSS710CV-MHB4 | SSS710CV | 185,99 | 179,99 | 205,99 | 4 |
+| SSS710CV-XHB4 | SSS710CV | 185,99 | 198,88 | 225,99 | 4 |
+| SSS905RN-DLT622-MH8 | SSS905RN-DLT622 | 819,88 | 849,88 | 839,88 | 4 |
+| SSS905RN-DLT622-XH8 | SSS905RN-DLT622 | 819,88 | 839,88 | 859,88 | 4 |
+| SSS702CV-MHB4 | SSS702CV | 158,88 | 148,88 | 178,88 | 3 |
+| SSS013VW-MH3 | SSS013VW | 149,99 | 181,91 | 169,99 | 2 (JhonJhon e SSS Shopee) |
+| FUN100-101-MH8 | FUN100-101 | contaminado | 88,88 | NAO CALCULAR | 2 (ver 63.5.3) |
+
+Os piores: SSS710CV-MHB4, SSS702CV-MHB4 e SSS905RN-MH8 estao com a versao LED MAIS
+BARATA que o proprio kit. O SSS710CV-XHB4 (Xenon) esta 198,88 contra 179,99 da versao
+LED, ou seja R$ 18,89 de diferenca onde devia ser R$ 20,00 acima do LED e R$ 40,00
+acima do kit.
+
+A mesma variante tambem esta com preco diferente ENTRE lojas em alguns SKUs, por causa de
+correcoes feitas em uma loja e nao na outra: o SSS057VW-MH3 esta 309,00 na SS LIGHT e
+299,88 na Isadora ML; o SSS905RN-DLT622-MH8 esta 849,88 na SS LIGHT e 839,88 na Isadora
+ML; o SSS002VW-MH8 esta 228,88 na SS LIGHT e 249,99 na Isadora ML. Pela regra das 5 lojas
+com preco igual, os dois lados tem de ficar no valor da formula.
+
+## 63.5 Pendencias desta secao
+
+- 63.5.1 Linha HALOGENA (`-L<encaixe>`): o dono ainda nao definiu o acrescimo. Hoje no ar
+  o FUN240-2-LH1 esta 78,88 contra 88,88 do kit FUN240-2, ou seja R$ 10,00 ABAIXO do kit.
+  Pela regra da loja nova, kit com halogena de brinde nem leva o sufixo -L, entao o
+  provavel e aposentar o -L em vez de criar acrescimo. Decisao do dono pendente.
+- 63.5.2 As 23 variantes M/X no ar sem o kit base na mesma loja (127 anuncios) nao tem
+  como ser conferidas pela regra: ou sobe o kit base, ou o preco e tratado a mao. Sao,
+  entre outras: SSS044VW-MH3, SSS089VW-MH11, SSS1105CT-MH8, SSS130FT-MH11,
+  SSS707CV-MHB4, SSS707CV-XHB4.
+- 63.5.3 FUN100-101 fica FORA da regra automatica. Em 22/10/2026 o SKU tem 2 blocos de
+  preco legitimos: R$ 139,99 (42 anuncios - 21 Mitsubishi Pajero Full e 21 Mitsubishi
+  L200) e R$ 54,99 a 75,59 (27 anuncios de Citroen C3, Ford EcoSport, Fiesta, Peugeot
+  207, Jeep Renegade, Honda Civic, Nissan Versa e Frontier). O bloco de 139,99 obedece a
+  regra (MH8 = 159,99 e XH8 = 179,99); na SSS Shopee e na JhonJhon o modal do kit cai
+  para 54,99 e a conta manda baixar o MH8 de 88,88 para 74,99, o que esta errado.
+  Resolver primeiro a 62.5.
