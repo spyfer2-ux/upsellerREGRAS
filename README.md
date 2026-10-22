@@ -3630,3 +3630,62 @@ com preco igual, os dois lados tem de ficar no valor da formula.
   regra (MH8 = 159,99 e XH8 = 179,99); na SSS Shopee e na JhonJhon o modal do kit cai
   para 54,99 e a conta manda baixar o MH8 de 88,88 para 74,99, o que esta errado.
   Resolver primeiro a 62.5.
+
+## 63.6 Aplicacao da regra +20/+40 nas 5 lojas (22/10/2026)
+
+Auditoria refeita por API: 3.114 anuncios ativos (ML 1.345, Shopee 1.154, TikTok 615).
+Plano: 13 SKUs, 517 anuncios fora da regra. Os precos-alvo bateram com os aprovados.
+
+### Resultado
+| | Planejado | Aplicado | Parado |
+| --- | --- | --- | --- |
+| Mercado Livre (SS LIGHT + Isadora ML) | 104 | 104 | 0 |
+| TikTok (SSS LIGHT TIKTOK) | 125 | 120 | 5 (em revisao) |
+| Shopee (SSS Shopee + JhonJhon Parts) | 288 | 29 | 259 (promocao ativa) |
+| TOTAL | 517 | 253 | 264 |
+
+Precos aplicados (kit + 20 no -M, kit + 40 no -X):
+SSS1306HY-MH8 907,00 | SSS1306HY-XH8 927,00 | SSS057VW-MH3 299,88 | SSS057VW-XH3 319,88 |
+SSS905RN-DLT622-MH8 839,88 | SSS905RN-DLT622-XH8 859,88 | SSS091VW-MH3 302,00 |
+SSS002VW-MH8 249,99 | SSS710CV-MHB4 205,99 | SSS710CV-XHB4 225,99 |
+SSS905RN-MH8 188,88 | SSS702CV-MHB4 178,88 | SSS013VW-MH3 169,99
+
+### Leitura de precos (TODAS x-www-form-urlencoded; em JSON o servidor devolve o filtro velho)
+- ML: POST /api/mercado/user-product/index
+  form {dataType:2, hasCatalogProduct:0, state:"online", productState:"active", sortName:3, sortValue:0, pageNum, pageSize:300}
+  busca por SKU: searchType:5, searchValue:<sku>, vagueSearchType:0
+- Shopee: POST /api/shopee/product/index
+  form {productState:"NORMAL", state:"online", sortName:3, sortValue:0, pageNum, pageSize:300}
+  busca por SKU: searchType:4, searchValue:<sku>, vagueSearchType:0
+- TikTok: POST /api/tiktok/product/index
+  form {state:"online", sortName:3, sortValue:0, pageNum, pageSize:300}
+  busca por SKU: searchType:1, searchValue:<sku>, vagueSearchType:0
+- Totais por estado do ML: POST /api/mercado/user-product/get-online-count {}
+
+### Gravacao de preco (JSON, UM anuncio por chamada)
+- ML: POST /api/mercado/product/edit-online-price
+  {type:0, idList:["<idStr>"], value:<preco>, mshopValue:<preco>}
+- Shopee: POST /api/shopee/product/edit-online-price
+  {productId:"<idStr>", price:<preco>}
+- TikTok: POST /api/tiktok/product/online-edit-price
+  {productId:"<idStr>", variantPriceList:[{variantId:"<variacao>", price:<preco>}]}
+  o <variacao> vem de GET /api/tiktok/product/edit (parametro id=<idStr>) -> data.variationList[0].idStr
+
+### Armadilhas confirmadas nesta rodada
+1. code 0 NAO garante gravacao. Conferir sempre relendo o index depois.
+2. ML: idList com varios ids responde code 0 e grava SO O PRIMEIRO. Um id por chamada.
+3. Shopee: anuncio com promocao ativa (isPromotion) devolve
+   "[Shopee] Update price failed, please try later." e nao grava.
+   986 dos 1.154 ativos estao em promocao. O preco base so muda tirando a promocao antes.
+4. TikTok: anuncio em revisao devolve Error.Error_failed_product_status. Refazer depois de aprovado.
+5. A tela pede "Sincronizar & Editar" antes de editar, mas pela API o sync (sync-price-id /
+   sync-id) nao foi necessario: gravou igual sem ele.
+6. /api/mercado/user-product/index sem dataType:2 devolve os RASCUNHOS, nao os ativos.
+
+### 63.6.1 Pendente para o dono
+- 259 anuncios da Shopee presos em promocao. Tirar a promocao muda o que o cliente paga hoje
+  (ex.: SSS1306HY-MH8 esta 909,88 de base com 727,90 na promocao), entao precisa da sua decisao:
+  tirar a promocao, corrigir a base e recriar a promocao, ou deixar como esta.
+- 5 anuncios do TikTok em revisao: refazer quando sairem da revisao.
+- Continuam de fora: FUN100-101-MH8 (SKU em veiculos diferentes, 63.5.3) e SSS101FT-MH8
+  (familia toda pausada).
