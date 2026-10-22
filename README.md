@@ -3683,10 +3683,10 @@ SSS905RN-MH8 188,88 | SSS702CV-MHB4 178,88 | SSS013VW-MH3 169,99
    sync-id) nao foi necessario: gravou igual sem ele.
 6. /api/mercado/user-product/index sem dataType:2 devolve os RASCUNHOS, nao os ativos.
 
-### 63.6.1 Pendente para o dono
-- 259 anuncios da Shopee presos em promocao. Tirar a promocao muda o que o cliente paga hoje
-  (ex.: SSS1306HY-MH8 esta 909,88 de base com 727,90 na promocao), entao precisa da sua decisao:
-  tirar a promocao, corrigir a base e recriar a promocao, ou deixar como esta.
-- 5 anuncios do TikTok em revisao: refazer quando sairem da revisao.
+### 63.6.1 Decisoes do dono (22/10/2026)
+- Shopee: os 259 anuncios presos em promocao FICAM COMO ESTAO. O dono decidiu em 22/10/2026 nao
+  tirar a promocao para corrigir o preco base (ex.: o SSS1306HY-MH8 segue com base 909,88 e
+  727,90 na promocao). Assunto fechado, nao reabrir.
+- TikTok: os 5 anuncios em revisao estao sob controle do dono. Nao refazer por conta propria.
 - Continuam de fora: FUN100-101-MH8 (SKU em veiculos diferentes, 63.5.3) e SSS101FT-MH8
   (familia toda pausada).
