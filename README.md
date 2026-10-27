@@ -1,8 +1,9 @@
 # 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
 
-Atualizado 22/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
+Atualizado 27/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
 
 ## 0.1 Ultima sessao concluida
+- Secao 64 (27/10/2026): REPLICA DO SSS743CV nas 5 lojas com a skill replica-de-anuncio (SEO + 10 titulos por plataforma). REGRA NOVA DO DONO: titulo comeca com Kit e a palavra Par nao entra mais (64.1). ML 10+10 ativos; Shopee 4+4 (a Shopee barrou o 5o por anuncio identico, 64.3); TikTok 10 publicados (2 aprovados, 7 em revisao, 1 reprovado por categoria).
 - Secao 63.6 (22/10/2026): REGRA +20/+40 APLICADA nas 5 lojas. 253 dos 517 anuncios corrigidos (ML 104/104, TikTok 120/125, Shopee 29/288). Os 259 da Shopee ficam em promocao por decisao do dono e os 5 do TikTok estao sob controle dele: assunto fechado (63.6.1). Endpoints de leitura e gravacao de preco das 3 plataformas documentados na 63.6.
 - Secao 63 (22/10/2026): REGRA DE PRECO POR LINHA DE LAMPADA. O dono definiu que a versao LED (-M<encaixe>) e o preco do kit + R$ 20,00 e a Xenon (-X<encaixe>) e o preco do kit + R$ 40,00, nas 5 lojas. Auditoria das 5 lojas por API (2.878 anuncios ativos com SKU): 63 pares SKU x loja dentro da regra (528 anuncios), 54 fora (524 anuncios) e 23 variantes sem kit base (127). As divergencias sao so 14 SKUs replicados entre lojas; tabela completa na 63.4.
 - Secao 61 (16 a 19/10/2026): MAGALU. Os 549 anuncios ativos da SS LIGHT (ML) tinham sido copiados para a loja SSS LIGHT MAGALU (shopId 1134187) e falhavam ("Descricao nao pode estar vazio" e "Tempo de Garantia"). Causa: o copiador nao traz descricao (200 anuncios do ML do SSS nao tem descricao), garantia, NCM, medidas, Modelo nem preco de venda. A Magalu NAO aceita 2 anuncios com o mesmo SKU ("Produto ja cadastrado com este SKU"). Decisao do dono (19/10): 1 anuncio por SKU na Magalu. Resultado: 69 SKUs publicados e ATIVOS no UpSeller (sync da Magalu confirma 69), titulos todos diferentes, descricao, garantia 3 meses (90 dias), NCM 85122011, pacote 0,85 kg 35x25x30, preco de venda = preco do ML, estoque igual ao do ML, fotos completas do ML (2 a 9). Do lado da Magalu 67 estao com subStatus BLOCKED, 1 NEW, 1 UNPUBLISHED: o motivo so aparece no Portal do Seller da Magalu (pendencia 61.6).
@@ -14,6 +15,7 @@ Atualizado 22/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - REGRA DO DONO (19/10/2026): na Magalu e 1 anuncio por SKU (a plataforma nao aceita SKU repetido); os outros titulos do mesmo SKU ficam em rascunho no UpSeller.
 
 ## 0.2 Proximos itens possiveis
+- 64.3: dono decidir (a) os 11 rascunhos da Shopee do SSS743CV barrados por duplicidade, (b) o TikTok reprovado por categoria, (c) se a loja ISA TIK TOK entra na lista das 5, (d) compatibilidades dos 20 anuncios do ML.
 - 61.6: dono conferir no Portal do Seller da Magalu por que 67 anuncios estao BLOCKED (provavel analise/curadoria, EAN ou atributo da categoria) e se o SSS905RN-V esta duplicado la (a Magalu responde SKU_Name_Duplicate_Error ao atualizar esse anuncio; ele ficou com 1 foto).
 - 61.7: decidir o que fazer com os 480 anuncios Magalu que sobraram no UpSeller (203 rascunhos + 277 falhou): sao os outros titulos dos mesmos 69 SKUs, nao podem ir para a Magalu. Eles perderam SKU e 5 das 6 fotos entre 16 e 19/10 (nao foi o Claude; mapa id->SKU salvo em localStorage __MG_IDS e __MG_SKUMAP). Opcoes: restaurar SKU/fotos por API e deixar em rascunho, ou apagar.
 - 61.8: apagar no UpSeller os 58 registros "Excluidos pela Magalu" (sao as copias velhas dos 69 publicados; o sync criou registros novos com o id da Magalu). Precisa OK do dono (Excluir e irreversivel).
@@ -3690,3 +3692,34 @@ SSS905RN-MH8 188,88 | SSS702CV-MHB4 178,88 | SSS013VW-MH3 169,99
 - TikTok: os 5 anuncios em revisao estao sob controle do dono. Nao refazer por conta propria.
 - Continuam de fora: FUN100-101-MH8 (SKU em veiculos diferentes, 63.5.3) e SSS101FT-MH8
   (familia toda pausada).
+
+# 64. REPLICA DO SSS743CV NAS 5 LOJAS, REGRA KIT-ONLY NO TITULO E LIMITES DA SHOPEE E DO TIKTOK (27/10/2026)
+
+## 64.1 REGRA NOVA DO DONO (27/10/2026) - TITULO COMECA COM KIT, NUNCA PAR
+- Todo titulo comeca com "Kit". A palavra "Par" NAO entra no titulo em lugar nenhum (nem no inicio, nem no meio).
+- "Kit" so na primeira palavra; nunca repetir "Kit" no meio do titulo.
+- Substitui a lista antiga de tipos (Par Farol / Par Farois / Par Milha / Par Neblina / Par Farol De) usada nas secoes 32.10 e 62.
+- Grafia: "Hatch" (o rascunho original do SSS743CV veio com "Hacht"; corrigido nos 10 titulos).
+
+## 64.2 SKILL replica-de-anuncio (SEO antes do titulo)
+- 6 consultas no autocomplete do Google, UMA POR VEZ (rate limit), + pagina de concorrentes do ML (lista.mercadolivre.com.br).
+- Termos prioridade 1 do Corsa (autocomplete E concorrentes): classic, wind, hatch, pick up, kit, neblina, auxiliar, 2000, original.
+- Termos que o concorrente usa e o catalogo NAO confirma, deixados de fora: Wagon, Maxx, Montana, GLS, GSI, Led (SKU sem sufixo M).
+- Validador roda antes de aplicar: faixa (ML 50-60, Shopee/TikTok 91-120), zero repeticao por loja, anos 2000 e 2010 preservados, nenhum "Par", todos comecam com "Kit".
+
+## 64.3 RESULTADO DA REPLICA (SKU SSS743CV, Kit Farol Milha Corsa 2000 a 2010 Classic Hatch Pick Up Wind, R$ 149,00, estoque 50)
+- Base: o item era RASCUNHO na SS LIGHT. Rascunho nao tem "Duplicar como Novo Anuncio": corrigido o titulo (Editar em Massa), publicado (MLB7895187624) e duplicado a partir do Ativo (9 SS LIGHT + 10 Isadora ML).
+- ML: 10 SS LIGHT + 10 Isadora ML ativos, titulos 50-60, zero repeticao por loja. Os 20 estao com "Compatibilidades Incompletas" (pendencia: preencher por ano, regra da secao 50).
+- Shopee: 4 SSS Shopee + 4 JhonJhon Parts ativos, titulos 91-120. O 5o da SSS Shopee foi BARRADO PELA SHOPEE: product.error_busi "Marketplace detectou que esta loja ja publicou um anuncio identico". Decisao: nao forcar (driblar mudando descricao/foto conta como spam). 11 rascunhos ficaram parados (5 SSS Shopee + 6 JhonJhon), 1 em Falhou (SSS Shopee). Dono decide.
+- Erro transitorio "Erro de API de imagem, reapresentar mais tarde" (fotos em http2.mlstatic.com) em 1 publicacao da Shopee: Falhou > Mais > Publicar resolveu.
+- TikTok (SSS LIGHT TIKTOK): 10 publicados com a categoria Carro e moto > Luzes do veiculo > Barras de luz e luzes de trabalho (veio certa da migracao do ML). Revisao do TikTok: 2 Sucesso, 7 Revisando, 1 Falha na Revisao ("Incorrect Product Category", mesma categoria dos aprovados). Dono decide se refaz em outra categoria.
+- A loja "ISA TIK TOK" aparece no UpSeller e NAO esta na lista das 5 lojas da regra permanente; nao foi usada. Dono decide se entra.
+- Magalu fora, como manda a regra (processo separado, 1 por SKU).
+
+## 64.4 MECANICA QUE FUNCIONOU (UpSeller, 27/10/2026)
+- Migracao ML -> Shopee/TikTok: Produtos > Ferramentas > Migracao de Anuncios > Migrar de Mercado Libre > User Product > busca SKU "Busca exata" > marcar SO as 10 linhas de UMA loja (as da outra loja repetem titulo) > Copiar para Lojas (clicar no NOME da loja) > Confirmar. 30/30 em ~20 s.
+- Shopee, rascunho por rascunho (Editar em Massa continua com o bug de "Campo obrigatorio em falta"): Selecionar Categoria > buscar "neblina" > Farois de Neblina; Numero da Peca = SKU; Mais Atributos > "Contem bluetooth..." = No; Marca = "Sem marca" ESCOLHIDA NA LISTA; Envio: peso 0.85, tamanho 35/25/30, marcar Shopee Xpress e CONFERIR POR ZOOM (o primeiro clique depois de digitar as medidas as vezes nao registra); titulo longo; Publicar > Fechar. 3 chamadas por rascunho.
+- TikTok, rascunho por rascunho: categoria ja vinha certa; Informacoes de Venda > Tipo = Simples (o radio aceita click() por JS); quantidade ja vinha 50; Envio: peso 0.85, Largura 25 / Comprimento 35 / Altura 30 (obrigatorios, vinham vazios); titulo longo; Publicar > Fechar.
+- O "Editar" clicado por JS abre o editor NA MESMA ABA (nao em aba nova) e, depois de Publicar > Fechar, volta sozinho para a lista de rascunhos.
+- Armadilha de seletor: regex /^Tipo/ pega "Tipo de iluminacao" (atributo oculto) antes de "Tipo" (Informacoes de Venda). Comparar a primeira linha inteira do form-item, nao prefixo.
+- browser_batch cai ("failed in the extension") sempre que a pagina navega no meio do lote: o click do Editar vai sozinho, o resto em lote separado.
