@@ -1,8 +1,10 @@
 # 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
 
-Atualizado 27/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
+Atualizado 02/11/2026. Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
 
 ## 0.1 Ultima sessao concluida
+- Secao 66 (02/11/2026): FECHAMENTO MENSAL de outubro/2026 com custo por produto (368 pedidos, 386 un, R$ 79.362,51). Depois o dono cadastrou 17 custos novos: UpSeller com 37/44 custos e fechamento refeito (custo R$ 26.066,72, margem R$ 51.687,62; so SSS240FT e SSS013VW sem custo) - 66.3. APIs de vendas/saidas/armazem na 66.1.
+- Secao 65 (02/11/2026): CUSTO DOS PRODUTOS DO SHOPPING DE PRECOS exportado para o UpSeller. O "R$ Valor Custo" do Resumo Financeiro e o campo Custo de Meus Produtos; 2.276 produtos extraidos por API (lista_produto_interno), conferidos por checksum e gravados em shopping-de-precos/custos_shopping_de_precos_2026-11-02.xlsx (aba SKU_Custo para importar no UpSeller) e .csv. Pendente: dono importar no UpSeller pelo outro navegador (65.4).
 - Secao 64 (27/10/2026): REPLICA DO SSS743CV nas 5 lojas com a skill replica-de-anuncio (SEO + 10 titulos por plataforma). REGRA NOVA DO DONO: titulo comeca com Kit e a palavra Par nao entra mais (64.1). ML 10+10 ativos; Shopee 4+4 (a Shopee barrou o 5o por anuncio identico, 64.3); TikTok 10 na SSS LIGHT TIKTOK (7 aprovados, 3 reprovados por categoria) + 10 na ISA TIK TOK (3 aprovados, 7 em revisao); ISA TIK TOK confirmada como loja do dono: 6 lojas.
 - Secao 63.6 (22/10/2026): REGRA +20/+40 APLICADA nas 5 lojas. 253 dos 517 anuncios corrigidos (ML 104/104, TikTok 120/125, Shopee 29/288). Os 259 da Shopee ficam em promocao por decisao do dono e os 5 do TikTok estao sob controle dele: assunto fechado (63.6.1). Endpoints de leitura e gravacao de preco das 3 plataformas documentados na 63.6.
 - Secao 63 (22/10/2026): REGRA DE PRECO POR LINHA DE LAMPADA. O dono definiu que a versao LED (-M<encaixe>) e o preco do kit + R$ 20,00 e a Xenon (-X<encaixe>) e o preco do kit + R$ 40,00, nas 5 lojas. Auditoria das 5 lojas por API (2.878 anuncios ativos com SKU): 63 pares SKU x loja dentro da regra (528 anuncios), 54 fora (524 anuncios) e 23 variantes sem kit base (127). As divergencias sao so 14 SKUs replicados entre lojas; tabela completa na 63.4.
@@ -24,6 +26,7 @@ Atualizado 27/10/2026. Esta secao e o ponto de retomada: se a tela do Claude fec
 - 56.7: 7 SKUs errados do ML e 16 anuncios da Shopee com variacao fora da troca de categoria. SSS126FT-MH1 no ML (58.4). 57.8: 4 anuncios do ML com "vidro" na descricao em revisao. Shopee: 12 descricoes do SSS707CV-XHB4 citam "Virtual Kar" (trocar pela 59.2). ML: 1 titulo repetido dentro da mesma loja (995 distintos em 996).
 
 ## 0.3 EM ANDAMENTO AGORA
+- Secao 66.4: 38 de 44 produtos do armazem com custo; faltam 6 (MDM343-MDM344, MDM344-MDM344, SSS1105CT, SSS204HD, SSS313NS, SSS723CV) - esperando o dono cadastrar no Shopping de Precos ou aprovar os equivalentes. Fechamento de outubro fechado com 100% das unidades custeadas e com as comissoes das plataformas (66.5: Relatorios de Lucros > Lucros por Pedido, API /api/profit-report/page).
 - Secao 63: aplicar os precos da tabela 63.4 nas 5 lojas (13 SKUs, 512 anuncios; o FUN100-101-MH8 fica de fora pela 63.5.3). Depois reconferir pela API relendo /index.
 - Proximo passo do dono: 61.6 (Portal do Seller), decidir 61.7 e 61.8, e responder as pendencias 63.5.1 (acrescimo da linha halogena -L) e 63.5.2 (variantes sem kit base).
 
@@ -3724,3 +3727,70 @@ SSS905RN-MH8 188,88 | SSS702CV-MHB4 178,88 | SSS013VW-MH3 169,99
 - O "Editar" clicado por JS abre o editor NA MESMA ABA (nao em aba nova) e, depois de Publicar > Fechar, volta sozinho para a lista de rascunhos.
 - Armadilha de seletor: regex /^Tipo/ pega "Tipo de iluminacao" (atributo oculto) antes de "Tipo" (Informacoes de Venda). Comparar a primeira linha inteira do form-item, nao prefixo.
 - browser_batch cai ("failed in the extension") sempre que a pagina navega no meio do lote: o click do Editar vai sozinho, o resto em lote separado.
+
+---
+
+# 65. CUSTO DOS PRODUTOS DO SHOPPING DE PRECOS EXPORTADO PARA IMPORTAR NO UPSELLER (02/11/2026)
+
+Pedido do dono: pegar o campo "R$ Valor Custo" do Shopping de Precos (app.shoppingdeprecos.com.br) em Excel para importar no UpSeller por outro navegador (ou deixar no repo para baixar de la).
+
+## 65.1 De onde vem o R$ Valor Custo
+- A coluna "R$ Valor Custo" do Resumo Financeiro Mercado Livre (/pedidos_1/faturamento) e o custo cadastrado por produto em Meus Produtos (/produto_interno), campo "Custo" (ex.: SSS1305HY custo R$ 139,00 = o que aparece no pedido do Creta). Nao e um campo do pedido.
+- A lista de Meus Produtos carrega por AJAX: POST https://app.shoppingdeprecos.com.br/produto_interno/lista_produto_interno (form-urlencoded, cookies da sessao) com os campos sku, titulo, fabricante, ean, descricao, variacao, kit, estoque=1 (todos), produtosNaoEstaoMkt, categoria=0, categoria_filtro, produtosEstaoMkt, qtde (30/50/100/200/500), filtro_sportbay, precoCustoIni, precoCustoFinal, precoIni, precoFinal, dropshipping, tabela_preco=0, offset, op, exportar. Devolve as linhas <tr> da tabela: celula 2 = ID (SKU), 4 = Titulo, celula "Precos" com "Preco: R$ x Promocao: R$ y Custo: R$ z", celula seguinte = Estoque. qtde=500 e offset 0/500/1000/1500/2000 trouxe tudo.
+- Total em 02/11/2026: 2.276 produtos, todos com SKU unico. So 1 sem custo (ATPHILUX) e 4 sem preco de venda (065K7, ATP106-107, ATP122FT, STS036HY-XHB4). Estoque do Shopping de Precos esta quase todo zerado (so GR58NS=100 e ATP945-946=10).
+- O catalogo do Shopping de Precos e o antigo: 185 SKUs FUN e so 21 SKUs SSS (SSS1305HY esta, SSS1306HY, SSS743CV e SSS905RN-DLT622 NAO estao). O resto sao codigos antigos (ATP, STS, GDF, FGS, DAS, numericos...).
+- Conferencia: soma dos custos R$ 275.598,19 e soma dos precos R$ 586.259,40, iguais no site e no arquivo (checksum por bloco de SKU, titulo, custo, preco e promocao bateu nos 5 blocos).
+
+## 65.2 Arquivos gerados (pasta shopping-de-precos/ deste repo e tambem no chat)
+- shopping-de-precos/custos_shopping_de_precos_2026-11-02.xlsx: aba SKU_Custo (SKU + Preco de Custo, para colar no modelo de importacao do UpSeller, Produtos do Armazem), aba Produtos (SKU, nome, custo, preco de venda, promocao, estoque) e aba Leia-me.
+- shopping-de-precos/custos_shopping_de_precos_2026-11-02.csv: o mesmo, separado por ";" com decimal em virgula (UTF-8 com BOM, abre direto no Excel).
+
+## 65.3 Como repetir a extracao
+- Na aba do Shopping de Precos logada, rodar fetch POST em /produto_interno/lista_produto_interno com qtde=500 e offset 0, 500, 1000... ate vir menos de 500 linhas; parsear os <tr> (DOMParser) pegando SKU, titulo, "Custo: R$", "Preco: R$", "Promocao: R$" e estoque. Cada POST leva ~5 s.
+- Para tirar os dados do navegador sem redigitar: abrir aba nova na mesma origem (ex.: /robots.txt), escrever os dados num <pre> em blocos de ate 46.000 caracteres e ler com get_page_text (limite 50.000); o texto fica no transcript da sessao e pode ser parseado por script. Conferir com checksums calculados no navegador antes de gerar o Excel.
+
+## 65.5 CUSTO GRAVADO NO UPSELLER POR API/TELA (02/11/2026, mesma sessao, pelo navegador do dono)
+- Produtos do Armazem no UpSeller: /pt/products/product-list. Listagem: POST /api/sku/index-single JSON {"pageNum":1,"pageSize":100} -> data.list[] com sku, idStr, title, costPrice (= "Custo de Compra"), referencePrice (= "Preco de varejo"), isGroup (kit). Total em 02/11/2026: 44 produtos (43 unicos + 1 kit "formado por 4 farois"), TODOS sem custo antes.
+- Detalhe: POST /api/sku/detail-single JSON {"id":"<idStr>"}. Gravacao: POST /api/sku/single-edit (corpo de ~40 campos montado pela tela, inclui skuRelations com todos os anuncios mapeados: NAO montar na mao, usar a tela).
+- Tela de edicao: /pt/products/product-edit/<idStr>?productType=single (sem o ?productType=single a tela abre vazia como "Editar Variantes"; valores: single, variant, group). Fluxo que funcionou (como a 48.3): iframe invisivel com essa URL na aba da listagem, esperar o input com o SKU e o label "Custo de Compra", setar o input.ant-input-number-input via setter nativo + eventos input/change/blur (mostra "210,00"), clicar Salvar, resposta {"code":0,...,"successed":0,"failed":0} e conferir por detail-single. ~5 s por produto; loop em segundo plano com progresso em localStorage __SP_PROG.
+- Resultado: 19 produtos com SKU IGUAL ao do Shopping de Precos receberam o custo de la: SSS1305HY 139, DLT621 210, DLT624 185, FL852 6, FUN100-101 20, FUN102-103 38, FUN104-105 30, FUN205-206 24, FUN240-2 34, FUN975-976 32, MDM371-372 15, SSS091VW 70, SSS101FT 70, SSS110HD 180, SSS126FT 48, SSS218HD 137, SSS713CV 70, SSS716CV 30, SSS726CV 70 (todos conferidos no servidor). O kit "formado por 4 farois" passou a mostrar custo 68 sozinho (calculado pelos componentes).
+- 24 produtos do armazem NAO existem com o mesmo SKU no Shopping de Precos e ficaram sem custo: DLT619, DLT622, FUN249-250, MDM343-MDM344, MDM344-MDM344, SSS002VW, SSS014VW, SSS044VW, SSS057VW, SSS069VW, SSS1105CT, SSS1306HY, SSS130FT, SSS204HD, SSS240FT, SSS313NS, SSS405FD, SSS702CV, SSS707CV, SSS710CV, SSS712CV, SSS723CV, SSS743CV, SSS905RN. No Shopping de Precos o kit equivalente costuma estar com prefixo STS (STS002VW 110, STS014VW 105, STS044VW 86,60, STS057VW 175, STS069VW 299,99, STS1306HY 540, STS130FT 120, STS405FD 75, STS702CV 70, STS707CV 75, STS710CV 90, STS905RN 75; STS712CV-TIC-LH3 129,99; STS723CV-TIC-LH3 120; STS204HD-TIC-LH8 120; ATP313NS 155,55; MDM343-344 32; DLT622-ATP522TA 350 e FUN249-250-LH8 18 sao produtos diferentes). PENDENTE: dono dizer se usa esses custos STS/ATP ou informa os custos novos. DLT619, SSS240FT e SSS743CV nao tem nada parecido.
+
+## 65.4 Pendente para o dono
+- Importar o arquivo no UpSeller (Produtos do Armazem > Importar) pelo outro navegador e conferir se o modelo de importacao do UpSeller pede mais colunas (nome, peso etc.): a aba Produtos tem nome e preco para completar.
+- O push deste repo nao esta liberado para a sessao do Claude (proxy do git nega credencial: "repositorio nao esta no conjunto autorizado da sessao"). Para o Claude conseguir gravar direto no GitHub, adicionar o repo spyfer2-ux/upsellerREGRAS nas fontes (sources) da sessao/tarefa; enquanto isso, os arquivos ficam no chat.
+
+---
+
+# 66. FECHAMENTO MENSAL DE OUTUBRO/2026 COM CUSTO POR PRODUTO (02/11/2026)
+
+Pedido do dono: o mesmo relatorio da skill/rotina de fechamento (semanal), agora mensal (01 a 31/10/2026) e com o custo do Shopping de Precos por produto; produtos sem custo em destaque. Entregue no chat (sem e-mail): Fechamento_Vendas_Outubro-2026.xlsx e .pdf.
+
+## 66.1 APIs do UpSeller usadas (mesma origem app.upseller.com, cookies da sessao)
+- Vendas por Anuncio: POST /api/statistics/product-sale-all-list, form-urlencoded beginDate, endDate, sortName=0, sortValue=0, pageNum, pageSize (300 traz tudo) -> data.list[] {shopName, platform (mercado/shopee/tiktok/physical), productSku, productId, validOrders, unitsSold, sales, averagePrice, productName}. Resumo: GET /api/statistics/product-sale-all-data?beginDate=&endDate= -> validOrders, unitsSold, sales.
+- Saidas manuais (Saiu do Estoque): POST /api/warehouse-inout-list/out-list JSON {"pageSize":100,"pageNum":1,"status":"1"} -> data.list[] {commonNo, createTime (UTC), note, operatorEmail, inoutQty, detailsVOList[{sku, qty, skuTitle, costPrice}]}. Nao tem filtro de data: filtrar pelo createTime (-3h).
+- Vendas por Produto do Armazem: POST /api/warehouse-sale/index JSON {"type":"0","searchType":"0","searchValue":"","startDate":"2026-10-01","endDate":"2026-10-31","warehouseIds":[],"sortName":"5","sortValue":"0","pageNum":1,"pageSize":200} -> data.list[] {sku, saleCount, orderCount, saleAmount, available, onhand, title}; /count com o mesmo corpo (sem sort/page) da os totais. O corpo com beginDate/endDate e IGNORADO (devolve os ultimos 30 dias): usar startDate/endDate.
+- Anuncios do TikTok vem SEM productSku nesta API: mapear pelo titulo (tabela por productId no script consolidar.py desta sessao). O MLB7634801400 (Creta) apareceu 2x, uma linha sem SKU.
+
+## 66.2 Numeros de outubro/2026
+- 368 pedidos, 386 unidades, R$ 79.362,51 (169 anuncios, 42 produtos do armazem). Importados 141 un / R$ 54.885,56; fabricados 245 un / R$ 24.476,95. Por loja: SS LIGHT 169 un, SSS LIGHT TIKTOK 141, Isadora ML 40, JhonJhon Parts 16, SSS Shopee 13, ISA TIK TOK 4, 'physical' 3 (R$ 1,00 cada).
+- Custo (so unidades com custo): R$ 17.622,99 em 293 un; margem bruta R$ 37.101,27 (67,8%). SEM CUSTO: 93 un / R$ 24.638,25 em 19 produtos (SSS1306HY 20 un, SSS702CV 13, SSS130FT 12, SSS240FT 10, SSS743CV 7, SSS707CV 6, SSS002VW 4, SSS014VW 4, SSS069VW 4, SSS710CV 4, SSS405FD 4, SSS013VW 4, FUN249-250 3, SSS905RN 3, DLT622 3, DLT619 2, SSS057VW 2, SSS712CV 2, SSS044VW 1).
+- Saidas manuais: 19 registros / 20 un (SSS1306HY 10, DLT621 4, SSS218HD 2, SSS405FD 1, SSS726CV 1, SSS1305HY 1, SSS091VW 1); por empresa: NAO INFORMADA (Marcel) 6, GR8 5, AUTOPLUS 4, BALFIX 2, NAO INFORMADA (Augusto) 2, NAO INFORMADA (Daiane/Julinho) 1.
+- Insumos: caixas 245, saquinhos 83 (69 vendas + 14 saidas), halogena 26 pares, Super LED 66, Xenon 12.
+- Vendas por Produto do Armazem fecha 339 un / 320 pedidos / R$ 69.770,08 (diferenca = anuncios nao mapeados).
+
+## 66.3 CUSTOS NOVOS CADASTRADOS PELO DONO E FECHAMENTO REFEITO (02/11/2026, mais tarde)
+- O dono cadastrou no Shopping de Precos os kits que faltavam: 17 SKUs novos (2.276 -> 2.293 produtos, soma dos custos R$ 276.849,53): DLT619 189,99; DLT622 215,00; FUN249-250 15,55; SSS002VW 35,80; SSS014VW 52,00; SSS044VW 45,00; SSS057VW 68,00; SSS069VW 32,00; SSS1306HY 270,00; SSS130FT 35,00; SSS405FD 68,00; SSS702CV 30,00; SSS707CV 35,00; SSS710CV 35,00; SSS712CV 60,00; SSS743CV 35,00; SSS905RN 30,00. Nenhum custo antigo mudou. Arquivo v2: shopping-de-precos/custos_shopping_de_precos_2026-11-02_v2.xlsx/.csv.
+- Os 17 foram gravados no UpSeller (Custo de Compra) pelo mesmo fluxo da 65.5 (decimal entra como "35.80" e a tela mostra "35,80"; conferido por detail-single). Armazem agora: 37 de 44 com custo. AINDA SEM CUSTO no UpSeller (7): MDM343-MDM344 e MDM344-MDM344 (no Shopping de Precos existe MDM343-344 = 32,00), SSS1105CT (so o -MH8 = 55,00), SSS204HD (so o -MH8 = 70,00), SSS240FT (nada), SSS313NS (nada), SSS723CV (nada; o dono disse que SSS723CV = SSS712CV = 60,00). Esperando o dono dizer se usa esses equivalentes.
+- Fechamento de outubro refeito com os custos novos: custo R$ 26.066,72 em 372 un, margem bruta R$ 51.687,62 (66,5%); importados custo R$ 18.458,98 / margem R$ 36.426,58, fabricados custo R$ 7.607,74 / margem R$ 15.261,04. Sem custo: so 14 un / R$ 1.608,17 (SSS240FT 10 un e SSS013VW 4 un, os dois nao cadastrados no armazem).
+
+## 66.4 CUSTOS INFORMADOS PELO DONO NO CHAT (02/11/2026): SSS240FT = R$ 45,00 e SSS013VW = R$ 49,00
+- SSS240FT (kit Palio/Uno Vivace) gravado no UpSeller (Custo de Compra 45,00, conferido). Armazem: 38 de 44 com custo; faltam MDM343-MDM344, MDM344-MDM344, SSS1105CT, SSS204HD, SSS313NS e SSS723CV.
+- SSS013VW (kit Gol G4) NAO existe no armazem do UpSeller nem no Shopping de Precos: custo usado so no relatorio. Os dois tambem nao estao cadastrados no Shopping de Precos (cadastrar la se quiser que o "R$ Valor Custo" do faturamento feche).
+- Fechamento de outubro refeito: 386 un todas com custo; custo R$ 26.712,72, margem bruta R$ 52.649,79 (66,3%); importados custo R$ 18.458,98 / margem R$ 36.426,58; fabricados custo R$ 8.253,74 / margem R$ 16.223,21.
+
+## 66.5 COMISSOES E TAXAS DAS PLATAFORMAS NO FECHAMENTO (02/11/2026)
+- Onde esta no UpSeller: Mais > Relatorio Financeiro > Relatorios de Lucros > Lucros por Pedido (abas Mercado Livre, Shopee, TikTok Shop; /pt/finance/profit-report/order/mercado). So traz pedidos ENVIADOS/CONCLUIDOS e ja LIQUIDADOS pela plataforma (atualiza 1x por dia). "Lucro Estimado" (/finance/profit-report/estimated) veio zerado.
+- API: GET /api/profit-report/page?tabValue=1&platform=mercado|shopee|tiktok&beginDate=AAAA-MM-DD&endDate=AAAA-MM-DD&searchDateType=1&searchType=0&pageNum=1&pageSize=100 -> data {orderAmount, itemSale, buyerPaidShippingFee, commissionFee (comissao de venda), transactionFee, serviceFee (taxa de servico), shippingFee (comissao/custo de frete), platformOtherFee, buyerRefundAmount, orderRevenue (recebimento liquido), skuCost, orderProfit, pageInfo{total, list[]}}; cada pedido da lista tem shopName, orderNumber (UPC...), platformOrderId, orderCreateTime, releaseTime, os mesmos campos de taxa e skuInfo[{skuName, skuCount}]. O TikTok devolve as taxas NEGATIVAS (usar valor absoluto); o ML devolve positivas. /api/profit-report/summary (mesmos parametros + compareBeginDate/compareEndDate) da so o resumo.
+- Outubro/2026 (liquidados ate 02/11): 239 dos 368 pedidos do mes, R$ 58.494,24. Comissao de venda R$ 5.016,27 (ML 4.641,71 / Shopee 304,53 / TikTok 70,03), taxa de servico R$ 1.056,70 (Shopee 185,51 / TikTok 871,19), comissao/custo de frete R$ 3.809,06 (ML 3.658,37 / TikTok 150,69), outras taxas R$ 1.160,10, reembolsos R$ 4.055,51, recebimento liquido R$ 43.663,56, custo dos produtos R$ 18.478,44, LUCRO LIQUIDO R$ 25.185,12. Taxas = 18,9% do valor (ML 19,8%, Shopee 18,9%, TikTok 13,7%); aplicando o % as vendas do mes por anuncio (R$ 79.359,51) a estimativa de taxas do mes inteiro e R$ 14.618,85.
+- No Excel: aba Comissoes (pedido a pedido + resumo por plataforma e por loja + estimativa) e bloco "Plataformas" na aba Geral; no PDF: pagina "Comissoes e taxas das plataformas". Pedidos sem SKU (3 do ML) ficam sem custo; SSS1105CT usa o custo do -MH8.
