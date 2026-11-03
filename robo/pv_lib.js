@@ -38,8 +38,10 @@ window.PV = (() => {
   // sempre sao SKU errado no anuncio (ex.: "Par ..." com SKU de kit SSS905RN a 88,88/118,88; FUN100-101 a 139,99) e vao para o relatorio
   // como "conferir SKU/titulo". Mudanca grande so com o dono conferindo o anuncio.
   const MAX_AUTO_CHANGE_PCT = 25;
-  // loja|SKU base em espera de decisao do dono: o robo nao mexe (67.6)
-  const HOLD = { 'Isadora ML|SSS1306HY': 'kit a 699,88 nesta loja contra 887,00 nas outras 5: dono decide se iguala o kit ou se as versoes Led/Xenon descem (67.6)' };
+  // loja|SKU base em espera de decisao do dono: o robo nao mexe (67.6). Vazio desde 03/11 (Isadora|SSS1306HY decidido: kit fica 699,88).
+  const HOLD = {};
+  // kit com preco diferente entre lojas DE PROPOSITO (dono): nao entra na aba "Kit preco entre lojas" nem nas decisoes
+  const CROSS_OK = { 'SSS1306HY': 'Isadora ML a 699,88 e as outras 5 lojas a 887,00: intencional (dono 03/11/2026); as versoes Led/Xenon da Isadora seguem 719,88/739,88' };
   // deteccao automatica de SKU com 2 blocos de preco: 3+ anuncios base fora do preco modal e pelo menos 10% do total
   const MULTI_MIN_N = 3, MULTI_MIN_SHARE = 0.10;
   const KIT_PREFIX = /^(SSS|FUN|GRX|GR)\d/;        // farol de milha (kit ou par)
@@ -275,13 +277,22 @@ window.PV = (() => {
     // preco do kit diferente entre lojas
     for (const [base, byShop] of Object.entries(basePriceByShop)) {
       const vals = [...new Set(Object.values(byShop))];
-      if (vals.length > 1) res.crossStore.push({ base, prices: byShop });
+      if (vals.length > 1 && !CROSS_OK[base]) res.crossStore.push({ base, prices: byShop });
     }
     res.diverg.sort((a, b) => a.shop.localeCompare(b.shop) || a.sku.localeCompare(b.sku));
     res.missing.sort((a, b) => a.shop.localeCompare(b.shop) || a.base.localeCompare(b.base));
     res.summary = { total: all.length, active: all.filter(r => r.active).length, new24: res.new24.length, diverg: res.diverg.length, divergFixable: res.diverg.filter(d => d.fixable).length, missing: res.missing.length, varNoBase: res.varNoBase.length, crossStore: res.crossStore.length, notKit: res.notKit.length, multiBlock: res.multiBlock.length };
     localStorage.__PV_RESULT = JSON.stringify(res);
     return res;
+  }
+
+  // TROCA DE SKU no ML (03/11/2026, usada com ordem do dono; o robo diario NAO troca SKU sozinho): POST /api/mercado/user-product/batch-online-sku
+  // JSON {type:1, startNumber:'', isVariantSku:0 (sem variacao), prefixType:0, suffixType:0, idList:[ids], oldReplaceStr:'SKU-VELHO', newReplaceStr:'SKU-NOVO'}.
+  // ARMADILHA: no ML o oldReplaceStr e troca de texto SIMPLES - com ancoras ^ e $ responde code 0 e nao grava nada (Shopee/TikTok aceitam regex).
+  // E assincrono: GET /api/check-process?uuid=<data> ate processMsg.code 1, depois reler o index (itemSku) para confirmar.
+  async function setSku(ids, oldSku, newSku, isVariantSku = 0) {
+    const r = await postJson('/api/mercado/user-product/batch-online-sku', { type: 1, startNumber: '', isVariantSku, prefixType: 0, suffixType: 0, idList: ids, oldReplaceStr: oldSku, newReplaceStr: newSku });
+    return { code: r.code, uuid: r.data };
   }
 
   // gravacao de preco (um anuncio por chamada; code 0 nao garante: reler depois)
@@ -412,5 +423,5 @@ window.PV = (() => {
     for (const o of Object.values(pg)) L.push(['P', o.shop, o.pl, o.sku, o.price, o.sale, o.pct, o.pname, o.pend, o.n, o.items.join(' '), (o.title || '').slice(0, 70)].map(esc).join('\t'));
     return L.join('\n');
   }
-  return { post, postJson, get, pullAll, pullML, pullShopee, pullTikTok, raw, classify, modal, isKit, analyze, setPrice, applyFixes, applyFixesBg, applyStatus, syncIds, syncFixed, verifyFixes, syncAllBg, syncStatus, promoAudit, dump, tsv, RE_MX, RE_L, ADD, EXCL_PRICE, TARGET_KIT, MAX_DISCOUNT_PCT, MAX_AUTO_CHANGE_PCT, HOLD, KIT_PREFIX, NOT_KIT, LED_FABRICA, ENCAIXE, ENCAIXE_CONFIRMAR };
+  return { post, postJson, get, pullAll, pullML, pullShopee, pullTikTok, raw, classify, modal, isKit, analyze, setPrice, setSku, applyFixes, applyFixesBg, applyStatus, syncIds, syncFixed, verifyFixes, syncAllBg, syncStatus, promoAudit, dump, tsv, RE_MX, RE_L, ADD, EXCL_PRICE, TARGET_KIT, MAX_DISCOUNT_PCT, MAX_AUTO_CHANGE_PCT, HOLD, CROSS_OK, KIT_PREFIX, NOT_KIT, LED_FABRICA, ENCAIXE, ENCAIXE_CONFIRMAR };
 })();
