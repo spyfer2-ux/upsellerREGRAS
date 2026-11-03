@@ -104,6 +104,10 @@ window.PV = (() => {
       if ((t && t >= since) || (t2 && t2 >= since)) res.new24.push({ shop: r.shop, pl: r.pl, sku: r.sku, title: r.title, price: r.price, created: r.created, status: r.status, id: r.id, item: r.item, qty: r.qty });
     }
     res.new24.sort((a, b) => (b.created || '').localeCompare(a.created || ''));
+    // ultimo dia com anuncio criado (para o relatorio dizer "os ultimos sao de DD/MM")
+    const byDay = {}; for (const r of all) { const d = (r.created || r.upCreated || '').slice(0, 10); if (d) byDay[d] = (byDay[d] || 0) + 1; }
+    const lastDay = Object.keys(byDay).sort().pop();
+    res.lastCreated = lastDay ? { date: lastDay, n: byDay[lastDay] } : null;
     // grupos por loja x SKU base (so ativos)
     const shops = {};
     for (const r of all) {
@@ -240,7 +244,7 @@ window.PV = (() => {
     const esc = s => String(s == null ? '' : s).replace(/[\t\n\r]+/g, ' ');
     const rc = s => /^ML em promocao/.test(s) ? 'ML_PROMO' : /^Shopee em promocao/.test(s) ? 'SP_PROMO' : /^TikTok em revisao/.test(s) ? 'TK_REVIEW' : /^SKU em veiculos/.test(s) ? 'MULTI_BLOCK' : (s || '');
     const L = [];
-    L.push('#META\t' + JSON.stringify({ ts: r.ts, pulledAt: r.pulledAt, summary: r.summary, counts: r.counts }));
+    L.push('#META\t' + JSON.stringify({ ts: r.ts, pulledAt: r.pulledAt, summary: r.summary, counts: r.counts, lastCreated: r.lastCreated || null }));
     const g = {};
     for (const d of r.diverg || []) { const k = d.shop + '|' + d.sku; const o = g[k] = g[k] || { shop: d.shop, pl: d.pl, sku: d.sku, base: d.base, line: d.line, basePrice: d.basePrice, baseN: d.baseN, baseTotal: d.baseTotal, expected: d.expected, n: 0, fix: 0, cur: {}, reason: rc(d.reason), items: [] }; o.n++; if (d.fixable) o.fix++; o.cur[d.current] = (o.cur[d.current] || 0) + 1; o.items.push(d.item); }
     L.push('#DIVERG_G\tshop\tpl\tsku\tbase\tline\tbasePrice\tbaseN\tbaseTotal\texpected\tn\tfixable\tcurrents\treason\titems');

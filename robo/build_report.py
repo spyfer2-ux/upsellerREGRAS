@@ -107,7 +107,11 @@ if new_rows:
 else:
     write_table(ws_new, 4, ['Loja', 'Plataforma', 'SKU', 'Preço', 'Criado em (UTC)', 'Estado', 'ID na plataforma', 'Estoque', 'Título'], [],
                 [18, 14, 22, 12, 20, 12, 18, 9, 70])
-    ws_new['A5'] = 'Nenhum anúncio foi criado nas últimas 24 horas em nenhuma das 6 lojas. Os anúncios mais recentes são de 30/10/2026 (57 anúncios).'
+    lc = meta.get('lastCreated') or {}
+    lc_txt = ''
+    if lc.get('date'):
+        d = lc['date']; lc_txt = f" Os anúncios mais recentes são de {d[8:10]}/{d[5:7]}/{d[0:4]} ({lc.get('n', 0)} anúncios)."
+    ws_new['A5'] = 'Nenhum anúncio foi criado nas últimas 24 horas em nenhuma das 6 lojas.' + lc_txt
     ws_new['A5'].font = BOLD
     ws_new.merge_cells('A5:I5')
 
@@ -252,15 +256,39 @@ for j, col in zip((2, 3, 4), 'BCD'):
     cell = ws.cell(row=row, column=j, value=f'=SUM({col}{first}:{col}{row - 1})'); cell.font = BOLD; cell.border = BORDER
 ws.cell(row=row, column=1).border = BORDER
 
+# ---- notas geradas a partir dos dados (servem para qualquer dia)
+def fmt(v):
+    try:
+        return f'{float(v):,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
+    except (TypeError, ValueError):
+        return str(v)
+
+fix_ok = [r for r in sections['FIXLOG']['rows'] if (r + [''] * 12)[8] == '1' and (r + [''] * 12)[10] != '1']
+fix_rev = [r for r in sections['FIXLOG']['rows'] if (r + [''] * 12)[10] == '1']
+fix_bad = [r for r in sections['FIXLOG']['rows'] if (r + [''] * 12)[8] != '1' and (r + [''] * 12)[10] != '1']
+groups = OrderedDict()
+for r in fix_ok:
+    k = (r[0], r[2], r[3], r[4]); groups[k] = groups.get(k, 0) + 1
+fix_txt = '; '.join(f'{sku} {n}x na {shop} de {fmt(a)} para {fmt(b)}' for (shop, sku, a, b), n in groups.items())
+div = sections['DIVERG_G']['rows']
+n_ml_promo = sum(int(r[9]) for r in div if r[12] == 'ML_PROMO')
+n_sp_promo = sum(int(r[9]) for r in div if r[12] == 'SP_PROMO')
+n_multi = sum(int(r[9]) for r in div if r[12] == 'MULTI_BLOCK')
+n_other = sum(int(r[9]) for r in div if r[12] not in ('ML_PROMO', 'SP_PROMO', 'MULTI_BLOCK'))
+lc = meta.get('lastCreated') or {}
+lc_txt = f" (os últimos criados são de {lc['date'][8:10]}/{lc['date'][5:7]}/{lc['date'][0:4]}, {lc.get('n', 0)} anúncios)" if lc.get('date') else ''
+n_new = len(sections['NEW24']['rows'])
+
 row += 2
-ws.cell(row=row, column=1, value='O que o robô fez hoje (03/11/2026)').font = TITLE_FONT
-notes = [
-    'Leu os 4.200 anúncios das 6 lojas pela API interna do UpSeller (sem abrir tela) e agrupou por loja e SKU base.',
-    'Corrigiu 23 anúncios e confirmou cada um relendo o marketplace: SSS101FT-MH1 (12 no ML, de 188,88 para 159,99, kit 139,99) e SSS1306HY-XH8 (11 na JhonJhon Parts, de 939,88 para 927,00, kit 887,00).',
-    'Corrigiu 6 SSS905RN-MH8 na Isadora ML e DESFEZ no mesmo dia: o SSS905RN tem dois blocos de preço (Peugeot 307/2008 e L200 a 139,99; Logan/Sandero/Kwid/Duster/Mobi/Argo/C4 Pallas a 168,88), então 188,88 estava certo. O SKU entrou na lista de exclusão junto com o FUN100-101.',
-    'Descoberta: no Mercado Livre a API grava o preço (code 0) mas o ML devolve o preço antigo no sync quando o anúncio está em promoção. Os 104 "corrigidos" de 22/10 nunca valeram por isso — hoje são 70 anúncios travados.',
-    'Nenhum anúncio novo nas últimas 24 horas (os últimos são de 30/10/2026).',
-]
+ws.cell(row=row, column=1, value=f'O que o robô fez hoje ({ts.strftime("%d/%m/%Y")})').font = TITLE_FONT
+notes = [f'Leu {summary["total"]} anúncios das 6 lojas pela API interna do UpSeller (sem abrir tela) e agrupou por loja e SKU base.']
+notes.append(f'Corrigiu {len(fix_ok)} anúncios e confirmou cada um relendo o marketplace: {fix_txt}.' if fix_ok else 'Nenhum preço Led/Xenon precisou de correção automática hoje.')
+if fix_rev:
+    notes.append(f'{len(fix_rev)} correções foram DESFEITAS no mesmo dia (ver observação na aba Precos corrigidos).')
+if fix_bad:
+    notes.append(f'{len(fix_bad)} gravações NÃO foram confirmadas pelo marketplace (aba Precos corrigidos, situação "Não confirmado"): conferir à mão.')
+notes.append(f'Fora da regra sem correção: {n_ml_promo} anúncios do Mercado Livre travados por promoção (o ML recusa a troca de preço com promoção ativa), {n_sp_promo} da Shopee em promoção (ficam como estão, decisão de 22/10), {n_multi} de SKU em veículos diferentes (2 blocos de preço){f", {n_other} por outros motivos" if n_other else ""}.')
+notes.append(f'{n_new} anúncios criados nas últimas 24 horas.' if n_new else 'Nenhum anúncio novo nas últimas 24 horas' + lc_txt + '.')
 for n in notes:
     row += 1
     c = ws.cell(row=row, column=1, value='• ' + n); c.font = BODY; c.alignment = Alignment(wrap_text=True, vertical='top')
@@ -269,13 +297,18 @@ for n in notes:
 
 row += 2
 ws.cell(row=row, column=1, value='Decisões que precisam de você').font = TITLE_FONT
-decisions = [
-    'Mercado Livre em promoção (70 anúncios, 13 SKUs): para corrigir é preciso tirar o anúncio da promoção, gravar o preço e (se quiser) recolocar. Quer que o robô faça isso, ou ficam como estão igual à Shopee?',
-    'Isadora ML: o kit SSS1306HY está a R$ 699,88 nos 30 anúncios, contra R$ 887,00 nas outras 5 lojas. Pela regra os -MH8/-XH8 da Isadora teriam de cair para 719,88/739,88 (travados pela promoção). É intencional? Se não, igualar o kit a 887,00.',
-    'SSS905RN: dois blocos de preço no mesmo SKU. Vale separar em dois SKUs (como pede a 62.5 para o FUN100-101) para o robô voltar a controlar essas variações.',
-    'SSS101FT-MH1 estava a 188,88 (parecia preço de kit 168,88, que não existe). Se 188,88 era o desejado, o kit precisa ir para 168,88 — o robô segue o kit.',
-    'Variações faltantes: 168 pares loja × SKU (aba própria), a maior parte sem Led nem Xenon. Os SKUs sugeridos já saem com encaixe e preço.',
-]
+decisions = []
+if n_ml_promo:
+    skus_ml = sorted(set(r[2] for r in div if r[12] == 'ML_PROMO'))
+    decisions.append(f'Mercado Livre em promoção ({n_ml_promo} anúncios: {", ".join(skus_ml[:8])}{"…" if len(skus_ml) > 8 else ""}): para corrigir é preciso tirar o anúncio da promoção, gravar o preço e (se quiser) recolocar. Quer que o robô faça isso, ou ficam como estão igual à Shopee?')
+notkit_bases = set(x[0] for x in sections['NOTKIT']['rows'])
+for r in [x for x in sections['CROSS']['rows'] if x[0] not in notkit_bases][:6]:
+    prices = json.loads(r[1])
+    decisions.append(f'{r[0]}: preço do kit diferente entre lojas (' + ', '.join(f'{s} {fmt(p)}' for s, p in prices.items()) + '). Pela regra o preço é o mesmo nas lojas: igualar ou confirmar que é intencional.')
+fixed_multi = sorted(set(r[2] for r in sections['MULTIBLOCK']['rows'] if r[5] == 'lista fixa'))
+if fixed_multi:
+    decisions.append(f'SKU em veículos diferentes ({", ".join(fixed_multi)}): separar em dois SKUs para o robô voltar a controlar as versões Led/Xenon.')
+decisions.append(f'Variações faltantes: {len(sections["MISSING"]["rows"])} pares loja × SKU (aba própria). Os SKUs sugeridos já saem com encaixe e preço.')
 for n in decisions:
     row += 1
     c = ws.cell(row=row, column=1, value='• ' + n); c.font = BODY; c.alignment = Alignment(wrap_text=True, vertical='top')
