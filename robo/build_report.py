@@ -33,12 +33,16 @@ ts = datetime.datetime.fromisoformat(meta['ts'].replace('Z', '+00:00')).astimezo
 data_str = ts.strftime('%d/%m/%Y %H:%M')
 
 PL = {'ML': 'Mercado Livre', 'SP': 'Shopee', 'TK': 'TikTok Shop'}
-LINE = {'M': 'Led (-M)', 'X': 'Xenon (-X)'}
+LINE = {'M': 'Led (-M)', 'X': 'Xenon (-X)', 'BASE': 'Kit (base)'}
 REASON = {
     'ML_PROMO': 'ML em promoção: o Mercado Livre recusa a troca de preço enquanto a promoção estiver ativa (tirar da promoção antes)',
     'SP_PROMO': 'Shopee em promoção: fica como está (decisão de 22/10/2026)',
     'TK_REVIEW': 'TikTok em revisão: refazer depois de aprovado',
+    'TK_PROMO': 'TikTok em promoção: fica como está até a campanha acabar',
+    'TARGET': 'Preço-alvo do kit definido pelo dono (o robô grava quando o anúncio sair da promoção)',
     'MULTI_BLOCK': 'SKU em veículos diferentes (2 blocos de preço): conferir à mão, o preço modal não serve de base',
+    'HOLD': 'Aguardando decisão do dono (kit da Isadora ML a 699,88 contra 887,00 nas outras lojas, pendência 67.6)',
+    'BIG_CHANGE': 'Mudança acima de 25%: quase sempre é SKU errado no anúncio (ex.: "Par" com SKU de kit). Conferir SKU/título antes de mexer',
 }
 STORES = ['SS LIGHT', 'Isadora ML', 'SSS Shopee', 'JhonJhon Parts', 'SSS LIGHT TIKTOK', 'ISA TIK TOK']
 
@@ -134,7 +138,7 @@ for i in range(5, end + 1):
 # ---------------------------------------------------------------- Fora da regra
 ws_div = wb.create_sheet('Fora da regra')
 title(ws_div, 'Anúncios Led/Xenon com preço fora da regra que o robô NÃO conseguiu corrigir',
-      'Agrupado por loja e SKU. Preço do kit = preço modal dos anúncios ativos do SKU base na mesma loja. Preço certo = kit + 20 (Led) ou kit + 40 (Xenon).')
+      'Agrupado por loja e SKU. Preço do kit = preço modal dos anúncios ativos do SKU base na mesma loja (ou preço-alvo do dono: FUN100-101 54,99 e SSS905RN 139,99). Preço certo = kit + 20 (Led) ou kit + 40 (Xenon).')
 div_rows = []
 for r in sections['DIVERG_G']['rows']:
     shop, pl, sku, base, line, bp, bn, bt, exp, n, fix, cur, reason, items = r
@@ -151,18 +155,26 @@ title(ws_mis, 'Kits de farol de milha sem a versão Led (-M) e/ou Xenon (-X) na 
       'Só SKUs de farol de milha (SSS/FUN/GRX/GR) com kit ativo na loja. Encaixe: da própria loja; senão de outra loja; senão H8 (padrão da casa) — confirmar na descrição antes de criar o SKU.')
 mis_rows = []
 for r in sections['MISSING']['rows']:
-    shop, pl, base, bp, nb, has, miss, enc, sm, sx, ttl = r
-    enc_code = enc.split(' ')[0]
+    r = (r + [''] * 15)[:15]
+    shop, pl, base, bp, nb, has, miss, enc, sm, sx, ttl, enc_note, sku_m, sku_x, _ = r
     falta = {'MX': 'Led e Xenon', 'M': 'Led', 'X': 'Xenon'}.get(miss, miss)
     tem = {'-': 'nenhuma', 'M': 'só Led', 'X': 'só Xenon', 'MX': 'Led e Xenon'}.get(has, has)
-    sku_m = f'{base}-M{enc_code}' if 'M' in miss else ''
-    sku_x = f'{base}-X{enc_code}' if 'X' in miss else ''
-    mis_rows.append([shop, PL.get(pl, pl), base, ttl, num(bp), int(nb), tem, falta, enc, sku_m, num(sm) if sku_m else '', sku_x, num(sx) if sku_x else ''])
-wrap_cols['Variacoes faltantes'] = (4, 9)
-end = write_table(ws_mis, 4, ['Loja', 'Plataforma', 'SKU base (kit)', 'Título de um anúncio do kit', 'Preço do kit', 'Anúncios do kit', 'Já tem', 'Falta criar', 'Encaixe sugerido', 'SKU Led a criar', 'Preço Led (+20)', 'SKU Xenon a criar', 'Preço Xenon (+40)'],
-                  mis_rows, [16, 13, 16, 52, 12, 9, 12, 13, 26, 20, 12, 20, 12], money_cols=(5, 11, 13))
+    if not enc:  # lib antiga ou encaixe desconhecido
+        enc_code = ''
+    else:
+        enc_code = enc
+    if not sku_m and not sku_x:
+        sku_m = f'{base}-M{enc_code}' if ('M' in miss and enc_code) else ('(confirmar encaixe)' if 'M' in miss else '')
+        sku_x = f'{base}-X{enc_code}' if ('X' in miss and enc_code) else ('(confirmar encaixe)' if 'X' in miss else '')
+    mis_rows.append([shop, PL.get(pl, pl), base, ttl, num(bp), int(nb), tem, falta, enc_code or '?', enc_note, sku_m, num(sm) if 'M' in miss else '', sku_x, num(sx) if 'X' in miss else ''])
+wrap_cols['Variacoes faltantes'] = (4, 10)
+end = write_table(ws_mis, 4, ['Loja', 'Plataforma', 'SKU base (kit)', 'Título de um anúncio do kit', 'Preço do kit', 'Anúncios do kit', 'Já tem', 'Falta criar', 'Encaixe', 'Origem do encaixe', 'SKU Led a criar', 'Preço Led (+20)', 'SKU Xenon a criar', 'Preço Xenon (+40)'],
+                  mis_rows, [16, 13, 16, 48, 12, 9, 12, 13, 9, 34, 20, 12, 20, 12], money_cols=(5, 12, 14))
 for i in range(5, end + 1):
     ws_mis.cell(row=i, column=8).fill = BAD_FILL if ws_mis.cell(row=i, column=8).value == 'Led e Xenon' else WARN_FILL
+    note = str(ws_mis.cell(row=i, column=10).value or '')
+    if 'ATENCAO' in note or 'confirmar' in note or 'pesquisar' in note:
+        ws_mis.cell(row=i, column=10).fill = BAD_FILL
 
 # ---------------------------------------------------------------- Variante sem kit
 ws_vnb = wb.create_sheet('Variante sem kit')
@@ -199,10 +211,37 @@ write_table(ws_mb, 4, ['Loja', 'Plataforma', 'SKU base', 'Blocos de preço (pre�
 # ---------------------------------------------------------------- Fora do padrao
 ws_nk = wb.create_sheet('SKUs fora do padrao kit')
 title(ws_nk, 'SKUs base que o robô não trata como kit de farol de milha',
-      'DRL, molduras, suportes, fitas e SKUs numéricos: não entram na checagem de variação faltante. Se algum deles devia ter Led/Xenon, avisar para incluir.')
-nk_rows = [[r[0], r[1]] for r in sections['NOTKIT']['rows']]
-wrap_cols['SKUs fora do padrao kit'] = (2,)
-write_table(ws_nk, 4, ['SKU base', 'Título de um anúncio'], nk_rows, [20, 80])
+      'DRL, molduras, suportes, fitas, SKUs numéricos e faróis construídos em LED: não entram na checagem de variação faltante. Se algum deles devia ter Led/Xenon, avisar para incluir.')
+nk_rows = [[r[0], r[1], (r + [''])[2]] for r in sections['NOTKIT']['rows']]
+wrap_cols['SKUs fora do padrao kit'] = (2, 3)
+write_table(ws_nk, 4, ['SKU base', 'Título de um anúncio', 'Por que não entra na checagem'], nk_rows, [20, 70, 44])
+
+# ---------------------------------------------------------------- Promocoes acima de 8%
+ws_pr = wb.create_sheet('Promocoes acima de 8%')
+pr_sum = sections.get('PROMO_SUM', {'rows': []})['rows']
+pr_over = sections.get('PROMO_OVER', {'rows': []})['rows']
+max_pct = (pr_sum[0][6] if pr_sum and len(pr_sum[0]) > 6 else '8')
+title(ws_pr, f'Anúncios em promoção com desconto acima de {max_pct}% (regra do dono: no máximo {max_pct}% em qualquer produto)',
+      'Lido depois de sincronizar as 6 lojas com os marketplaces. O robô só lista: ele nunca tira anúncio de promoção (decisão de 03/11/2026). ML = discountPrice x price; Shopee = salePrice x price; TikTok = preço mínimo da atividade.')
+r0 = 4
+for j, h in enumerate(['Loja', 'Plataforma', 'Em promoção', f'Acima de {max_pct}%', f'Até {max_pct}%', 'Sem preço promocional lido'], 1):
+    c = ws_pr.cell(row=r0, column=j, value=h); c.font = HEAD_FONT; c.fill = HEAD_FILL; c.border = BORDER
+for i, r in enumerate(pr_sum, r0 + 1):
+    for j, v in enumerate([r[0], PL.get(r[1], r[1]), int(r[2]), int(r[3]), int(r[4]), int(r[5])], 1):
+        c = ws_pr.cell(row=i, column=j, value=v); c.font = BODY; c.border = BORDER
+    if int(r[3]) > 0:
+        ws_pr.cell(row=i, column=4).fill = BAD_FILL
+r1 = r0 + len(pr_sum) + 2
+ws_pr.cell(row=r1, column=1, value=f'Anúncios acima de {max_pct}% (agrupados por loja, SKU, preço e promoção)').font = BOLD
+pr_rows = []
+for r in pr_over:
+    r = (r + [''] * 12)[:12]
+    shop, pl, sku, price, sale, pct, pname, pend, n, items, ttl, _ = r
+    pr_rows.append([shop, PL.get(pl, pl), sku, num(price), num(sale), num(pct), pname, pend, int(n) if n else 0, ttl, items])
+wrap_cols['Promocoes acima de 8%'] = (10, 11)
+write_table(ws_pr, r1 + 1, ['Loja', 'Plataforma', 'SKU', 'Preço', 'Preço promocional', 'Desconto %', 'Promoção', 'Termina em', 'Qtd anúncios', 'Título', 'IDs dos anúncios'],
+            pr_rows, [16, 13, 20, 12, 14, 11, 18, 12, 10, 50, 40], money_cols=(4, 5))
+ws_pr.freeze_panes = None
 
 # ---------------------------------------------------------------- Resumo (primeira aba)
 ws = wb.create_sheet('Resumo', 0)
@@ -222,11 +261,15 @@ kpis = [
     ('Anúncios ativos', summary['active'], 'leitura API'),
     ('Anúncios criados nas últimas 24 horas', "=COUNTA('Anuncios novos 24h'!C:C)-1", 'aba Anuncios novos 24h'),
     ('Preços corrigidos hoje e confirmados no marketplace', "=COUNTIF('Precos corrigidos'!G:G,\"Confirmado\")", 'aba Precos corrigidos'),
-    ('Correções revertidas no mesmo dia (SKU em veículos diferentes)', "=COUNTIF('Precos corrigidos'!G:G,\"Revertido\")", 'aba Precos corrigidos'),
+    ('Correções revertidas no mesmo dia', "=COUNTIF('Precos corrigidos'!G:G,\"Revertido\")", 'aba Precos corrigidos'),
     ('Anúncios fora da regra que o robô não pode corrigir', "=SUM('Fora da regra'!I:I)", 'aba Fora da regra'),
-    ('   … travados por promoção no Mercado Livre', "=SUMIF('Fora da regra'!B:B,\"Mercado Livre\",'Fora da regra'!I:I)-SUMIFS('Fora da regra'!I:I,'Fora da regra'!B:B,\"Mercado Livre\",'Fora da regra'!K:K,\"SKU em veículos*\")", 'aba Fora da regra'),
-    ('   … em promoção na Shopee (ficam como estão, decisão de 22/10)', "=SUMIF('Fora da regra'!B:B,\"Shopee\",'Fora da regra'!I:I)-SUMIFS('Fora da regra'!I:I,'Fora da regra'!B:B,\"Shopee\",'Fora da regra'!K:K,\"SKU em veículos*\")", 'aba Fora da regra'),
-    ('   … SKU em veículos diferentes (SSS905RN): conferir à mão', "=SUMIF('Fora da regra'!K:K,\"SKU em veículos*\",'Fora da regra'!I:I)", 'aba Fora da regra'),
+    ('   … em promoção no Mercado Livre (ficam como estão, decisão de 03/11; o robô corrige quando a promoção acabar)', "=SUMIF('Fora da regra'!K:K,\"ML em promoção*\",'Fora da regra'!I:I)", 'aba Fora da regra'),
+    ('   … em promoção na Shopee (ficam como estão, decisão de 22/10)', "=SUMIF('Fora da regra'!K:K,\"Shopee em promoção*\",'Fora da regra'!I:I)", 'aba Fora da regra'),
+    ('   … em promoção no TikTok', "=SUMIF('Fora da regra'!K:K,\"TikTok em promoção*\",'Fora da regra'!I:I)", 'aba Fora da regra'),
+    ('   … SKU em veículos diferentes (2 blocos de preço): conferir à mão', "=SUMIF('Fora da regra'!K:K,\"SKU em veículos*\",'Fora da regra'!I:I)", 'aba Fora da regra'),
+    ('   … mudança acima de 25% (conferir SKU/título do anúncio)', "=SUMIF('Fora da regra'!K:K,\"Mudança acima*\",'Fora da regra'!I:I)", 'aba Fora da regra'),
+    ('   … aguardando decisão sua (Isadora ML SSS1306HY)', "=SUMIF('Fora da regra'!K:K,\"Aguardando*\",'Fora da regra'!I:I)", 'aba Fora da regra'),
+    ('Anúncios em promoção com desconto acima de 8%', f"=SUM('Promocoes acima de 8%'!D5:D{4 + max(len(pr_sum), 1)})", 'aba Promocoes acima de 8%'),
     ('Kits sem Led e/ou Xenon na loja (pares loja × SKU)', "=COUNTA('Variacoes faltantes'!C:C)-1", 'aba Variacoes faltantes'),
     ('   … faltando Led E Xenon', "=COUNTIF('Variacoes faltantes'!H:H,\"Led e Xenon\")", 'aba Variacoes faltantes'),
     ('   … faltando só Xenon', "=COUNTIF('Variacoes faltantes'!H:H,\"Xenon\")", 'aba Variacoes faltantes'),
@@ -287,8 +330,29 @@ if fix_rev:
     notes.append(f'{len(fix_rev)} correções foram DESFEITAS no mesmo dia (ver observação na aba Precos corrigidos).')
 if fix_bad:
     notes.append(f'{len(fix_bad)} gravações NÃO foram confirmadas pelo marketplace (aba Precos corrigidos, situação "Não confirmado"): conferir à mão.')
-notes.append(f'Fora da regra sem correção: {n_ml_promo} anúncios do Mercado Livre travados por promoção (o ML recusa a troca de preço com promoção ativa), {n_sp_promo} da Shopee em promoção (ficam como estão, decisão de 22/10), {n_multi} de SKU em veículos diferentes (2 blocos de preço){f", {n_other} por outros motivos" if n_other else ""}.')
-notes.append(f'{n_new} anúncios criados nas últimas 24 horas.' if n_new else 'Nenhum anúncio novo nas últimas 24 horas' + lc_txt + '.')
+notes.append(f'Fora da regra sem correção: {n_ml_promo} anúncios do Mercado Livre em promoção (o ML recusa a troca de preço com promoção ativa) e {n_sp_promo} da Shopee em promoção. Decisão sua (22/10 e 03/11): nada sai de promoção; campanhas novas só no início do mês. O robô grava o preço certo sozinho quando a promoção terminar{f"; {n_multi} de SKU em veículos diferentes (2 blocos de preço)" if n_multi else ""}{f"; {n_other} por outros motivos" if n_other else ""}.')
+# preco-alvo do kit definido pelo dono (linha BASE no DIVERG_G): mostra o que ainda esta pendente
+target_rows = [r for r in div if r[4] == 'BASE']
+if target_rows:
+    by_base = OrderedDict()
+    for r in target_rows:
+        why = {'ML_PROMO': 'em promoção', 'SP_PROMO': 'em promoção', 'TK_PROMO': 'em promoção', 'BIG_CHANGE': 'mudança acima de 25%, conferir SKU', 'HOLD': 'aguardando decisão'}.get(r[12], r[12])
+        by_base.setdefault((r[3], r[8]), []).append(f'{r[0]} {r[9]}x a {", ".join(fmt(c.split("x")[0]) for c in r[11].split(" ")[:3])}{"…" if len(r[11].split(" ")) > 3 else ""} ({why})')
+    notes.append('Preço-alvo do kit definido por você ainda não aplicado: ' + '; '.join(f'{base} = {fmt(exp)} ({"; ".join(v)})' for (base, exp), v in by_base.items()) + '. Em promoção = o robô grava quando a campanha acabar; mudança acima de 25% = você confere o SKU/título antes.')
+n_big = sum(int(r[9]) for r in div if r[12] == 'BIG_CHANGE')
+n_hold = sum(int(r[9]) for r in div if r[12] == 'HOLD')
+if n_big:
+    big_skus = sorted(set(f'{r[2]} a {fmt(r[11].split(" ")[0].split("x")[0])} ({r[0]})' for r in div if r[12] == 'BIG_CHANGE'))
+    notes.append(f'{n_big} anúncios com mudança de preço acima de 25% NÃO foram tocados: quase sempre é SKU errado no anúncio ({"; ".join(big_skus[:6])}{"…" if len(big_skus) > 6 else ""}). Conferir o SKU/título e avisar o robô.')
+if n_hold:
+    notes.append(f'{n_hold} anúncios esperam sua decisão (Isadora ML: kit SSS1306HY a 699,88 contra 887,00 nas outras lojas).')
+pr_total_over = sum(int(r[3]) for r in pr_sum)
+pr_total = sum(int(r[2]) for r in pr_sum)
+if pr_total:
+    notes.append(f'Promoções (depois do sync): {pr_total} anúncios em promoção; {pr_total_over} com desconto acima de {max_pct}% (aba Promocoes acima de 8%). O robô não tira ninguém de promoção; só lista.')
+else:
+    notes.append('Promoções (depois do sync): nenhum anúncio em promoção nas 6 lojas.')
+notes.append((f'{n_new} anúncio criado nas últimas 24 horas (aba Anuncios novos 24h).' if n_new == 1 else f'{n_new} anúncios criados nas últimas 24 horas (aba Anuncios novos 24h).') if n_new else 'Nenhum anúncio novo nas últimas 24 horas' + lc_txt + '.')
 for n in notes:
     row += 1
     c = ws.cell(row=row, column=1, value='• ' + n); c.font = BODY; c.alignment = Alignment(wrap_text=True, vertical='top')
@@ -300,7 +364,7 @@ ws.cell(row=row, column=1, value='Decisões que precisam de você').font = TITLE
 decisions = []
 if n_ml_promo:
     skus_ml = sorted(set(r[2] for r in div if r[12] == 'ML_PROMO'))
-    decisions.append(f'Mercado Livre em promoção ({n_ml_promo} anúncios: {", ".join(skus_ml[:8])}{"…" if len(skus_ml) > 8 else ""}): para corrigir é preciso tirar o anúncio da promoção, gravar o preço e (se quiser) recolocar. Quer que o robô faça isso, ou ficam como estão igual à Shopee?')
+    decisions.append(f'Mercado Livre em promoção ({n_ml_promo} anúncios: {", ".join(skus_ml[:8])}{"…" if len(skus_ml) > 8 else ""}): ficam como estão até a campanha acabar (decisão de 03/11). O robô corrige sozinho no dia seguinte ao fim da promoção.')
 notkit_bases = set(x[0] for x in sections['NOTKIT']['rows'])
 for r in [x for x in sections['CROSS']['rows'] if x[0] not in notkit_bases][:6]:
     prices = json.loads(r[1])
