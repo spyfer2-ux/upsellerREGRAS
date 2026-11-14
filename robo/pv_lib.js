@@ -51,7 +51,7 @@ window.PV = (() => {
   // ENCAIXE DA LAMPADA POR SKU BASE - manda na sugestao de -M/-X (dono 03/11/2026 + variacoes no ar + pesquisa; H11 vira H8 por regra da casa)
   const ENCAIXE = {
     // confirmados pelo dono em 03/11/2026
-    'FUN102-103': 'HB4', 'FUN104-105': 'HB4', 'FUN975-976': 'HB4', 'SSS014VW': 'HB4', 'SSS414FD': 'HB4', 'SSS712CV': 'H27', 'SSS240FT-4': 'H1',
+    'FUN102-103': 'HB4', 'FUN104-105': 'HB4', 'FUN975-976': 'HB4', 'SSS014VW': 'HB4', 'SSS414FD': 'HB4', 'SSS712CV': 'H3', 'SSS240FT-4': 'H1', // SSS712CV (Vectra): H3, confirmado pelo dono em 14/11/2026 (antes estava H27)
     // encaixe das variacoes que ja existem no ar
     'SSS702CV': 'HB4', 'SSS710CV': 'HB4', 'SSS405FD': 'HB4', 'SSS707CV': 'HB4',
     'SSS013VW': 'H3', 'SSS743CV': 'H3', 'SSS726CV': 'H3', 'SSS091VW': 'H3', 'SSS057VW': 'H3', 'SSS044VW': 'H3', 'SSS218HD': 'H3',
