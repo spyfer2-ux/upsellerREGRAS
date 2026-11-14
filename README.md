@@ -4975,6 +4975,7 @@ Visto foto por foto, por SKU (grade com todas as fotos distintas e quantos anunc
   - REMOVIDOS mais 18 (8 ativos + 10 pausados) com G3.rmBad (G3_RMLIB) e conferidos com G3.rmVerify (sync + releitura): 18 de 18 sem o logo. Total do dia: 21 anuncios limpos (11 ativos + 10 pausados). Estado em G3_RM_STATE, fotos de antes em G3_RM_BEFORE.
   - FICARAM 16, TODOS PAUSADOS (nao aparecem para o cliente): 7 com variacao (os unitarios/grades da GERSON que o dono mandou nao mexer na 82) e 9 que a Shopee nao deixa salvar sem acertar outro campo (7 sem o Numero da Peca obrigatorio, SKU antigo tipo MLB.../GRX...; 2 sem envio selecionado). Se forem reativados, tirar o logo antes.
   - O resto da varredura (fotos do meio dos anuncios) continua; retomar pelo G3_GSCAN_CODE e limpar o que aparecer.
+- GERSON 22599384510 (SSS002VW-MH8, Gol/Voyage G6 Led): dono "Pode tirar" -> a 3a foto, com o texto "Encaixe de Lampada H11", foi REMOVIDA (ficou com 7) e conferida por sync. A assinatura dela entrou no G3_BADSIGS (label "texto Encaixe de Lampada H11"): nenhuma copia futura leva essa foto. Nas ~14 mil fotos ja assinadas (GERSON antiga + grupo 2) ela so aparecia nesse anuncio.
 - Logan MLB7991302802 (SS LIGHT): o dono trocou a foto "H8/H11 4300K" pelo padrao SO H8.
 - Vectra SSS712CV e H3 (dono, 14/11): robo/pv_lib.js corrigido para 'SSS712CV': 'H3' (a skill robo-precos-upseller tem a mesma tabela).
-- Continuam com o dono: SSS716CV com foto de lampada H8/H11 no kit H27 (84.5 a); GERSON 22599384510 com a foto "Encaixe de Lampada H11" (84.5 c).
+- Continua com o dono: SSS716CV com foto de lampada H8/H11 no kit H27 (84.5 a). A 84.5 c (foto H11 da GERSON) foi resolvida.
