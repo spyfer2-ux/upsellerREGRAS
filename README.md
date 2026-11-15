@@ -5058,3 +5058,43 @@ Execucao agendada (lembrete de 14/11, pedido do dono "faca todo esse cronograma 
 
 ## 86.4 Proximo
 - 16/11 (lote 4): SSS716CV Onix 9 nas 6 lojas + as sobras da 86.3 (gerar titulos novos se faltar). Depois disso o grupo 2 fecha, menos a GERSON (84.6).
+
+---
+
+# 87. CORRECAO DA AUDITORIA 85 NAS 7 LOJAS + CIVIC 2009-2011 (15/11/2026, 13H A 20H50)
+
+Pedido do dono: "Preciso corrigir tudo que vc disse acima. Comeca pelos que nao tem descricao. Apos ver tudo que me disse acima, quero que veja os Civics pq tem uma foto de anuncio errado titulo 2009 e foto 2011" e "Apos isso vamos corrigir tudo que esta errado". Decisoes dele (15/11): garantia dos DLT = 90 dias; "Saveiro G6 e HB4, FUN240 H1, so Saveiro 2022 e H8".
+
+## 87.1 O que foi feito (no ar)
+- SEM DESCRICAO (D01): 545 anuncios do ML ganharam descricao (padrao SSS 35W, doador do mesmo SKU) + 12 do TikTok. Os 4 sem doador: SSS621DLT x2 (texto do DLT621 da mesma loja - mesmo produto, fotos iguais), SSS1306HY Creta da Isadora (doador da SSS Shopee) e FUN97CV Onix/Tracker 2026 da SS LIGHT (escrito com os "Itens inclusos" da foto 6 do proprio anuncio: par de farois LED, botao TicTac, chicote, kit parafusos - CONFERIR).
+- ML, resto da 85 (fila G3_FIX_Q2): 846 anuncios - 315 titulos, 658 descricoes (55W -> 35W, H11 -> H8, Codigo do Produto = SKU, sem "L7 Auto Pecas", sem nome da propria loja), 22 garantias 30 -> 90 dias (texto e termo de venda).
+- Shopee: 705 anuncios (titulo/descricao). Conferido por sincronizacao com a Shopee: 704 certos; 1 em revisao na Shopee (JhonJhon 58219872417 Polo "Farolete") - refazer depois.
+- TikTok: 476 anuncios (122 com variacao) + 2 titulos com "Farolete" que estavam sem SKU.
+- SKU no TikTok (S01): 283 preenchidos na variacao (batch-online-sku, so onde estava vazio); 277 conferidos no edit. O index do TikTok mostra itemSku vazio em anuncio com variacao, por isso a auditoria ainda conta S01 neles (falso alarme).
+- Sobras de H11/55W/garantia que a 1a passada nao pegou (frases "Lampadas H11 Kit completo", "55 Watts", "vendido com lampadas H11 ou H1"): 69 anuncios (ML 26, Shopee 8, TikTok 35). FUN240-4: H11 -> H1 e "utiliza lampadas H1".
+- CIVIC 2009-2011 (FUN189-190 / SSS189-190): a capa era foto do Civic 2012+ (G9) em todos os 39 anuncios. Foto tirada dos 39 (ML 10, Shopee 18, TikTok 11); a capa agora e a foto do produto com molduras. Nao existe foto do carro 2009-2011 no banco de midias - se o dono mandar uma, da para colocar como capa.
+- ROBO (robo/pv_lib.js): SSS004VW = HB4 (Saveiro G6; so a Saveiro 2022 e H8). FUN240-4 = H1 confirmado.
+
+## 87.2 Antes x depois (anuncios NO AR; auditoria G3.audit, 85 = 15/11 00h, agora = 15/11 20h45)
+- Anuncios com pelo menos 1 ponto: 2.653 de 8.016 -> 539 de 8.292, e 203 tirando os falsos alarmes abaixo.
+- Zerados: D01 sem descricao 556, D05 55W 1.209, D03 H11 no texto 301, D06 Codigo do Produto 185, D15 nome da propria loja 108, D13 garantia 69, D11 outra loja 47, D07/D08 20.
+- Falsos alarmes que sobram: S01 281 (SKU esta na variacao do TikTok), D04 30 (SSS004VW: o texto diz HB4 e esta CERTO; a tabela da auditoria era a velha), D14 28 (texto escreve "X-Terra", titulo "Xterra"), T08 53 (o ML junta a cor do anuncio ao nome da familia: "... Transparente/Preto/Branco" e passa de 60), T10 5 ("Super Led Drl"), T03 4 (FUN240-4 "4 Farol ...", kit de 4).
+
+## 87.3 Para o dono decidir
+1. 101 titulos NAO mudados porque o titulo novo ficaria igual a outro anuncio da mesma loja (SS LIGHT 38, Isadora 24, GERSON 28, JhonJhon 4, SSS Shopee 7): sao os T02 "Par" em kit (32), T03 (22), T10 (22), T05 Farolete (9), T11/T01/T04 GERSON, T06 H11 (2). Precisa de palavra diferente para cada um (ou aceitar repetir).
+2. TikTok FUN100-101 Peugeot 207 (4 anuncios): titulo "Kit" mas SKU de par (FUN100-101-MH8/-XH8).
+3. TikTok Ducato Jumper Boxer (2): SKU numerico 22299450082; o titulo igual em outra loja usa SSS240FT. Nao troquei.
+4. 23 anuncios sem SKU sem mapa (2 ML + 21 TikTok).
+5. T07 repetidos que sobraram (11): FUN977-978 T-Cross na Isadora, FUN240-4 Strada Adventure e SSS303NS Xterra na SS LIGHT, SSS126FT Strada Cabine Estendida (base e -MH1 com o mesmo titulo "Led").
+
+## 87.4 Mecanica e armadilhas novas
+- ML: editor em iframe persistente (#g3ed) com hook no check-edit-price/batch-update (G3_FIXLIB + G3_CIVMLLIB). NOVO: o hook tambem tira fotos (dropUrls/dropIds em mainImage e pictures) e escolhe a Loja Oficial quando vem vazia - o MLB7825589426 da SS LIGHT estava sem Loja Oficial e o editor nao salvava ("Campo obrigatorio em falta"); ficou 407504 (Jz Comercio, a unica opcao da conta).
+- ML: o index do UpSeller NAO atualiza o titulo depois do batch-update (so o familyName do edit). Para conferir: POST /api/mercado/product/sync ids=... e reler depois de 2-5 min (a fila do UpSeller e lenta). Os 315 titulos estao no ar.
+- SHOPEE - ARMADILHA: na 1a passada 235 itens deram Error.Miss_required_field (Bluetooth 106664; o __G.boot nao montou o modelo ATTR_TPL.bt) e o UpSeller GUARDOU o texto novo no local mesmo com a Shopee recusando. Na repassada o needsSave achou "igual" e pulou. So a sincronizacao (POST /api/shopee/product/sync + reler) mostrou: 277 com texto velho na Shopee. Reenviados com o modelo do Bluetooth fixo (BOOT2) e conferidos de novo por sync: todos certos. REGRA: depois de gravar na Shopee, conferir SEMPRE por sync, nunca pelo index.
+- TikTok com variacao: corpo do POST /api/tiktok/product/add igual ao da tela - variationListStr (id, variationSku, barcode, price, stock, inventoryItem JSON, medidas, imageUrl, salesAttributesJson) + variationTheme, sem stock/price/itemSku no topo (G3_TKLIB F.tkBuildVar; conferido campo a campo contra a tela: 0 diferencas). Se a variacao vem sem medidas, usar as do produto ("The parcel length is required").
+- FOTO DO CARRO ERRADA POR SKU: assinatura em G3_SKU_BADSIGS ({'FUN189-190': [...], 'SSS189-190': [...]}, distancia < 30); o G3.badPhotoGuard (G3_PLANLIB) tira essa foto das copias desses SKUs. A mesma foto e CERTA nos Civic 2012+, por isso nao foi para a lista geral (G3_BADSIGS).
+- A ABA TRAVOU 7 vezes (renderizador preso, javascript_tool e screenshot falham, titulo parado). Quase sempre com o lote da Shopee (save-batch + zip) rodando junto com o editor do ML; com o ML sozinho passou 161 seguidos sem travar. Fazer UM de cada vez. Retomada: navigate para a mesma URL e eval(await get('G3_BOOT2')) (carrega tudo, o modelo do Bluetooth e F.startML/startSP/startTK); estado em G3_FIX_STATE_A/B (D01), G3_FIX2_STATE_A (Q2), G3_FIX_SP, G3_FIX_TK, G3_FIX3_ML/G3_FIX3_PLAN (sobras), G3_CIVIC_ML/TK, G3_TKSKU_STATE, G3_SPVER/G3_SPVER2, G3_AUD3 (auditoria final). G3_ML_CUR/G3_ML_HANG marcam o anuncio que estava abrindo quando travou (2 travadas no mesmo = pula).
+
+## 87.5 Proximo
+- 16/11 10h40: lote 4 do grupo 2 (86.4). ATENCAO TikTok: a loja em periodo de teste aceita no maximo 1.000 produtos ("allows at most 1000 total"). Em 15/11 20h45: SSS LIGHT TIKTOK 996 ativos + 36 em revisao + 18 para corrigir + 42 inativos; ISA TIK TOK 958 + 41 + 24 + 16. Um anuncio novo ja foi recusado por isso (SSS240FT). Contar antes; se a TikTok recusar, nao insistir e avisar o dono (liberar espaco = apagar/arquivar inativos, decisao dele).
+- Refazer o titulo do JhonJhon 58219872417 quando sair da revisao.
