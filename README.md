@@ -5098,3 +5098,48 @@ Pedido do dono: "Preciso corrigir tudo que vc disse acima. Comeca pelos que nao 
 ## 87.5 Proximo
 - 16/11 10h40: lote 4 do grupo 2 (86.4). ATENCAO TikTok: a loja em periodo de teste aceita no maximo 1.000 produtos ("allows at most 1000 total"). Em 15/11 20h45: SSS LIGHT TIKTOK 996 ativos + 36 em revisao + 18 para corrigir + 42 inativos; ISA TIK TOK 958 + 41 + 24 + 16. Um anuncio novo ja foi recusado por isso (SSS240FT). Contar antes; se a TikTok recusar, nao insistir e avisar o dono (liberar espaco = apagar/arquivar inativos, decisao dele).
 - Refazer o titulo do JhonJhon 58219872417 quando sair da revisao.
+
+---
+
+# 88. SSS218HD (CIVIC 1999/2000) FORA DE TODAS AS PROMOCOES E PRECO +30% NAS 7 LOJAS (15/11/2026, 19H)
+
+Pedido do dono: "O produto Civic 99 ou SSS218HD tire as promocoes de todas plataformas e aumente o preco em 30% estou ficando sem estoque dessa peca e nao quero pausar."
+
+## 88.1 Resultado (conferido por sync + releitura, 15/11 19h30)
+- Preco: base 309,99 -> 402,99 (+30%). Led e Xenon seguem a regra da casa sobre a base nova: SSS218HD-MH3 329,99 -> 422,99 e SSS218HD-XH3 349,99 -> 442,99 (+28% e +27%). Assim o robo de precos (modal por loja, +20/+40) nao desfaz.
+- 152 anuncios, todos no ar e todos com o preco novo depois do sync: ML 63 (SS LIGHT 33, Isadora 30), Shopee 54 (18 em cada loja), TikTok 35 (SSS LIGHT TIKTOK 18, ISA TIK TOK 17). Nenhum pausado/fora do ar com esse SKU.
+- Promocoes tiradas (so o SSS218HD; as campanhas seguem com os outros produtos):
+  - ML: 126 participacoes apagadas (TORRES 63, novembro 32, Black Friday 2026 31) por /api/mercado/promotion/product/batch-delete; depois do sync: 0 participacoes (Black Friday e "Impulsione" ficam so como candidato, sem desconto).
+  - Shopee: SSS Shopee "TORRES" 722 -> 704 e JhonJhon "OUTUBRO" 730 -> 712 (tela da promocao, busca SKU, marcar todos, Remover, Atualizar). GERSON nao tinha promocao.
+  - TikTok: "NOVEMBRO" SSS LIGHT TIKTOK 745 -> 727 e ISA TIK TOK 707 -> 690 (remove-product); VECTRA nao tinha o SKU.
+- Backup no IndexedDB: S218_BEFORE (precos antigos), S218_MLPROMO / S218_MLDEL, S218_SPPROMO, S218_TKDEL, S218_MLPRICE / S218_SPPRICE / S218_TKPRICE (resposta de cada gravacao), S218_FINAL (conferencia).
+
+## 88.2 Mecanica nova (complementa a 83.3)
+- Shopee - corpo que a tela manda ao tirar anuncios da Promocao de Desconto (capturado hoje): POST FORM /api/shopee/promotion/add com shopId, promotionName, startTime e endTime em SEGUNDOS (epoch), enableAutoRenew, promotionProductStr=[], deleteActivityProducts=[{"itemId":...}], promotionId (o da Shopee) e id (o do UpSeller) -> data.state "promotion_product_success". Lista: POST /api/shopee/promotion/index {pageNum,pageSize} -> data.page.list (status ongoing/upcoming/expired).
+- TikTok: lista das atividades POST JSON /api/tiktok/promotion-activity/page {pageNum,pageSize} (activityStatus ONGOING/EXPIRED; tela Produtos > TikTok > Marketing > Promocoes = /pt/products/tiktok/marketing/promotions). Tirar: POST JSON /api/tiktok/promotion-activity/remove-product {activityId: id do UpSeller da atividade, productId: idStr do anuncio} -> code 0 e sai na hora do detail.
+- Para o dono: se quiser o SSS218HD de volta nas campanhas ou baixar o preco quando o estoque voltar, e so pedir. As campanhas do mes NAO devem colocar o SSS218HD de novo enquanto isso.
+
+---
+
+# 89. GRUPO 3: REPLICAR OS KITS COM "COMPLETO" NO TITULO + TIKTOK FORA (15/11/2026)
+
+Pedido do dono (15/11): "os anuncios novos nao vao pro tik tok ate a segunda ordem. Quero replicar os anuncios com nome kit e adicionar a palavra COMPLETO no titulo, nos kits apenas. Vamos fazer por lotes e por dia." Respostas dele: copia NOVA (o original fica no ar); Shopee com titulo novo com Completo e 3+ palavras de diferenca; so os kits que ainda NAO tem "Completo"; escrita "Completo" (nao maiusculo).
+
+## 89.1 REGRA NOVA
+- TIKTOK: nenhum anuncio novo vai para SSS LIGHT TIKTOK nem ISA TIK TOK ate o dono mandar (vale tambem para o lote 4 do grupo 2 de 16/11).
+- Grupo 3: so KIT (titulo comeca com "Kit", SKU SSS/FUN de kit), sem "Completo" no titulo, no ar. Fora: pares, FUN240-4 (kit de 4 farois, sem chicote/rele/botao), SSS1305HY/SSS621DLT (DRL), titulo com Farolete/H11/55W, e na GERSON origem criada antes de 10/11.
+- Titulo ML: o do original + "Completo" logo depois do nome do produto ("Kit Farol De Milha Completo Celta 2007 A 2015"), ate 60 (sai 6000k, marca do carro, "Super" de Super Led... nunca carro, ano, Led/Xenon). Titulo Shopee: modelos com Completo ("Kit Farol de Milha Completo {carro/ano/lampada} Lado Direito e Esquerdo", "Kit Completo Farol Auxiliar Neblina {..} Para-choque Dianteiro" etc.), 3+ palavras de diferenca de todo titulo da loja, ate 120.
+- Grupo = loja + SKU + palavras de carro do titulo (mesma compatibilidade); origem = o anuncio do grupo com mais fotos; 1 copia para cada anuncio do grupo, cada uma com o titulo do seu original. ML: compatibilidade da origem gravada nas copias (G3.compatJob). Guarda de fotos proibidas (84.8 e Civic) rodada antes.
+- Teto por dia: 12 do mesmo SKU por loja (contando os criados no dia) e ~100 por loja.
+- Codigo: G3_C3LIB (scratchpad g3_c3.js): G3.C3.makePlan(rows,{maxShop,capSku}) -> G3.PLAN; G3.badPhotoGuard; G3.mlRunAll(i=>i.type.startsWith('C3|')); G3.compatJob(); G3.spDriver(); G3.C3.markDone(G3.PLAN). Estado separado: G3_C3_ML_STATE, G3_C3_XS_STATE (G3.saveSt/saveXs apontados para elas), G3_C3_PLAN_<dia>, G3_C3_DONE (originais ja replicados - nao repete).
+
+## 89.2 Tamanho do trabalho (15/11): 2.318 copias possiveis
+- SS LIGHT 676, Isadora 703, SSS Shopee 345, JhonJhon 347, GERSON 247 (os demais kits sem Completo ficam sem titulo possivel: no ML o titulo igual ja existe na loja ou nao cabe em 60).
+- A ~100 por loja por dia: ~7 dias no ML, ~4 na Shopee.
+
+## 89.3 Dia 1 (15/11, piloto de 10 por loja): 50 anuncios novos, todos no ar
+- SS LIGHT: SSS905RN-MH8 Pajero Full 9 + SSS905RN Pajero Full 1. Isadora: SSS1306HY Creta 4 + SSS726CV Montana 6. SSS Shopee, JhonJhon e GERSON: SSS507TA Hilux 5 + SSS204HD-MH8 Fit 5 cada.
+- Conferido: ML 20 ativos com compatibilidade da origem (20/20), Shopee 30 NORMAL; titulo exato nos 50.
+
+## 89.4 Proximo
+- 16/11: lote 4 do grupo 2 (sem TikTok) + lote do grupo 3 (~100 por loja, respeitando 12 por SKU no dia contando o lote 4).
