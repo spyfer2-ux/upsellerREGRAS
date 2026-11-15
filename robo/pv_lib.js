@@ -58,11 +58,12 @@ window.PV = (() => {
     'SSS126FT': 'H1', 'SSS101FT': 'H1', 'SSS716CV': 'H27',
     'SSS002VW': 'H8', 'SSS905RN': 'H8', 'SSS905RN-DLT622': 'H8', 'SSS1306HY': 'H8', 'SSS313NS': 'H8', 'SSS303NS': 'H8', 'SSS1105CT': 'H8', 'SSS130FT': 'H8', 'FUN100-101': 'H8',
     // pesquisa 03/11/2026 (tabela de lampadas de farol de milha; H11 vira H8)
-    'SSS240FT': 'H1', 'FUN240-2': 'H1', 'FUN240-4': 'H1',                 // Fiat Palio / Strada / Idea / Uno Vivace: H1
+    'SSS240FT': 'H1', 'FUN240-2': 'H1', 'FUN240-4': 'H1',                 // Fiat Palio / Strada / Idea / Uno Vivace: H1 (FUN240-4 = H1 confirmado pelo dono em 15/11/2026)
     'FUN205-206': 'H3',                                                     // VW Fox / Gol G4 / Saveiro G4 / Parati G4: H3
     'SSS507TA': 'HB4', 'FUN152-153': 'HB4',                                 // Toyota Hilux 2005-2011: HB4
     'FUN117-118': 'H8', 'SSS189-190': 'H8', 'SSS1103CT': 'H8', 'SSS907RN': 'H8', 'SSS905RN-V': 'H8', // Versa, Civic 09-11, C4 Pallas, Logan/Sandero 08-13: H11 -> H8
-    'FUN249-250': 'H8', 'SSS069VW': 'H8', 'SSS004VW': 'H8',                 // Gol / Voyage / Saveiro G6: H8 (igual ao SSS002VW)
+    'FUN249-250': 'H8', 'SSS069VW': 'H8',                                   // Gol / Voyage: H8 (igual ao SSS002VW)
+    'SSS004VW': 'HB4',                                                      // Saveiro G6: HB4, confirmado pelo dono em 15/11/2026 (so a Saveiro 2022 e H8)
     'FUN955-956': 'H27'                                                     // Onix Plus 2020-2021: H27
   };
   const ENCAIXE_CONFIRMAR = { 'SSS036VW': 'Polo 2003-2006: H3 ou HB4, confirmar' };
