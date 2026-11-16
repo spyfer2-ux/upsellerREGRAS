@@ -5221,7 +5221,7 @@ Pedido do dono (16/11): "faz o fechamento semanal e deixa o PDF aqui pra mim / p
 - SKU trocado: FUN100-101-MH8 -> SSS905RN-MH8 (27379422306106116 SSS TIKTOK, 27379422306106112 ISA) e FUN100-101-XH8 -> SSS905RN-XH8 (27379422306106118 SSS TIKTOK, 27379422306106114 ISA). Continuam ativos, preco sem mudar.
 - DESCOBERTA: no /api/tiktok/product/batch-online-sku de anuncio COM variacao, oldReplaceStr com ancora (^SKU$) responde sucesso (check-process successNum 2) mas NAO grava. Sem ancora gravou na hora. Conferir sempre relendo o variationSku.
 
-## 91.6 Capa do Civic 2009-2011 (PENDENTE do OK do dono)
+## 91.6 Capa do Civic 2009-2011 (opcoes mostradas; o dono escolheu a 2 - aplicado na 91.8)
 - Busca "MILHA CIVIC 2009" no Google Imagens. 3 opcoes sem logo mostradas ao dono: (1) kit com botao/rele/chicote, 1200x1200, site General Car; (2) par simples, 1024x1024, anuncio da Shopee; (3) par com 2 lampadas, anuncio do Mercado Livre.
 - Anuncios do Civic 2009-2011: FUN189-190 (par) 33 = SS LIGHT 4, SSS Shopee 6, JhonJhon 6, GERSON 6, SSS TIKTOK 6, ISA TIKTOK 5; SSS189-190 (kit) 7 = Isadora 6 (em revisao) + ISA TIKTOK 1 (em retificacao).
 - Nao baixei nem publiquei: sao fotos de outros vendedores e o dono precisa escolher qual usar.
@@ -5230,3 +5230,20 @@ Pedido do dono (16/11): "faz o fechamento semanal e deixa o PDF aqui pra mim / p
 - Varredura de fotos em 2 abas: a aba dos lotes grava a lista de fotos pendentes no IndexedDB (G3_SCANB_LIST) e uma SEGUNDA aba do UpSeller compara (30 buscas ao mesmo tempo = ~30 fotos por segundo; resultado em G3_SCANB_RES). Na mesma aba dos lotes a varredura andava a ~3 por segundo e ainda atrapalhava o lote.
 - A varredura rodando junto com o lote da Shopee na mesma aba fez a captura do "Salvar" falhar 15 vezes ("captura sem resposta") e o G3.spDriver parou em "limite". Sem a varredura, o G3.spDriver rodado de novo terminou JhonJhon e GERSON sem falha. Regra: varredura de fotos sempre em outra aba.
 - Shopee "Falhou" por video: G3.fixFails() le o index state fail, refaz o add com videoUrl vazio (S.tpl do G3.xs) e publica de novo; Image_API_error so republica; rascunho sem estado (antigo) nao e mexido.
+
+## 91.8 CAPA DO CIVIC 2009-2011 APLICADA (16/11, noite) - dono: "foto numero 2 CIVIC 2009"
+- Foto 2 = Civic prata 2009-2011 + par de farois, 1024x1024, jpeg 186 KB, sem logo (veio de um anuncio de outro vendedor na Shopee, achada no Google Imagens). Subida no Banco de Midias > Imagens de Anuncios como "Civic 2009 2011 Par.jpg" (id 27379422443073175): https://image-product.upseller.cn/online-product/398423/common/2026-11-16/20261116193027338001.jpeg. Assinatura e origem em IndexedDB G3_CIVIC_COVER.
+- Colocada como CAPA (1a foto) em 39 anuncios; as fotos de antes continuam depois dela (4 -> 5 fotos em todos):
+  - Mercado Livre 10: SS LIGHT 4 (FUN189-190) + Isadora ML 6 (SKU SSS189-190, titulo "Par ..."). Conferido por sync + edit: 1a foto nova (sourcePictures aponta para a URL do Banco de Midias). Os 6 da Isadora estavam "em revisao" e ficaram ATIVOS depois da gravacao.
+  - Shopee 18: SSS Shopee 6, JhonJhon 6, GERSON 6 (FUN189-190). Conferido por sync + releitura (1a foto = a nova, por assinatura).
+  - TikTok 11: SSS LIGHT TIKTOK 6, ISA TIK TOK 5 (FUN189-190). Conferido relendo o edit 30 s depois; todos online/active.
+- Nao mexido: 1 anuncio SSS189-190 da ISA TIK TOK que esta em "retificacao" no TikTok.
+- A VER COM O DONO: os 6 da Isadora ML tem titulo "Par" e SKU de kit (SSS189-190). Se sao par, o SKU certo e FUN189-190 (regra KIT e KIT, PAR e PAR). Nao mexi no SKU.
+- ATENCAO Shopee: a foto e a mesma de um anuncio de outro vendedor da Shopee; acompanhar a aba "Excluidos pela Shopee" nos proximos dias (76.8).
+- Backup das fotos de antes: G3_CIVIC_ML_BEFORE, G3_CIVIC_SP_BEFORE, G3_CIVIC_TK_BEFORE. Para desfazer: regravar o mainImage / imgUrl de antes.
+- Mecanica (codigo em IndexedDB G3_COVERLIB; precisa de window.__civUrl e window.__civSig):
+  - Subir foto no Banco de Midias sem dialogo: buscar a imagem com fetch na propria aba, montar um File e colocar no input de imagens da pagina /pt/media-files/listing-images (DataTransfer + evento change). A pagina chama /api/media/file/upload/generate-sign, envia o arquivo e chama /api/media/file/upload/callback (devolve o id). A URL sai de /api/media/space/resource/page (fileUrl).
+  - Shopee: G3.civSP() = batch-edit-index -> __G.buildSaveItem (newTitle/newDesc = os atuais) com mainImage = URL nova | fotos de antes (maximo 9) -> __G.saveBatch -> __G.waitTask; conferir com G3.civSPver() (sync + assinatura da 1a foto, distancia < 30).
+  - TikTok: F.tkAddCover(id) = F.tkBuild / F.tkBuildVar com imgUrl = URL nova | fotos de antes -> POST /api/tiktok/product/add; F.tkCoverVer(id) rele depois de ~30 s.
+  - Mercado Livre: F.mlAddCover({id}) = editor em iframe (F.edOpen) -> singleImgInfoRef.doMyAddMediaSpaceImgModalOk({imgUrls:[URL]}) (entra no fim) -> fileList.unshift(fileList.pop()) (vira a 1a) -> "Atualizar". ~12 s por anuncio. O ML recorta a borda branca: a assinatura da capa no ML fica a 26,5 da original (limite 30); a prova e o sourcePictures.
+
