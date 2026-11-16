@@ -5178,3 +5178,55 @@ Agendado (lote 4, pedido de 14/11) + pedido do dono de 16/11: "REPLICA SSS240FT-
 - Como foi gravado: corpo do rascunho (S.tpl do G3_C3_ML_STATE) com upc trocado + ids/titulo do rascunho -> POST /api/mercado/user-product/add -> /api/mercado/family-product/batch-publish. Os 7 ficaram ATIVOS (MLB8003609202, MLB5567713011, MLB5567725159, MLB5567725185, MLB5567713071, MLB8003577992, MLB8003578028) e a compatibilidade da origem foi regravada (7/7). Grupo 3 de 16/11: 393 de 393 no ar.
 - A CONFERIR: depois de publicar e sincronizar, o UpSeller mostra o campo upc vazio nesses 7 (e nos 2 do mesmo grupo que tinham passado sozinhos); nas copias de 15/11 o upc da origem aparece. Reler em 17/11 para saber se o ML guardou o codigo.
 - O codigo de barras do produto SSS313NS no armazem e 682548162930 (nao foi usado nos anuncios).
+
+---
+
+# 91. 16/11/2026 (TARDE): FECHAMENTO SEMANAL 09-15/11 + SSS240FT-4 LOTE 2 + GRUPO 3 LOTE B + VARREDURA COMPLETA DO LOGO L7 + TIKTOK PEUGEOT 207 + CAPA DO CIVIC
+
+Pedido do dono (16/11): "faz o fechamento semanal e deixa o PDF aqui pra mim / procure esse logo da L7 e remova / pode fazer mais um pouco dos completo / sss240ft-4 pode fazer hoje mesmo vai 10 por loja e inclua a palavra COMPLETO nas variacoes de titulos / TikTok: 4 anuncios do Peugeot 207 com titulo Kit e SKU de par: veja se a descricao tem kit, ou veja as fotos, se for PAR vc coloca FUN100-101, e se for KIT SSS905RN / Civic 2009-2011, procure a foto no google, jogue MILHA CIVIC 2009 e vai achar".
+
+## 91.1 Fechamento da semana 09/11 a 15/11/2026 (Excel + PDF entregues no chat; e-mail NAO enviado, o dono pediu so o PDF)
+- Totais = cards do UpSeller: 490 unidades, 456 pedidos validos, R$ 78.604,37, 230 anuncios (225 com unidade > 0). Importados 183 un. (37,3%, R$ 49.654,62) x Fabricados 307 un. (R$ 28.949,75).
+- Por loja: SS LIGHT 186, Isadora ML 119, SSS LIGHT TIKTOK 80, ISA TIK TOK 28, SSS Shopee 47, JhonJhon 24, GERSON 6, Loja Fisica 0. A GERSON entrou como 8a loja do fechamento (a skill fala em 7).
+- Saidas manuais: 82 unidades em 15 saidas (OUT10023 a OUT10037): AUTOPLUS 21, BALFIX 5, GR8 2, VEMBUSCARFAROIS 2, NEWS PARTS 1 e MALVA 1 (empresas novas), NAO INFORMADA 10 (OUT10031, so diz que a Daiane retirou), "FULL" 40 (OUT10030: 40 botoes BFM464 para o Full do ML - nao e retirada de empresa). 74 das 82 sao botao BFM464.
+- Insumos: 140 pares de lampada (Super LED 108: H3 51, H8 43, H1 8, HB4 6; Xenon 7; halogena 25), 140 saquinhos de kit, 307 caixas de papelao.
+- Top: SSS743CV 60, FL852 54, FUN240-2 45, SSS101FT 37, FUN100-101 30, SSS1305HY 24.
+- A conferir (estao no PDF): 11 anuncios do TikTok sem SKU atribuidos pelo titulo (13 un.); SSS202HD Civic G7 sem encaixe de lampada definido; sem cadastro no armazem SSS240FT-4 e SSS714CV; FUN240-4 cadastrado como "formado por 4 farois"; FUN240-2 armazem 76 x 79 pelos anuncios; FL852/DLT624/SSS110HD classificacao importado x fabricado.
+- Como foi coletado (mais rapido que pela tela):
+  - Vendas: POST form /api/statistics/product-sale-all-list {beginDate, endDate, sortName 0, sortValue 0, pageNum, pageSize 300}; cards em GET /api/statistics/product-sale-all-data.
+  - Saidas manuais: POST JSON /api/warehouse-inout-list/out-list {pageSize, pageNum, status "1"}; os itens de cada saida so aparecem clicando em "Detalhes" na tela (clique de verdade, o .click() por script nao abre) e lendo o DOM.
+  - Estoque por SKU no periodo: POST JSON /api/warehouse-inout/sku-list {startDate, endDate, pageNum, pageSize <= 50} -> estoque inicial/final, saida por venda e saida manual.
+  - SKU dos anuncios do TikTok com variacao: o relatorio mostra "-"; usar o variationSku de /api/tiktok/product/edit (mapa item -> SKU).
+- Arquivos de trabalho da sessao: /home/claude/fech (build.py, make_xlsx.py, make_pdf.py).
+
+## 91.2 SSS240FT-4 lote 2 (o dono liberou acima do teto de 12 do mesmo SKU no dia)
+- 10 por loja nas 5 lojas = 50 anuncios novos, TODOS com "Completo" no titulo. No ar 50/50 (ML 20 ativos com compatibilidade 20/20; Shopee 30 NORMAL). Agora 28 por loja. TikTok continua fora.
+
+## 91.3 Grupo 3 ("Completo") lote B de 16/11
+- 212 copias: SS LIGHT 40, Isadora 40, SSS Shopee 44, JhonJhon 44, GERSON 44. No ar 212/212 (ML 80 ativos, compatibilidade 80/80; Shopee 132 NORMAL), titulo exato.
+- Shopee: 22 deram "Falhou" por causa do video da origem (SSS1306HY Creta): refeito o add sem o video (videoUrl vazio) e publicado de novo; os 22 no ar.
+- Total de anuncios novos em 16/11 por loja: SS LIGHT 150, Isadora 150, SSS Shopee 154, JhonJhon 154, GERSON 157 (teto do dia batido; o dono pediu o extra).
+- Grupo 3 falta (aprox.): SS LIGHT 725, Isadora 730, SSS Shopee 228, JhonJhon 230, GERSON 110. Proximo lote: 17/11 10h40 (agendado).
+- Rascunhos antigos com falha na Shopee continuam la, sem mexer: SSS716CV-MH27 x2, SSS716CV-XH27 x2, SSS743CV x1.
+
+## 91.4 VARREDURA COMPLETA DO LOGO "L7 AUTO PECAS" (todas as lojas, todas as fotos)
+- 8.880 anuncios ativos das 7 lojas, 40.651 fotos diferentes comparadas com as assinaturas proibidas (G3_BADSIGS: logo L7, logo Mercado Livre x2, texto "Encaixe de Lampada H11"; distancia < 8).
+- Achado: so 2 anuncios, os dois no TikTok, "Kit Farol Milha Celta Prisma 2007 2010 2014 2016 + Super Led" (SSS LIGHT TIKTOK 1737849543290881031 e ISA TIK TOK 1738166047941559752), 6a foto com o logo L7. Foto removida dos 2 (6 -> 5 fotos, continuam ativos). Backup das fotos: IndexedDB G3_L7_TK_BEFORE.
+- Mercado Livre e Shopee: nenhuma foto com logo L7 (os 12 da familia SSS702CV ja tinham sido limpos na 90.2). Tambem nao apareceu logo do Mercado Livre nem a foto do texto H11.
+- 15 fotos da Shopee nao abriram (o servidor de imagens da Shopee devolve erro 503/504); nao deu para comparar essas.
+- Como tirar foto de anuncio do TikTok por API: F.tkBuild / F.tkBuildVar (corpo do add) com imgUrl sem a foto (lista separada por "|") -> POST form /api/tiktok/product/add (op 2, state online) -> reler /api/tiktok/product/edit. Funcao: F.tkDropImg(id).
+
+## 91.5 TikTok: 4 anuncios do Peugeot 207 com titulo "Kit" e SKU de par
+- Descricao dos 4 lista 02 farois + par de lampadas + chicote + rele + botao + pingos LED + ferragens = e KIT. Preco tambem e de kit (159,99 Super Led / 179,99 Xenon = SSS905RN 139,99 + 20 / + 40).
+- SKU trocado: FUN100-101-MH8 -> SSS905RN-MH8 (27379422306106116 SSS TIKTOK, 27379422306106112 ISA) e FUN100-101-XH8 -> SSS905RN-XH8 (27379422306106118 SSS TIKTOK, 27379422306106114 ISA). Continuam ativos, preco sem mudar.
+- DESCOBERTA: no /api/tiktok/product/batch-online-sku de anuncio COM variacao, oldReplaceStr com ancora (^SKU$) responde sucesso (check-process successNum 2) mas NAO grava. Sem ancora gravou na hora. Conferir sempre relendo o variationSku.
+
+## 91.6 Capa do Civic 2009-2011 (PENDENTE do OK do dono)
+- Busca "MILHA CIVIC 2009" no Google Imagens. 3 opcoes sem logo mostradas ao dono: (1) kit com botao/rele/chicote, 1200x1200, site General Car; (2) par simples, 1024x1024, anuncio da Shopee; (3) par com 2 lampadas, anuncio do Mercado Livre.
+- Anuncios do Civic 2009-2011: FUN189-190 (par) 33 = SS LIGHT 4, SSS Shopee 6, JhonJhon 6, GERSON 6, SSS TIKTOK 6, ISA TIKTOK 5; SSS189-190 (kit) 7 = Isadora 6 (em revisao) + ISA TIKTOK 1 (em retificacao).
+- Nao baixei nem publiquei: sao fotos de outros vendedores e o dono precisa escolher qual usar.
+
+## 91.7 Mecanica nova
+- Varredura de fotos em 2 abas: a aba dos lotes grava a lista de fotos pendentes no IndexedDB (G3_SCANB_LIST) e uma SEGUNDA aba do UpSeller compara (30 buscas ao mesmo tempo = ~30 fotos por segundo; resultado em G3_SCANB_RES). Na mesma aba dos lotes a varredura andava a ~3 por segundo e ainda atrapalhava o lote.
+- A varredura rodando junto com o lote da Shopee na mesma aba fez a captura do "Salvar" falhar 15 vezes ("captura sem resposta") e o G3.spDriver parou em "limite". Sem a varredura, o G3.spDriver rodado de novo terminou JhonJhon e GERSON sem falha. Regra: varredura de fotos sempre em outra aba.
+- Shopee "Falhou" por video: G3.fixFails() le o index state fail, refaz o add com videoUrl vazio (S.tpl do G3.xs) e publica de novo; Image_API_error so republica; rascunho sem estado (antigo) nao e mexido.
