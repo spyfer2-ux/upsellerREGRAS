@@ -5155,7 +5155,7 @@ Agendado (lote 4, pedido de 14/11) + pedido do dono de 16/11: "REPLICA SSS240FT-
 - SSS240FT-4 (kit 4 farois Idea Adventure, 189,99): 12 em cada uma das 5 lojas (teto do dia) = 60. Titulos todos diferentes, a maioria com "Completo" (ex. ML "Kit 4 Farol Neblina Fiat Idea Adventure 2004 A 2016 Completo"; Shopee "Kit 4 Farol de Milha Fiat Idea Adventure 2010 2011 2012 2013 2014 2015 2016 Completo Encaixe H1 com Chicote Rele e Botao"). Agora 18 por loja.
 - Lote 4 + SSS240FT-4: 110 anuncios, 110 no ar (ML 42 ativos com compatibilidade da origem 42/42; Shopee 68 NORMAL), titulo exato e estoque 10.
 - Grupo 3 dia 2: 393 criados (ML 158: SS LIGHT 79, Isadora 79; Shopee 235: SSS Shopee 72, JhonJhon 72, GERSON 91). No ar 386; compatibilidade 158/158.
-  - 7 da SS LIGHT (SSS313NS-MH8 March) o ML recusou: "Insira um codigo universal que voce nao tenha usado no anuncio de outra categoria" (GTIN da origem usado em outra categoria). Ficaram como rascunho com falha (nao apagados).
+  - 7 da SS LIGHT (SSS313NS-MH8 March) o ML recusou: "Insira um codigo universal que voce nao tenha usado no anuncio de outra categoria" (GTIN da origem usado em outra categoria). RESOLVIDO no mesmo dia (90.4): codigo de barras novo no padrao da casa e os 7 no ar.
   - Shopee: 49 deram "Falhou" na publicacao: Image_API_error 27 (republicados), video da origem que nao subiu 17 (SSS1306HY Creta; republicados SEM o video), 4 sem peso/atributo (republicados). Todos no ar no fim.
 - Total do dia por loja (novos): SS LIGHT 100, Isadora 100, SSS Shopee 100, JhonJhon 100, GERSON 103.
 - Grupo 3 falta (aprox.): SS LIGHT 764, Isadora 771, SSS Shopee 270, JhonJhon 273, GERSON 154. Proximo lote agendado para 17/11 10h40 (trig_018u9PDaeobzfsQvLohtJfBV).
@@ -5170,3 +5170,11 @@ Agendado (lote 4, pedido de 14/11) + pedido do dono de 16/11: "REPLICA SSS240FT-
 - Ordem que nao travou a aba hoje: guarda -> ML (mlRunAll) -> compatJob -> spDriver, um depois do outro, nunca junto.
 - Shopee "Falhou" depois de publicar: ler /api/shopee/product/index state fail (errMsg). Video da origem que falha: refazer o add do rascunho com os campos video* vazios (S.tpl do G3.xs) e publicar de novo.
 - Rascunhos antigos com falha na Shopee (nao sao de hoje, nao mexidos): SSS716CV-MH27/-XH27 na SSS Shopee e JhonJhon (Miss_required_field Specification) e 1 SSS743CV.
+
+## 90.4 CODIGO DE BARRAS NOVO PARA ANUNCIO RECUSADO POR GTIN (16/11, 13h)
+- Pedido do dono: "GERE um cod de barras no padrao que ja tenho!" (para os 7 SSS313NS-MH8 March da SS LIGHT).
+- Causa: a origem MLB7860465326 usa o codigo universal 044934550668 (campo upc do user product; nao e do padrao da casa) e esse codigo esta em 28 anuncios SSS313NS-MH8 de DUAS categorias (MLB46659 e MLB458222) - o ML nao aceita o mesmo codigo em categorias diferentes (erro 3701).
+- Codigo novo: 682529413785 - padrao da 76.9 ("6825" + 7 digitos + verificador UPC-A; conta conferida em 4 codigos existentes). Sem repetir: comparado com os 66 codigos do armazem (G3_WH_BARCODES; 61 no padrao) e os 57 codigos universais em uso nos anuncios do ML. Lista dos gerados para anuncio: IndexedDB G3_GTIN_GERADOS (conferir antes de gerar outro).
+- Como foi gravado: corpo do rascunho (S.tpl do G3_C3_ML_STATE) com upc trocado + ids/titulo do rascunho -> POST /api/mercado/user-product/add -> /api/mercado/family-product/batch-publish. Os 7 ficaram ATIVOS (MLB8003609202, MLB5567713011, MLB5567725159, MLB5567725185, MLB5567713071, MLB8003577992, MLB8003578028) e a compatibilidade da origem foi regravada (7/7). Grupo 3 de 16/11: 393 de 393 no ar.
+- A CONFERIR: depois de publicar e sincronizar, o UpSeller mostra o campo upc vazio nesses 7 (e nos 2 do mesmo grupo que tinham passado sozinhos); nas copias de 15/11 o upc da origem aparece. Reler em 17/11 para saber se o ML guardou o codigo.
+- O codigo de barras do produto SSS313NS no armazem e 682548162930 (nao foi usado nos anuncios).
