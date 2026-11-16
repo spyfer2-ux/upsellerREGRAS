@@ -5143,3 +5143,30 @@ Pedido do dono (15/11): "os anuncios novos nao vao pro tik tok ate a segunda ord
 
 ## 89.4 Proximo
 - 16/11: lote 4 do grupo 2 (sem TikTok) + lote do grupo 3 (~100 por loja, respeitando 12 por SKU no dia contando o lote 4).
+
+---
+
+# 90. 16/11/2026: LOTE 4 DO GRUPO 2 (SEM TIKTOK) + SSS240FT-4 NAS 5 LOJAS + GRUPO 3 DIA 2 + LOGO L7 EM 12 ANUNCIOS
+
+Agendado (lote 4, pedido de 14/11) + pedido do dono de 16/11: "REPLICA SSS240FT-4 PARA TODAS AS LOJAS, E CRIA TITULOS DIFERENTES, INCLUSIVE COM NOME COMPLETO. E PODE DAR CONTINUIDADE NAS PENDENCIAS". TikTok fora (89.1, ordem de 15/11 ate segunda ordem) - inclusive o SSS240FT-4, que nao existe no TikTok.
+
+## 90.1 Resultado (conferido 16/11 ~15h40: index releitura + compatibilidade)
+- Grupo 2 lote 4: SSS716CV Onix 9 em SS LIGHT, Isadora, SSS Shopee e JhonJhon (GERSON sem origem do Onix); sobras de Voyage na SSS Shopee e JhonJhon: SSS002VW-MH8 1, -XH8 4, FUN249-250 (Par) 2 cada. Titulos novos da Shopee gerados (G3_GENLIB).
+- SSS240FT-4 (kit 4 farois Idea Adventure, 189,99): 12 em cada uma das 5 lojas (teto do dia) = 60. Titulos todos diferentes, a maioria com "Completo" (ex. ML "Kit 4 Farol Neblina Fiat Idea Adventure 2004 A 2016 Completo"; Shopee "Kit 4 Farol de Milha Fiat Idea Adventure 2010 2011 2012 2013 2014 2015 2016 Completo Encaixe H1 com Chicote Rele e Botao"). Agora 18 por loja.
+- Lote 4 + SSS240FT-4: 110 anuncios, 110 no ar (ML 42 ativos com compatibilidade da origem 42/42; Shopee 68 NORMAL), titulo exato e estoque 10.
+- Grupo 3 dia 2: 393 criados (ML 158: SS LIGHT 79, Isadora 79; Shopee 235: SSS Shopee 72, JhonJhon 72, GERSON 91). No ar 386; compatibilidade 158/158.
+  - 7 da SS LIGHT (SSS313NS-MH8 March) o ML recusou: "Insira um codigo universal que voce nao tenha usado no anuncio de outra categoria" (GTIN da origem usado em outra categoria). Ficaram como rascunho com falha (nao apagados).
+  - Shopee: 49 deram "Falhou" na publicacao: Image_API_error 27 (republicados), video da origem que nao subiu 17 (SSS1306HY Creta; republicados SEM o video), 4 sem peso/atributo (republicados). Todos no ar no fim.
+- Total do dia por loja (novos): SS LIGHT 100, Isadora 100, SSS Shopee 100, JhonJhon 100, GERSON 103.
+- Grupo 3 falta (aprox.): SS LIGHT 764, Isadora 771, SSS Shopee 270, JhonJhon 273, GERSON 154. Proximo lote agendado para 17/11 10h40 (trig_018u9PDaeobzfsQvLohtJfBV).
+
+## 90.2 LOGO "L7 AUTO PECAS" FORA DA GERSON (regra 84.8)
+- A guarda de fotos achou o logo L7 na origem SSS702CV-MHB4 (Celta/Prisma) da SSS Shopee e da JhonJhon - as copias sairam sem a foto. Varredura da familia SSS702CV nas 7 lojas (487 fotos): 12 anuncios com o logo (Isadora 1, SS LIGHT 1, SSS Shopee 5, JhonJhon 5). Foto tirada dos 12 (ML pelo editor com dropUrls; Shopee por save-batch-edit com __G.buildSaveItem). Backup das fotos antigas da Shopee: G3_L7_BEFORE_1611; varredura: G3_L7_SCAN_702.
+- ATENCAO: so a GERSON (84.8) e a familia SSS702CV foram varridas. Pode haver logo L7 em outros SKUs da SSS Shopee/JhonJhon/ML/TikTok (copias antigas da mesma origem). Varredura completa = ~40 mil fotos (ML ~7.200 por loja, Shopee 5.200 a 11.100, TikTok ~1.700) - fazer por familia de SKU, junto com os lotes.
+
+## 90.3 Mecanica nova
+- G3_GENLIB (g3_genlib = scratchpad g3_gen.js): G3.genTitles(spec, pl, loja, n) monta titulos por combinacao (prefixo + carro + anos + extras/lampada), intercala os prefixos, ML <= 60 e palavras diferentes; Shopee 70-120 e 3+ palavras de diferenca. Specs em G3.SPECS (SSS240FT-4, Onix, Voyage -MH8/-XH8/FUN249-250). E pesado: chamar em segundo plano.
+- G3.sig com timeout de 8 s (senao uma foto lenta trava a guarda): ainda leva ~15-25 s por origem (8 fotos); a guarda de 143 origens levou ~25 min.
+- Ordem que nao travou a aba hoje: guarda -> ML (mlRunAll) -> compatJob -> spDriver, um depois do outro, nunca junto.
+- Shopee "Falhou" depois de publicar: ler /api/shopee/product/index state fail (errMsg). Video da origem que falha: refazer o add do rascunho com os campos video* vazios (S.tpl do G3.xs) e publicar de novo.
+- Rascunhos antigos com falha na Shopee (nao sao de hoje, nao mexidos): SSS716CV-MH27/-XH27 na SSS Shopee e JhonJhon (Miss_required_field Specification) e 1 SSS743CV.
