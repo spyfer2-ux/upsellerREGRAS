@@ -5238,7 +5238,7 @@ Pedido do dono (16/11): "faz o fechamento semanal e deixa o PDF aqui pra mim / p
   - Shopee 18: SSS Shopee 6, JhonJhon 6, GERSON 6 (FUN189-190). Conferido por sync + releitura (1a foto = a nova, por assinatura).
   - TikTok 11: SSS LIGHT TIKTOK 6, ISA TIK TOK 5 (FUN189-190). Conferido relendo o edit 30 s depois; todos online/active.
 - Nao mexido: 1 anuncio SSS189-190 da ISA TIK TOK que esta em "retificacao" no TikTok.
-- A VER COM O DONO: os 6 da Isadora ML tem titulo "Par" e SKU de kit (SSS189-190). Se sao par, o SKU certo e FUN189-190 (regra KIT e KIT, PAR e PAR). Nao mexi no SKU.
+- Os 6 da Isadora ML tinham titulo "Par" e SKU de kit (SSS189-190): RESOLVIDO na 91.9 (dono: "pode trocar").
 - ATENCAO Shopee: a foto e a mesma de um anuncio de outro vendedor da Shopee; acompanhar a aba "Excluidos pela Shopee" nos proximos dias (76.8).
 - Backup das fotos de antes: G3_CIVIC_ML_BEFORE, G3_CIVIC_SP_BEFORE, G3_CIVIC_TK_BEFORE. Para desfazer: regravar o mainImage / imgUrl de antes.
 - Mecanica (codigo em IndexedDB G3_COVERLIB; precisa de window.__civUrl e window.__civSig):
@@ -5246,4 +5246,10 @@ Pedido do dono (16/11): "faz o fechamento semanal e deixa o PDF aqui pra mim / p
   - Shopee: G3.civSP() = batch-edit-index -> __G.buildSaveItem (newTitle/newDesc = os atuais) com mainImage = URL nova | fotos de antes (maximo 9) -> __G.saveBatch -> __G.waitTask; conferir com G3.civSPver() (sync + assinatura da 1a foto, distancia < 30).
   - TikTok: F.tkAddCover(id) = F.tkBuild / F.tkBuildVar com imgUrl = URL nova | fotos de antes -> POST /api/tiktok/product/add; F.tkCoverVer(id) rele depois de ~30 s.
   - Mercado Livre: F.mlAddCover({id}) = editor em iframe (F.edOpen) -> singleImgInfoRef.doMyAddMediaSpaceImgModalOk({imgUrls:[URL]}) (entra no fim) -> fileList.unshift(fileList.pop()) (vira a 1a) -> "Atualizar". ~12 s por anuncio. O ML recorta a borda branca: a assinatura da capa no ML fica a 26,5 da original (limite 30); a prova e o sourcePictures.
+
+## 91.9 ISADORA ML: SKU DOS 6 "PAR" DO CIVIC 2009-2011 TROCADO PARA FUN189-190 (16/11, dono: "pode trocar")
+- Conferido antes: titulo "Par ...", descricao sem chicote/rele ("nao possui botao pulsador") e preco 169,88, igual ao FUN189-190 da SS LIGHT e da Shopee. Sao par.
+- MLB7825589754, MLB7825589720, MLB5405071489, MLB5405058789, MLB7825589490, MLB5405058627: SSS189-190 -> FUN189-190 por POST JSON /api/mercado/user-product/batch-online-sku (type 1, isVariantSku 0, idList = ids da lista, oldReplaceStr SSS189-190, newReplaceStr FUN189-190). Conferido por sync + releitura: os 6 ativos, SKU FUN189-190, 169,88.
+- A descricao e o atributo "Numero de peca" continuam citando SSS189-190 - igual nos FUN189-190 da SS LIGHT; nao mexi.
+- No ML nao sobrou nenhum anuncio com SKU SSS189-190. No TikTok ha 1 (ISA TIK TOK, em retificacao).
 
