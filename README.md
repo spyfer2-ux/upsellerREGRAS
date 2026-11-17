@@ -5438,3 +5438,52 @@ Lote agendado (trig_018u9PDaeobzfsQvLohtJfBV) + 9 pedidos do dono feitos durante
 5. SSS069VW: os anuncios antigos do dono estao a 138,88 / 168,88 (e 208,88 na GERSON); os novos a 179,88 com 18%. Na SS LIGHT ha titulos antigos com "Branco Branco" repetido.
 6. "55W" escrito na descricao: hoje o texto padrao fala "ate 35W"; se o dono quiser a palavra 55W, trocar o modelo.
 7. FUN100-101 Jumpy saiu a 78,88 (preco do rascunho); os outros FUN100-101 do dono variam de 54,99 a 139,99.
+
+---
+
+# 94. 17/11/2026 (TARDE, 12h40 A 14h45): SSS743CV A 199,88 + LEGADO DA GERSON ATIVADO + SSS413FD ATIVADO E LEVADO PARA AS OUTRAS LOJAS + HILUX = SSS559TA
+
+Pedidos do dono depois do relatorio da 93: "replicou os Etios ? pode manter SSS518TA E substituir esses Hilux por SSS559TA" / "069vw e TIC TAC nada de Colante, nem tenho mais esse botao, se quiser unificar as fotos com capas dos ativados ja pode fazer." / "PRECISO QUE ALTERE O PRECO DO SSS743CV MAIS UMA VEZ. DEIXE COMO 199,88 E O LED MAIS 20 REAIS E XENON MAIS 40 REAIS" / "SSS413FD PODE ATIVAR E TRAZER PRA NOS, NOSSO PADRAO" / "PODE ATIVAR OS PAUSADOS [legado padronizado] DESDE QUE JA ESTEJAM NO PADRAO NOVO!"
+- REGRAS NOVAS: Hilux 2017 a 2020 = SSS559TA (o SSS518TA fica so com o kit Etios 2013 a 2020). SSS069VW e SEMPRE botao tic tac - o botao colante nao existe mais. SSS743CV: base 199,88, Led 219,88, Xenon 239,88.
+
+## 94.1 SSS743CV - preco novo nas 7 lojas (146 anuncios, conferido por sincronizacao + releitura)
+| Plataforma | Loja | SSS743CV (199,88) | SSS743CV-MH3 (219,88) |
+|---|---|---|---|
+| ML | SS LIGHT / Isadora | 10 / 10 | 11 / 10 |
+| Shopee | SSS Shopee / JhonJhon / GERSON | 8 / 8 / 7 | 13 / 13 / 16 |
+| TikTok | SSS LIGHT TIKTOK / ISA TIK TOK | 10 (3 em rectification) / 10 (4 em rectification) | 10 / 10 |
+- Antes 169,00 / 189,00 (secao 83). Nenhum estava em promocao; 146 de 146 gravados e 0 fora do preco depois do sync. O Xenon (SSS743CV-XH3) continua NAO existindo; quando existir e 239,88.
+- Mecanica igual a 83.3 (ML /api/mercado/product/edit-online-price {type:0,idList:[id],value}; Shopee /api/shopee/product/edit-online-price {productId,price}; TikTok /api/tiktok/product/online-edit-price {productId, variantPriceList:[{variantId: variationList[].id, price}]}). Backup: IndexedDB S743_BEFORE_1711 / S743_AFTER_1711.
+- Robo de precos (67): preco-alvo do SSS743CV agora 199,88 (MH3 219,88).
+
+## 94.2 Hilux = SSS559TA
+- GERSON 58211893531 (419,00) e 58261888550 (338,88): SKU SSS518TA -> SSS559TA. So o SKU: continuam PAUSADOS, com titulo antigo ("... + 2 Brinde") e a foto "SUPER PROMOCAO". O SSS518TA ficou so com os 2 kits Etios.
+
+## 94.3 Legado ATIVADO na GERSON (30 anuncios, todos NORMAL, estoque 10, no padrao: SKU, titulo 91-120 com "Completo", descricao com parafusos/garantia/35W/Super Brancas)
+- SSS069VW 13 + SSS069VW-MH8 6: titulos novos (gerador), descricao com "Botao de Acionamento Modelo Tic Tac" (nenhuma fala mais em colante, touch ou universal). FOTOS: 11 base ficaram com as 5 fotos da origem das replicas (kit com Gol vermelho, farol, moldura, botao tic tac, brindes) - inclusive os 4 que mostravam o botao colante; no MH8 58205990434 a foto do botao colante virou a do tic tac; 58261898682 e 58261898803 ficaram com as fotos proprias (sem colante) porque a Shopee nao aplicava a troca de fotos neles. Preco: 12 a 179,88 (base) / 199,88 (Led); 7 estao numa PROMOCAO ANTIGA da Shopee e ficaram com o preco velho (179,90 x2, 144,13, 158,00, 189,99 e Led 188,88 x2).
+- SSS101FT 6 (ex-SSS165FT): 3 a 139,99 (preco do SSS101FT) e 3 em promocao antiga a 175,88. Foto "TA COM PRESSA? POSTAMOS EM ATE 2 HORAS" tirada do 58261883367.
+- SSS518TA Etios 2 (184,00 e 187,00), SSS905RN Ka 2 (139,99; o 58261873088 ganhou titulo e descricao no padrao), SSS907RN Clio 1 (179,99).
+- Promocao VECTRA da GERSON (18%): entraram 8 SSS069VW a 147,50 e 3 SSS069VW-MH8 a 163,90. O MH8 58261876496 tem VARIACAO e a Shopee recusou a entrada na promocao (ficou a 199,88 sem desconto).
+
+## 94.4 SSS413FD (kit Ford Ka 2015 a 2018 com molduras) - tudo ativo e nas outras lojas
+- GERSON: os 68 ATIVOS com estoque 10. 36 base a 187,48 com 18% (153,73), 1 Led a 207,48 (170,13), 2 "-V" a 197,57 / 200,59 (162,01 / 164,48); 29 estao numa PROMOCAO ANTIGA da Shopee com o preco velho (27 a 158,88, 1 a 169,88 e 1 Led a 158,88).
+- Replicas (origem GERSON 58261839791, 10 por loja, 187,48, estoque 10): SSS Shopee 10 e JhonJhon 10 no ar, na promocao VECTRA a 153,73; SS LIGHT 10 (1o MLB5573060733) e Isadora 10 com compatibilidade pelo catalogo (Ford Ka 68902 + Ka+ 17780466, 2015 a 2018 = 54 veiculos) e Preco com Desconto 153,73 (17/11 a 30/11) em 19. O MLB5573060733 ficou "paused / picture_download_pending" (o ML ainda baixando as fotos) e sem desconto - reconferir.
+- Titulos ML: Kit Farol De Milha Completo Ford Ka 2015 A 2018 Com Moldura | Kit Farol Milha Completo Ford Ka 2015 2016 2017 2018 Moldura | Kit Farol Neblina Completo Ford Ka 2015 Até 2018 Com Moldura | Kit Farol Auxiliar Completo Ford Ka 2015 A 2018 Com Molduras | Kit Completo Farol De Milha Ka Sedan 2015 A 2018 Com Moldura | Kit Farol De Neblina Ford Ka 2015 A 2018 Completo Molduras | Kit Faróis De Milha Completo Ka Hatch 2015 A 2018 Moldura | Kit Farol Milha Neblina Completo Ka Sedan 2015 A 2018 Botão | Kit Completo Farol Auxiliar Ford Ka 2015 16 17 18 Molduras | Kit Farol Milha Auxiliar Completo Ford Ka 2015 A 2018 Botão. Shopee: 10 do gerador (IndexedDB G3_T413REP).
+
+## 94.5 Promocao VECTRA depois de hoje
+- GERSON 69 anuncios (9 Vectra, 10 Kicks, 36 SSS413FD + 1 Led + 2 -V, 8 SSS069VW + 3 Led); SSS Shopee e JhonJhon 39 cada (9 Vectra, 10 Kicks, 10 SSS069VW a 147,50, 10 SSS413FD a 153,73).
+
+## 94.6 Total de 17/11 (novos no ar): SS LIGHT 159 (+1 esperando fotos), Isadora 160, SSS Shopee 156, JhonJhon 156, GERSON 134 novos + 98 antigos reativados (68 SSS413FD + 30 do legado)
+
+## 94.7 Mecanica nova
+- Estoque na Shopee sem regravar o anuncio: POST JSON /api/shopee/product/batch-online-stock {type:0, value:10, idList:[ids]} (ate 20 por chamada; funcionou em pausado).
+- Anuncio da Shopee COM VARIACAO: preco e estoque estao em p.variations[] (currentPrice, originPrice, currentStock) - mudar ali antes do __G.buildSaveItem; p.price/p.stock nao valem.
+- Ativar: POST FORM /api/shopee/product/updateUnlist {flag:'true', ids} (20 por chamada); os 98 ficaram NORMAL em ~30 s.
+- "Tool failed in the extension" nem sempre e aba morta: as vezes so o comando (o zoom falhou com a aba viva). Testar com um JS curto antes de recarregar a aba.
+- ML recem-criado a partir de fotos da Shopee pode ficar "paused" com pausedStatus ["picture_download_pending"]: e o ML baixando as fotos; volta sozinho.
+
+## 94.8 ESPERANDO O DONO
+1. ETIOS (SSS518TA): NAO foi replicado - so padronizado e ativado na GERSON (2 anuncios). Replicar 10 por loja? A que preco (hoje 184,00 e 187,00)?
+2. 39 anuncios da GERSON presos em promocao antiga com o preco velho (29 SSS413FD, 7 SSS069VW, 3 SSS101FT): tirar da promocao antiga para alinhar o preco?
+3. Hilux SSS559TA (2 pausados): padronizar titulo, descricao e fotos e ativar?
+4. SSS743CV Xenon nao existe (seria 239,88).
