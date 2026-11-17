@@ -5538,3 +5538,49 @@ Pedidos do dono depois do relatorio da 94: "SSS069VW LED nao pode existir, preci
 2. GERSON: os 84 SSS069VW / SSS069VW-MH8 antigos a 208,88 com "Botao Touch" - trazer para tic tac e para 179,88 / 199,88? E os 2 MH8 sem "Led" no titulo?
 3. Replicar o SSS069VW-MH8 (Led) para as outras lojas?
 4. Continuam da 94.8: 39 anuncios da GERSON presos em promocao antiga; Hilux SSS559TA (2 pausados); mapear as replicas novas.
+
+---
+
+# 96. 17/11/2026 (17h30 A 18h10): LOJA NOVA BELLIPARTS (MERCADO LIVRE) - COPIA DA SS LIGHT EM LOTES DE 150 POR DIA + SSS518TA NO ARMAZEM COMO FABRICADO
+
+Pedidos do dono: "primeiro tenho uma loja nova, e preciso Copiar os anuncios da SS pra ela, se chama BELLIPARTS, preciso jogar todos os anuncios pra la, pq ela sera uma nova loja!" / "depois crie o SSS518TA no armazem como Fabricado".
+Respostas do dono as perguntas (17/11): ritmo = "Lotes de 150 por dia"; descontos = "Mesmo desconto da SS LIGHT"; mapeamento = "Sim, igual a SS LIGHT". Depois que o ML recusou os descontos: "Deixar no preco cheio" (nao mexer em preco; tentar o desconto de novo a cada lote).
+
+## 96.1 A loja
+- BELLIPARTS: Mercado Livre, shopId 1204662 no UpSeller (GET /api/shop/platform-list lista todas as lojas por plataforma), autorizada em 17/11/2026 (expira 17/05/2027), SEM loja oficial (officialStoreId null). E a 3a loja do ML (SS LIGHT 1079313, Isadora ML 1104549).
+- O dono tinha feito 1 copia de teste (Etios MLB8011134746, 17h27); as 17h43 ela ja estava "deleted" - nao foi usada.
+- REGRAS DA BELLIPARTS: copia 1 para 1 dos anuncios ATIVOS da SS LIGHT (mesmo titulo, SKU, preco cheio, estoque, fotos, descricao, tipo de anuncio, garantia 90 dias); 150 por dia; compatibilidade de veiculos igual a da origem; mapa do armazem igual ao da origem; Preco com Desconto igual ao da origem QUANDO o ML aceitar - enquanto recusar, fica no preco cheio. Pausados da SS LIGHT (30) nao sao copiados.
+
+## 96.2 SS LIGHT em 17/11 (origem)
+- 1.638 no indice: 1.558 ativos, 30 pausados, 50 "deleted". 110 SKUs. 1.605 Classico (gold_special) e 33 Premium (gold_pro). 127 com venda.
+- Preco com desconto em 834 ativos: 361 a 8% e 341 a 3% (campanhas - "Black Friday 2026" DEAL do ML, 12/11 a 01/12, e campanha do vendedor; no indice aparecem como promotionStatus "candidate", sem datas), 46 a 18% (Preco com Desconto do dono, ate 29/11 e 30/11), 11 a 12%, 7 a 16%, 7 a 13% e outros.
+- MAPA: a SS LIGHT tem 901 linhas mapeadas e 686 SEM MAPA (SSS716CV 57, SSS303NS 42, -XH8 41, -MH8 41, SSS905RN 34, SSS907RN 33, SSS905RN-MH8 26, FUN249-250 26, ...) - sao as copias dos lotes do grupo 3 e as replicas, que nunca foram mapeadas.
+
+## 96.3 Lote 1 (17/11): 150 anuncios no ar
+- Fila: ativos da SS LIGHT em rodizio por SKU (SKU que mais vendeu primeiro; dentro do SKU o que mais vendeu e depois o mais antigo). O lote 1 pegou 1 anuncio de cada um dos 110 SKUs + o 2o dos 40 SKUs que mais vendem. Faltam 1.408.
+- Resultado conferido por sincronizacao (150/150) + releitura: 150 ACTIVE (140 Classico, 10 Premium), 0 falha, preco e titulo iguais aos da origem, nenhum titulo repetido na loja. 1o anuncio: MLB8011172688 (Creta SSS1305HY, piloto).
+- Compatibilidade: 141 com os mesmos veiculos da origem; 9 origens nao tem compatibilidade no ML (ex.: Creta MLB7634801400) e a copia ficou igual.
+- Mapa: 130 mapeados (128 pelo anuncio de origem, 2 pelo SKU); 20 sem mapa porque a origem esta sem mapa na SS LIGHT e o SKU nao tem nenhum mapeado la (SSS303NS, SSS303NS-XH8, SSS907RN, -MH8, -XH8, SSS002VW-XH8, SSS507TA, SSS981RN, SSS036VW, SSS202HD, SSS413FD, FUN117-118, SSS004VW, SSS044VW-MH3, FUN977-978, FUN152-153, FUN97CV, SSS080VW, SSS621DLT e 1 sem SKU). Mapas herdados que nao seguem o SKU (iguais aos da SS LIGHT): FUN240-4 -> kit "formado por 4 farois", SSS240FT-4 -> FUN240-4, SSS714CV -> SSS713CV, SSS414FD -> SSS405FD, MDM343-344 -> MDM343-MDM344, combos DLT622 / DLT619, e dois estranhos: 1 SSS905RN -> FUN100-101 e 1 FUN100-101-MH8 -> SSS905RN.
+- PRECO COM DESCONTO: 117 do lote tem desconto na origem; o ML recusou os 117 com "Mercado.Promotions.Product_eligible_discount" (conta nova; nas lojas antigas o mesmo pedido passa na hora). Dono: deixar no preco cheio. O estado guarda o preco com desconto de cada um (campo disc) e o __B.promo tenta de novo em todo lote.
+
+## 96.4 Mecanica (biblioteca belliparts/belli.js; no IndexedDB: BELLI_LIB; estado BELLI_STATE; fila do dia BELLI_LOTE_<n>; veiculos por origem BELLI_VEH)
+- Carregar depois do boot do G3: (0,eval)(await __get('BELLI_LIB')); await __B.load(). Lote inteiro: __B.day(150, nLote) em segundo plano; acompanhar __B.st (copia, casar, publicar, esperar, compat, mapa, desconto, fim do dia); resumo __B.sum(nLote), mapa __B.rm, desconto __B.rp, quanto falta __B.rest.
+- Copia: POST JSON /api/mercado/user-product/copy {id: <id UpSeller do anuncio da SS LIGHT>, shopCountVoList: [{count: '1', shopId: 1204662}]} -> chave (check-process). O rascunho nasce na BELLIPARTS com tudo igual (titulo = familyName, SKU, preco, estoque, 5 fotos, descricao, garantia, tipo) e SEM loja oficial. NAO precisa de captura do Salvar: como o titulo nao muda, e so publicar. 3 copias em paralelo; 149 em ~7 min.
+- Casar rascunho x origem: SKU + familyName (o indice do rascunho nao traz o id da origem). Publicar: POST FORM /api/mercado/family-product/batch-publish {ids: fmId,fmId,...} (15 por chamada); o id do anuncio no UpSeller continua o mesmo do rascunho. Em ~2 min os 150 estavam online. Lista por loja: /api/mercado/user-product/index com shopId e shopIds (state online | draft | fail).
+- Diferencas do anuncio copiado: perde o atributo EMPTY_GTIN_REASON (vira GTIN nulo) e o HAS_COMPATIBILITIES ate a compatibilidade ser gravada; fotos sao reenviadas (ids novos). O ML aceitou assim.
+- Compatibilidade: G3.vehiclesOf(MLB da origem, 1079313) + G3.setVehicles(id da copia, ids). Origem sem veiculos devolve lista vazia.
+- MAPA: as linhas de /api/product-map-sku/index do ML usam o userProductId (MLBU...) no campo itemId, NAO o MLB - casar pelo userProductId do indice de anuncios. Destino pelo SKU do produto do armazem (campo sku da linha) -> idStr por /api/sku/search-sku; gravar com map-group-sku. Na resposta crua o skuId vem como NUMERO de 17 digitos (o JSON.parse comum arredonda; o G3.pj devolve texto).
+- Sincronizar 150 anuncios do ML leva ~3 min por 50 (POST FORM /api/mercado/product/sync em blocos de 50).
+- Agendado: lote 2 em 18/11 as 09h40 (trig_01BLXYNwPH54PzjrNWzEQpqh, send_later; cada lote agenda o seguinte ate a fila zerar - uns 10 dias). Fica antes do lote do grupo 3 (10h40) para os dois nao usarem a aba ao mesmo tempo.
+
+## 96.5 SSS518TA NO ARMAZEM (FABRICADO) E MAPA DO ETIOS
+- Criado por POST JSON /api/sku/save-single: SKU SSS518TA, Nome e Apelido "KIT FAROL DE MILHA ETIOS 2013 A 2020" (isInvoice 1), Codigo do Produto SC52P10077, Codigo de Barras 682519063549 (padrao da casa, novo, anotado em G3_GTIN_GERADOS), categoria FAROL DE MILHA, 850 g, 25 x 35 x 25, NCM 85122011, CEST 0105500, grupo de impostos 78065, UN, origem 0, My Warehouse estoque 10, sem custo. id 27379420325654740.
+- "FABRICADO" no armazem = fornecedor AUTOPLUS COMERCIO DE PECAS E ACESSORIOS LTDA (supplierId 2405) como padrao; no corpo vai skuSupplierRelations: [{supplierId: 2405, supplierName: '...', isDefault: 1}] (o save-single aceitou e o detail-single confirma). O detail-single so responde por POST JSON {id} (GET da "Error_request_mode_incorrect").
+- Mapa: depois da Deteccao (Shopee e ML), os 52 anuncios do Etios foram mapeados no SSS518TA por map-group-sku: GERSON 12, SSS Shopee 10, JhonJhon 10, SS LIGHT 10, Isadora 10.
+- Pela regra do fechamento (skill): SSS518TA nao esta nas NF-e de importacao = FABRICADO.
+
+## 96.6 ESPERANDO O DONO
+1. SS LIGHT com 686 anuncios sem mapa (e as copias deles na BELLIPARTS nascem sem mapa): rodar o mapeamento automatico (regra da 77), menos SSS714CV e SSS240FT-4?
+2. BELLIPARTS nas rotinas: entra no robo de precos, no fechamento de vendas e nos lotes do grupo 3 / replicas novas?
+3. Preco com Desconto na BELLIPARTS: o ML recusa por enquanto; fica no preco cheio (ordem do dono) e o lote diario tenta de novo.
+4. Continuam: GERSON SSS069VW antigos a 208,88 com "Touch" (95.6), replicar o SSS069VW-MH8, 39 presos em promocao antiga, Hilux SSS559TA.
