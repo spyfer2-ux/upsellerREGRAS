@@ -5487,3 +5487,54 @@ Pedidos do dono depois do relatorio da 93: "replicou os Etios ? pode manter SSS5
 2. 39 anuncios da GERSON presos em promocao antiga com o preco velho (29 SSS413FD, 7 SSS069VW, 3 SSS101FT): tirar da promocao antiga para alinhar o preco?
 3. Hilux SSS559TA (2 pausados): padronizar titulo, descricao e fotos e ativar?
 4. SSS743CV Xenon nao existe (seria 239,88).
+
+---
+
+# 95. 17/11/2026 (15h A 16h40): SSS069VW COM LED CONFERIDO + ETIOS SSS518TA REPLICADO A 229,12 COM 18% (187,88) + SSS413FD DA SS LIGHT QUE FALTAVA
+
+Pedidos do dono depois do relatorio da 94: "SSS069VW LED nao pode existir, precisa ser SSS069VW-MH8 para ter Led, verifique." / "o Etios replica 10 por loja a 187,88 (mas jogue 18% pra cima) pra ficar no preco de 187,88".
+- REGRA (reforco): Led no SSS069VW so com o SKU SSS069VW-MH8 (Xenon SSS069VW-XH8). Anuncio com SKU SSS069VW nao pode falar de lampada Led no titulo, na descricao nem na variacao.
+- REGRA DE PRECO "X com 18% pra cima": o preco cheio e X / 0,82 e a promocao de 18% devolve X. Etios: 187,88 / 0,82 = 229,12; 229,12 x 0,82 = 187,88. (No SSS413FD de 17/11 a conta foi a outra: 158,88 x 1,18 = 187,48, com 18% = 153,73.)
+
+## 95.1 Retorno agendado (trig_01CTaDVURqMuUfam39eQgKzV, 15h03): SSS413FD MLB5573060733 da SS LIGHT
+- Depois de sincronizar o anuncio saiu do "paused / picture_download_pending" e ficou ACTIVE; criado o Preco com Desconto 153,73 (187,48 com 18%, 17/11 a 30/11). Os 20 SSS413FD do ML (SS LIGHT 10, Isadora 10) estao ativos a 153,73. O indice do UpSeller so mostrou "active" depois do POST /api/mercado/product/sync - sincronizar antes de concluir que continua pausado.
+
+## 95.2 SSS069VW com Led - conferencia nas 7 lojas (185 anuncios com SKU SSS069VW*, todos ativos; nada foi alterado)
+| Loja | SSS069VW (base) | SSS069VW-MH8 (Led) | SSS069VW-XH8 (Xenon) |
+|---|---|---|---|
+| GERSON | 54 | 50 | 5 |
+| SSS Shopee / JhonJhon | 16 / 16 | 0 | 0 |
+| SS LIGHT / Isadora | 16 / 16 | 0 | 0 |
+| SSS LIGHT TIKTOK / ISA TIK TOK | 6 / 6 | 0 | 0 |
+- RESULTADO: nenhum anuncio com SKU SSS069VW fala de lampada Led - conferidos titulo, descricao (batch-edit-index da Shopee, edit do ML e do TikTok), variacao (as unicas variacoes sao "Branco", 6 na SSS Shopee, 6 na JhonJhon e 1 na GERSON) e atributos do ML (os 12 antigos tem BULB_CONNECTOR_TYPE H8, sem Led). Todo anuncio com Led no titulo e SSS069VW-MH8 (48 na GERSON); os "3 Led a 163,90" da promocao VECTRA da GERSON (94.3) sao SSS069VW-MH8.
+- Fotos vistas (amostra): os SSS069VW base mostram lampada halogena; a unica palavra "LED" nas fotos e "BRINDES: PINGO LED" (pingo T10 de brinde, que consta na descricao).
+- ACHADOS PARA O DONO (nao mexidos):
+  1. GERSON, 2 anuncios SSS069VW-MH8 SEM "Led" no titulo: 58211893776 "Kit Milha Neblina Auxiliar Gol Voyage G6 13 14 15 16 Touch" e 23699494229 "Kit Milha Neblina Gol Voyage G6 13 14 15 16 Touch S14x" (208,88; a descricao fala de Led).
+  2. GERSON, anuncios antigos de 03/06 com titulo curto "... Touch": 40 SSS069VW e 44 SSS069VW-MH8 TODOS a 208,88 (base e Led com o mesmo preco, fora da regra Led = base + 20) e 4 SSS069VW-XH8 a 378,88 (+1 a 228,88). Titulo e descricao dizem "Botao Modelo Touch" - o dono disse em 17/11 que o SSS069VW e so tic tac.
+  3. GERSON, 6 pausados com SKU fora do padrao GRX069VW-UH8 ("... Touch S14x", 328,88).
+  4. So a GERSON tem a versao Led do Gol G6 (SSS069VW-MH8); as outras 6 lojas so tem a base.
+- Armazem: so existe o produto SSS069VW ("KIT FAROL DE MILHA GOL G6 2011 A 2013 TIC TAC"); nao existe SSS069VW-MH8 - os anuncios MH8/XH8 mapeados baixam o SSS069VW (regra da 77). SEM MAPA hoje: GERSON 13 base + 6 MH8 (legado ativado), SSS Shopee 10, JhonJhon 10, SS LIGHT 10, Isadora 10 (replicas de 17/11) e ISA TIK TOK 6.
+
+## 95.3 ETIOS SSS518TA (kit Etios 2013 a 2020) - 10 anuncios novos por loja, 229,12 com 18% = 187,88
+- Origem: GERSON 58211915627 (id UpSeller 27379420220557436), 5 fotos limpas (kit com Etios vermelho, pecas, frente do carro, verso e frente do farol; sem logo nem texto), descricao no padrao (93.4).
+- Os 2 anuncios antigos da GERSON (58211915627 e 23195027108) foram de 184,00 / 187,00 para 229,12 e entraram na promocao VECTRA a 187,88 (suposicao: o preco do SKU vale tambem para os 2 que ja existiam).
+- Replicas (estoque 10, todas no ar, conferido por sincronizacao + releitura: 32/32 Shopee e 20/20 ML): SSS Shopee 10, JhonJhon 10, GERSON 10 (NORMAL, 229,12, na promocao VECTRA a 187,88); SS LIGHT 10 (1o MLB8010982192) e Isadora 10 (active, 229,12 com Preco com Desconto 187,88 de 17/11 a 30/11, 20/20 aceitos). Titulos exatos 10/10 em cada loja.
+- Compatibilidade no ML pelo catalogo: Toyota 60297, Etios 389473 (59) + Etios Sedan 3304617 (40), 2013 a 2020 = 99 veiculos em cada um dos 20. O Etios Cross (1007094, 7 veiculos) ficou FORA: o anuncio de origem nao fala em Cross.
+- Promocao VECTRA depois disso: SSS Shopee 49, JhonJhon 49, GERSON 81.
+- Titulos ML: Kit Farol De Milha Completo Toyota Etios 2013 A 2020 Botão | Kit Farol Milha Completo Etios 2013 14 15 16 17 18 19 2020 | Kit Farol Neblina Completo Toyota Etios 2013 Até 2020 Relé | Kit Farol Auxiliar Completo Etios 2013 A 2020 Chicote Relé | Kit Completo Farol De Milha Etios Sedan 2013 A 2020 Botão | Kit Farol De Neblina Etios 2013 A 2020 Completo Com Chicote | Kit Faróis De Milha Completo Etios Hatch 2013 A 2020 Relé | Kit Farol Milha Neblina Completo Etios Sedan 2013 A 2020 H8 | Kit Completo Farol Auxiliar Toyota Etios 2013 A 2020 Botão | Kit Farol Milha Auxiliar Completo Etios Hatch 2013 A 2020 H8
+- Titulos Shopee (SSS Shopee e JhonJhon; a GERSON tem conjunto proprio; os 12 + 12 + 12 em IndexedDB G3_T518): Kit Farol de Milha Completo Toyota Etios Hatch Sedan 2013 2014 2015 2016 2017 2018 2019 2020 Chicote Relé Botão Neblina | Kit Completo Farol de Neblina Toyota Etios 2013 a 2020 Hatch Sedan Chicote Relé Botão Auxiliar Para-choque Dianteiro | Kit Farol Auxiliar Completo Toyota Etios 2013 14 15 16 17 18 19 20 Milha Neblina com Botão Encaixe H8 Direito Esquerdo | ...
+- Pesquisa (skill replica-de-anuncio): 7 consultas no autocomplete do Google (farol de milha etios, kit farol de milha etios, farol de neblina etios, farol auxiliar etios, "... com ", ... sedan, ... hatch) + pagina de concorrentes do ML. Prioridade 1: farol de milha / neblina / auxiliar etios, anos 2013 a 2020, hatch, sedan, Toyota. Fora por nao confirmados: "original" / "botao modelo original", "Cross", "Super Led", anos 2012 e 2021.
+- ARMAZEM: NAO existe produto SSS518TA (busca /api/sku/search-sku vazia) - os 32 anuncios do Etios estao sem mapa. Nao criado (o dono nao pediu).
+
+## 95.4 Total de 17/11 (novos no ar): SS LIGHT 170, Isadora 170, SSS Shopee 166, JhonJhon 166, GERSON 144 novos + 98 antigos reativados
+
+## 95.5 Mecanica nova
+- Ver fotos sem pesar a aba de trabalho: abrir uma aba de apoio em https://down-br.img.susercontent.com/file/<id>_tn, trocar o body por uma grade de <img> (ids vindos do mainImage) e tirar screenshot; fechar a aba depois. O sufixo _tn da a miniatura.
+- No batch-edit-index da Shopee o campo mainImage e a lista de TODAS as fotos separadas por "|" (a 1a e a capa); cada anuncio tem ids de foto proprios (a Shopee reenvia a foto por anuncio) - comparar ids de foto entre anuncios nao diz se a foto e a mesma.
+- O Etios inteiro (30 Shopee + 20 ML + compatibilidade) levou ~4 min com o __repgo em duas chamadas (lojas Shopee primeiro, ML depois).
+
+## 95.6 ESPERANDO O DONO
+1. Criar o produto SSS518TA no armazem (estoque 10) e mapear os 32 anuncios do Etios?
+2. GERSON: os 84 SSS069VW / SSS069VW-MH8 antigos a 208,88 com "Botao Touch" - trazer para tic tac e para 179,88 / 199,88? E os 2 MH8 sem "Led" no titulo?
+3. Replicar o SSS069VW-MH8 (Led) para as outras lojas?
+4. Continuam da 94.8: 39 anuncios da GERSON presos em promocao antiga; Hilux SSS559TA (2 pausados); mapear as replicas novas.
