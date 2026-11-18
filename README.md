@@ -5991,3 +5991,11 @@ Importante:
 - Titulos G3_T137M (/home/claude/rep137/cand2.json): 10 ML "... Toro 2016 2017 2018 ... Led / Super Led / Lampadas Led" (57 a 60), 10 + 10 Shopee/GERSON. Autocomplete: "farol de milha toro led", "lampada led farol de milha toro".
 - Resultado: ML SS LIGHT 10 (original MLB8017452244) + Isadora 10 + BELLIPARTS 10 ativos a 229,88, garantia 90 dias, compatibilidade Fiat Toro 2016 a 2018 = 21 veiculos lida nos 20 (4 copias precisaram regravar: G3.setVehicles + reler). Shopee 10 + 10 + 10. Magalu 1 (id 27379420110336472).
 - Sem produto no armazem (sem mapeamento), como os outros SKUs novos do dia (101.18 item 2).
+
+## 101.20 SSS137FT-XH8 - KIT TORO 2016 A 2018 COM ARO CROMADO + XENON (rascunho 27379422795383316, 18/11 17h40 a 18h00)
+- Pedido do dono: "SSS137FT-XH8 pode fazer nesse tambem, e replicar pra todas as lojas". Rascunho a 268,99, capa xenon + foto das lampadas xenon + foto dos reatores; o titulo do rascunho terminava em "Led" (copia do MH8) e foi trocado por "Xenon"; descricao com "01 Par de Lampadas H8 Xenon + Reator" - as outras 2 frases que ainda diziam "Super LED" viraram "Xenon com reator".
+- ATENCAO PRECO: regra Xenon = base + 40 daria 239,00 (base 199,00); o dono pos 268,99 e foi mantido.
+- Fotos: capa, farois, kit, lampadas xenon, reatores, botao, costas, aros + 2 horas + envio (ML 10); Shopee 9 (sem a de envio); Magalu 8.
+- Titulos G3_T137X (/home/claude/rep137/cand3.json): "... Xenon / Com Xenon / Lampadas Xenon / Xenon E Reator". Autocomplete do Toro com xenon quase vazio ("kit xenon fiat toro").
+- Resultado: ML SS LIGHT 10 (original MLB8017529446) + Isadora 10 + BELLIPARTS 10 a 268,99, compatibilidade 21 veiculos lida nos 20 (2 regravadas); Shopee 10 + 10 + 10; Magalu 1 (id 27379420110336484).
+- Magalu do SSS137FT-MH8: a 1a publicacao (id ...336472) sumiu da lista sem virar anuncio; refeita as 17h45 (id 27379420110336486). Conferir depois se ficou 1 so ativo por SKU.
