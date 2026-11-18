@@ -5697,3 +5697,9 @@ Ordens do dono: "coloque como SSS037VW-MHB4" / "POR ENQUANTO NAO DA PRA COLOCAR 
 2. Ecosport: trocar "2013" por "2012" nos titulos e na descricao dos 50 anuncios?
 3. GERSON: os pausados do Polo 2007-2011 com SSS036VW-MH8 / -XH8 passam para SSS037VW?
 4. Continuam: produtos sem cadastro (SSS981RN, SSS413FD, SSS414FD), GERSON SSS069VW "Touch", 39 presos em promocao antiga, Hilux SSS559TA.
+
+## 99.3 SSS037VW NO ARMAZEM (18/11, ~10h05) - dono: "sss037vw e fabricado, pode fazer o armazem"
+- Criado: SSS037VW "KIT FAROL DE MILHA POLO 2007 A 2011", Fabricado (fornecedor AUTOPLUS), Codigo do Produto SC52P10080, Codigo de Barras 682525705808, My Warehouse estoque 10, sem custo, id 27379420326002898 (mesmo corpo do save-single da 96.5).
+- MAPA (deteccao Shopee + ML, map-group-sku): 66 anuncios ligados - SS LIGHT 10, Isadora 10, SSS Shopee 10, JhonJhon 10, GERSON 26 (10 novos SSS037VW-MHB4 + os 16 pausados antigos com SKU SSS037VW). Estoque 10 / disponivel 10.
+- A aba tinha sido recarregada pelo dono (G3 sumiu): boot de novo antes de usar (testar typeof G3 no comeco de cada pedido).
+- Sai da lista de espera o item 1 da 99.2.
