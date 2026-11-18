@@ -5941,3 +5941,45 @@ Importante:
 - Recomendamos que a instalação seja realizada por profissional especializado
 - Danos causados por instalação incorreta ou mau uso não são cobertos pela garantia oferecida pelo vendedor
 ```
+
+## 101.14 PROMOCOES: MONITOR DIARIO + FUN977-978 (PAR T-CROSS) A 429,88 (18/11, 16h50 a 17h20)
+- Ordem do dono: "FUN977-978 par de T-Cross, pode colocar em promocao e deixe a 429,88, porem de o desconto em promocao e monitore todas as promocoes e me avise dos dias, quando estiver terminando, pra sempre habilitarmos". Perguntado como montar, escolheu: PRECO CHEIO 467,26 + PROMOCAO DE 8% = 429,88 (regra da casa de no maximo 8% continua valendo; nao e para deixar 988,88 com desconto grande).
+- Antes: 988,88 em todas as lojas; 1 anuncio da SS LIGHT (MLB7964113682) estava em promocao a 711,99 (tirada com POST JSON /api/mercado/product/delete-promotion {id}). Backup em IndexedDB P977_BEFORE_1811.
+- ARMADILHA DE PRECO: /edit-online-price (ML, Shopee e TikTok) recusa queda grande de uma vez: 988,88 -> 467,26 devolve {code:10001, msg:"product_price"}. Em DOIS PASSOS passa: 988,88 -> 600,00 -> 467,26 (2 s entre as chamadas). O mesmo valor de antes devolve code 0 (serve de teste).
+- Preco cheio 467,26 gravado e relido: ML SS LIGHT 10, Isadora 10, BELLIPARTS 10; Shopee 10 + 10 + 10; TikTok SSS e ISA (1 cada).
+- Promocao a 429,88:
+  - Mercado Livre (SS LIGHT 10 + Isadora 10): POST JSON /api/mercado/product/batch-create-promotion [{id, dealPrice:429.88, promotionStartDate:"2026-11-18", promotionFinishDate:"2026-12-01"}] (o "Preco com Desconto" dura no maximo 14 dias) -> chave; conferir em /api/check-process?uuid=<chave> (processMsg.data.successList/failList; ~10 s por anuncio). 20 de 20 com discountPrice 429,88 (1 da Isadora so entrou na 2a chamada). VENCE EM 01/12/2026.
+  - Shopee: POST FORM /api/shopee/promotion/add na promocao de desconto que ja existe em cada loja (SSS Shopee "TORRES" id 27379420779235728; JhonJhon "OUTUBRO" id 27379420779231654; GERSON "VECTRA" id 27379420786941041 porque a "TORRES SSS" ja tem 1.000 anuncios), promotionProductStr com itemId e promotionPrice "429.88" -> state promotion_product_success. Conferido em POST FORM /api/shopee/promotion/detail {id} (shopeeProductList: salePrice 429.88 / price 467.26 nos 10 de cada loja) e no anuncio (isPromotion 1, salePrice 429.88). VENCEM EM 30/11/2026 junto com a promocao da loja.
+  - NAO FEITO (esperando o dono): TikTok (2 anuncios a 467,26, sem promocao - falta capturar o corpo de /promotion-activity/add-product), BELLIPARTS (10 a 467,26 sem promocao pela regra "sem desconto ate 10 vendas"), Magalu (1 anuncio ainda a 988,88).
+- PROMOCOES QUE EXISTEM HOJE (leitura de 18/11): ML campanhas (/api/mercado/promotion/seller-index): SS LIGHT "TORRES" ate 30/11, "novembro" ate 02/12, Black Friday 2026 (DEAL) ate 01/12; Isadora "novembro" ate 30/11, "BLACK FRIDAY PECAS AUTO" (SMART) ate 30/11, Black Friday 2026 ate 01/12. Shopee (/api/shopee/promotion/index -> data.page.list; 32 no total, 6 ativas): JhonJhon "VECTRA" 49 e "OUTUBRO" 712; SSS Shopee "VECTRA" 49 e "TORRES" 704; GERSON "VECTRA" 81 e "TORRES SSS" 1.000 - todas ate 30/11. TikTok (/api/tiktok/promotion-activity/page): SSS e ISA com 2 atividades ONGOING cada (9 e ~700 anuncios) ate 30/11 23h59.
+- MONITOR DIARIO: tarefa agendada "Monitor de promocoes UpSeller" (trig_01B6SLQidoV5UQeQig8iSg2s), todo dia 09h13 (Brasilia), SO LEITURA: le as 4 listas acima + o "Preco com Desconto" por anuncio do ML (index: discountPrice < price; termino em priceInfoVo.endDate), monta a tabela plataforma | loja | promocao | anuncios | termino | dias que faltam, avisa o que vence em ate 3 dias e o que venceu, e PERGUNTA ao dono se renova. Nao cria nem renova nada sozinho.
+- A regra dos 8% vale tambem para o robo de precos: FUN977-978 a 467,26 com 429,88 = 8,0% (dentro da regra).
+
+## 101.15 FUN977-978 - MAIS TITULOS E MAIS LOJAS ("tem poucos titulos, pode gerar mais e replicar em mais lojas")
+- Antes: 2 anuncios por loja no ML (mesmo titulo repetido), 1 por loja na Shopee e no TikTok, 2 fotos, descricao comecando no meio da frase.
+- Feito: ML SS LIGHT + 8, Isadora + 8, BELLIPARTS + 8 (= 10 por loja); Shopee + 9 por loja (= 10 por loja, 30 online/NORMAL). Compatibilidade 34 veiculos T-Cross copiada da origem e lida nos 30 do ML. TikTok fica para o lote de 19/11.
+- Titulos (IndexedDB G3_T977; /home/claude/rep977/cand.json): 10 ML "Par Farol ... Drl ... T-cross 2018 A 2024 ..." (55 a 60) e 10 + 10 Shopee/GERSON (95 a 118) com Drl, Daylight, Chicote, Modulo, Lente Lisa, Policarbonato, Encaixe H8. Autocomplete: "farol de milha t cross drl", "farol de neblina t cross", "farol auxiliar t cross", anos 2020 a 2024. Ficaram de fora: Led, Sense, Highline (nao confirmados).
+- Descricao das COPIAS no padrao do dono (IndexedDB G3_DESC977, 1.319 caracteres), so com o que a descricao antiga dizia (lente lisa de policarbonato, H8 35W, regulagem manual, acompanha chicote Daylight + modulo, T-Cross 2018 em diante, 90 dias). Os 2 anuncios antigos de cada loja continuam com o texto antigo.
+- Fotos das copias: as 2 do anuncio + 2 horas + envio no ML (4); + 2 horas na Shopee (3).
+- Mecanica: copias de anuncio JA ONLINE com titulo, descricao e fotos novos: G3.mlItem(item, {}) com item = {shop, shopId, pl:'ML', sku, car, type:'REP|dia|SKU|carro', n, have:0, origin:{id, item, sku, t}, titles} e um gancho no G3.pj (em /api/mercado/user-product/add, se userProductList[0].itemSku for o SKU: troca itemList[0].description e acrescenta as 2 fotos em mainImage); depois G3.VEH[origem] = {ids} e G3.compatJob(). Shopee: G3.xItem(item, {fix:(ps,id)=>{ps.set('description',...); ps.set('mainImage',...)}}) com origin = o anuncio da propria loja. "captura sem resposta" na 1a loja: chamar G3.xItem de novo (os rascunhos ficam guardados).
+- Falta: garantia de 90 dias no campo de garantia (saleTerms) desses anuncios do ML - a origem nao tem.
+
+## 101.16 SSS033HY-MH8 (LED) E SSS033HY-XH8 (XENON) - HB20, dos rascunhos do dono
+- MH8: rascunho 27379422795142546, 269,88, capa e foto das lampadas LED novas; descricao = a do SSS033HY com "02 Lampadas LED H8" (ajustei tambem as outras 2 frases para "lampadas LED H8"). XH8: rascunho 27379422795153660, 299,88, capa + lampadas xenon + reatores; "02 Lampadas Xenon H8 com Reatores" (as outras 2 frases viraram "Xenon H8 com reatores"); o titulo do rascunho dizia "Super Led" e foi trocado por "Xenon".
+- ATENCAO PRECO: pela regra Led = base + 20 e Xenon = base + 40 seriam 269,00 e 289,00; o dono pos 269,88 e 299,88 nos rascunhos e foi mantido. O robo de precos das 20h57 pode querer corrigir - conferir com o dono.
+- Fotos: capa nova + 4 do kit + lampadas (LED ou xenon + reatores) + parafusos + 2 horas + envio (ML 9 / 10; Shopee 8 / 9 sem a de envio).
+- Titulos: G3_T033M e G3_T033X (cand2.json e cand3.json em /home/claude/rep033): "... Led / Super Led / Lampadas Led / Led 6000k" e "... Xenon / Com Xenon / Lampadas Xenon / Xenon E Reatores" (autocomplete: "farol de milha led hb20 2014", "super led farol de milha hb20", "lampada led farol de milha hb20", "kit xenon farol de milha hb20").
+- Resultado de cada um: ML SS LIGHT 10 + Isadora 10 + BELLIPARTS 10 ativos, compatibilidade 69 (1 copia do XH8 precisou regravar); Shopee 10 + 10 + 10 online/NORMAL (1 da GERSON do MH8 falhou com Image_API_error e voltou com G3.imgFix()); Magalu 1 ativo cada.
+
+## 101.17 SSS137FT - KIT TORO 2016 A 2018 COM ARO CROMADO (rascunho 27379422795271061)
+- "Kit Farol Milha Neblina Aro Cromado Toro 2016 2017 2018", 199,00, descricao ja no padrao do dono (tirados so os "**"; garantia "3 meses"; lampadas H8 de cortesia), 7 fotos + 2 horas + envio.
+- Compatibilidade: Fiat 67781 / Toro 389627 / 2016 a 2018 = 21 veiculos (lida nos 20).
+- Titulos G3_T137 (/home/claude/rep137/cand.json): 10 ML (54 a 60), 10 + 10 Shopee/GERSON com Aro(s) Cromado(s), Chicote, Rele, Botao, Suportes, Encaixe H8.
+- Resultado: ML SS LIGHT 10 (original MLB8017338136) + Isadora 10 + BELLIPARTS 10; Shopee 30 online/NORMAL; Magalu 1 ativo (id 27379420110336217).
+
+## 101.18 ESPERANDO O DONO (18/11, 17h20)
+1. FUN977-978 no TikTok (2), na BELLIPARTS (10) e na Magalu (1): por 429,88 direto no preco, ja que nessas lojas nao ha promocao criada?
+2. SSS033HY, SSS033HY-MH8, SSS033HY-XH8 e SSS137FT nao existem no armazem (sem mapeamento): criar como Fabricado (AUTOPLUS), estoque 10?
+3. Precos 269,88 (Led) e 299,88 (Xenon) do HB20 x regra base + 20 / base + 40.
+4. TikTok dos 5 SKUs novos de hoje: lote de 19/11 (os 150 de hoje ja foram).
+5. Magalu: o 1o registro de cada publicacao por API fica como "deleted" no UpSeller (sobra) - apagar junto com as outras sobras quando o dono autorizar.
