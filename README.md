@@ -5584,3 +5584,57 @@ Respostas do dono as perguntas (17/11): ritmo = "Lotes de 150 por dia"; desconto
 2. BELLIPARTS nas rotinas: entra no robo de precos, no fechamento de vendas e nos lotes do grupo 3 / replicas novas?
 3. Preco com Desconto na BELLIPARTS: o ML recusa por enquanto; fica no preco cheio (ordem do dono) e o lote diario tenta de novo.
 4. Continuam: GERSON SSS069VW antigos a 208,88 com "Touch" (95.6), replicar o SSS069VW-MH8, 39 presos em promocao antiga, Hilux SSS559TA.
+
+---
+
+# 97. 17/11/2026 (18h20 A 19h30) E 18/11/2026 (08h00): MAPEAMENTO AUTOMATICO DA SS LIGHT, REPLICA DO SSS441FD-MHB4 (ECOSPORT), LOTE 2 DA BELLIPARTS E QUEDA DA SESSAO DO UPSELLER
+
+Pedidos do dono (17/11, noite): "deixe agendado para as 08:00 assim que eu te der qualquer comando." / "pode rodar o mapeamento inclusive no 714cv e sss240ft-4" / "tem um produto SSS441FD-MHB4 em Rascunhos, pode replicar pra todas as lojas, no meu padrao!" / "SSS036VW-MHB4 TMB ESTA EM RASCUNHO, PODE COPIAR PARA TODAS AS LOJAS NO MEU PADRAO" / "SSS409FD-MH8 TMB ESTA EM RASCUNHO..." / "PERDAO, SSS409FD EU PUBLIQUEI, MAS PODE REPLICAR ELE!".
+- COMBINADO: o lote diario da BELLIPARTS roda as 08:00 de Brasilia; se o Chrome/UpSeller nao estiver disponivel nessa hora, roda assim que o dono mandar o primeiro comando do dia.
+
+## 97.1 MAPEAMENTO AUTOMATICO NA SS LIGHT (17/11, 18h20)
+- 686 linhas sem mapa -> /api/product-map-sku/auto-mapping {platform:'mercado', idList} em blocos de 200 -> 652 mapeadas, todas no produto de SKU igual ou no produto base (sufixo de lampada), nenhuma fora da regra. Mapeados depois: 1.553 de 1.587 linhas.
+- Ficaram SEM MAPA 34 (nao existe produto do armazem com esse SKU): SSS981RN 16, SSS413FD 10, SSS414FD 3 (os outros SSS414FD da loja estao no SSS405FD), sem SKU 2, FUN152-153 1, FUN97CV 1, SSS621DLT 1.
+- SSS714CV e SSS240FT-4: o dono liberou rodar "inclusive" neles, mas nao havia nenhuma linha deles sem mapa (SSS714CV 25 -> SSS713CV; SSS240FT-4 28 -> kit FUN240-4, regra da 92.10) - nada mudou neles. ATENCAO para o futuro: o automatico mandaria um SSS714CV novo para o produto SSS714CV e um SSS240FT-4 novo para o produto simples SSS240FT-4; continuar mapeando esses dois pela regra da 92.10 ate o dono dizer o contrario.
+- BELLIPARTS depois disso: 144 de 150 do lote 1 mapeados (6 sem mapa: origem sem produto).
+- Mecanica: cada bloco de 200 fica ~3 min no check-process e volta "sem resposta", mas o mapa E aplicado (conferir pelo index: sem mapa 686 -> 300 -> 34). Backup das linhas antes: IndexedDB MAP_SSL_1711_BEFORE.
+
+## 97.2 SSS441FD-MHB4 - KIT ECOSPORT 2003 A 2013 SUPER LED HB4 (replicado em 17/11, conferido em 18/11 por sincronizacao 30/30 + 20/20)
+- Origem: rascunho do ML na SS LIGHT (id 27379422782961511), coletado do anuncio antigo do proprio dono ("...farolete completo ecosport 2003 ... 2013", loja oficial 407504). Titulo de 97 caracteres com "Farolete" - refeito. 5 fotos sem logo (a 2a era repetida da 1a: ficaram 4).
+- Descricao no padrao (__G35.gen + linha dos parafusos): 02 farois, chicote, rele, botao de acionamento, par de lampadas Super LED 6000K HB4, pingo T10 de brinde, kit de parafusos; lente lisa em policarbonato; 35W; Ecosport 2003 a 2013 (como no anuncio do dono).
+- No ar: SS LIGHT 10 (1o MLB5574061567), Isadora 10, SSS Shopee 10, JhonJhon 10, GERSON 10 - 178,36 (preco do rascunho; nao existe SSS441FD base para a regra Led = base + 20), estoque 10, titulos exatos 10/10 por loja. Shopee com Part Number SSS441FD e as 4 fotos pelo URL do mlstatic.
+- Compatibilidade ML: Ford 66432, Ecosport 389468, 2003 a 2012 = 95 veiculos (o 2013 do catalogo e a geracao nova - ficou fora ate o dono confirmar; os concorrentes separam 2003-2007, 2008-2012 e 2013+).
+- Armazem: NAO existe SSS441FD - os 50 anuncios estao sem mapa.
+- Titulos ML: Kit Farol De Milha Completo Ecosport 2003 A 2013 Super Led | Kit Farol Milha Completo Ford Ecosport 2003 Até 2013 Led | Kit Farol Neblina Completo Ecosport 2003 A 2013 Super Led | Kit Farol Auxiliar Completo Ecosport 2003 A 2013 Led 6000k | Kit Completo Farol De Milha Led Ford Ecosport 2003 A 2013 | Kit Farol De Neblina Led Ecosport 2003 A 2013 Completo Hb4 | Kit Faróis De Milha Completo Ecosport 2003 A 2013 Led Hb4 | Kit Farol Milha Neblina Completo Ecosport 2003 A 2013 Led | Kit Completo Farol Auxiliar Led Ford Ecosport 2003 A 2013 | Kit Farol De Milha Led Completo Ecosport 2003 A 2013 Botão. Shopee e GERSON: replicas/titulos_1711_1811.json (e IndexedDB G3_T441).
+- Pesquisa (skill): 6 consultas no autocomplete + pagina de concorrentes do ML. Fora: "Ranger", "original".
+
+## 97.3 SSS036VW-MHB4 (rascunho 27379422782975018, "Kit Farol Milha Cibie Neblina Polo 2007 2008 2009 2011", 160,43) - NAO REPLICADO, DUVIDA DE SKU
+- O rascunho e o kit do POLO 2007 A 2011 (molduras, botao alternativo, Super Led 6000K HB4, lente de vidro; a descricao antiga fala "ate 55W" - no padrao vira 35W). Nas lojas do dono e no armazem o SSS036VW e o POLO 2003 A 2006 ("KIT FAROL DE MILHA POLO 2003 A 2006 BOTAO COLANTE", 167,56). Na GERSON os pausados do Polo 2007-2011 estao como SSS037VW (16) e tambem como SSS036VW-MH8 (20) / -XH8 (14).
+- Perguntar ao dono: SSS036VW-MHB4 mesmo, ou SSS037VW-MHB4? E o preco: 160,43 do rascunho ou base + 20 (187,56)? Titulos prontos (replicas/titulos_1711_1811.json, IndexedDB G3_T036), fotos conferidas (4, sem logo), compatibilidade prevista Polo 61695 + Polo Sedan 389571, 2007 a 2011.
+- ARMADILHA NA GERSON: os pausados antigos tem titulo curto ("Kit Farol Milha Polo 2007 2011 Led"); pela regra do subconjunto o titulo novo nao pode conter todas as palavras de um deles - o __pick so aceitou 3 de 12. Titulo novo para a GERSON: sem a lista de anos completa ("2007 a 2011") e sem "Farol" + "Milha" juntos quando existir pausado assim.
+
+## 97.4 SSS409FD-MH8 - KIT FOCUS 2009 A 2013 SUPER LED H8 COM MOLDURAS (o dono publicou: SS LIGHT MLB5574116845, "Kit Cibie Milha Focus 2009 2010 2011 2012 2013", 173,09) - PREPARADO, NAO REPLICADO (a sessao caiu antes)
+- 7 fotos sem logo (a 2a repetida da 1a: usar 6). Descricao no padrao gerada (molduras, chicote, rele, botao, Super LED 6000K H8, parafusos). Titulos prontos e validados (IndexedDB G3_T409 e replicas/titulos_1711_1811.json; os da GERSON ja sem a lista de anos completa). Compatibilidade prevista: Ford 66432, Focus 68463, 2009 a 2013 = 52 veiculos (Focus Sedan 45 fica fora: o anuncio nao fala em sedan). O anuncio do dono esta sem compatibilidade.
+- Plano: __repDraft com a origem ja online (so grava a compatibilidade nela), copias SSL 9 + Isadora 10 com a descricao no padrao (gancho no G3.pj do user-product/add para trocar description e tirar a foto repetida) e Shopee 10 por loja pelo doador.
+
+## 97.5 BELLIPARTS - LOTE 2 (18/11, 08h00, agendado) - PARCIAL
+- 150 copiados (102 SKUs; 116 com desconto na origem). 149 ACTIVE; 1 falhou na publicacao: MDM371-372 "Par Moldura Farol Milha Citroen C4 Pallas 2008 A 2011 Preta" (origem MLB5405083219; erro do ML com os codigos 303 "Attribute [GTIN] ignored" e 3703).
+- Compatibilidade: 126 iguais a origem + 8 origens sem compatibilidade; 15 PENDENTES. Mapa e nova tentativa de desconto do lote 2: NAO feitos. Conferencia por sincronizacao: NAO feita. Lote 1 continua 150 ACTIVE.
+- Total na BELLIPARTS: 299 ativos. Faltam ~1.260 da SS LIGHT.
+
+## 97.6 SESSAO DO UPSELLER CAIU (18/11, ~08h05)
+- No meio do lote 2 TODAS as chamadas passaram a devolver {code: 2001, msg: "validated.failed"}; recarregando a aba caiu em /login (e-mail e senha preenchidos pelo navegador + CAPTCHA). Parado ali: login e captcha sao do dono.
+- REGRA: antes de cada fase longa, testar a sessao com uma chamada barata; code 2001 "validated.failed" = sessao encerrada -> parar, avisar o dono, nao recarregar em laco. O estado (IndexedDB) nao se perde.
+- Retomada depois do login: boot (G3_DAYLIB + __dayBoot), (0,eval)(await __get('BELLI_LIB')), await __B.load(), await __B.compat(), await __B.map(), await __B.promo(13), sincronizar e conferir; depois o SSS409FD-MH8.
+
+## 97.7 Mecanica nova
+- __repDraft (IndexedDB G3_REPDRAFT): rascunho do ML na SS LIGHT -> 1o anuncio no padrao com o modelo do doador (titulo, SKU, descricao, fotos, preco) -> publica -> compatibilidade -> copias SSL 9 + Isadora 10 (G3.mlItem) -> Shopee 10 por loja copiando o anuncio de origem do doador do dia (plano C3) e trocando SKU, descricao, fotos (URLs do mlstatic), preco e Part Number no modelo. Config: {sku, draftId, car, titles:{ML,SP,GER}, desc, imgs, imgsSP, price, veh}. O SSS441FD-MHB4 inteiro (50 anuncios) levou ~6 min.
+- Catalogo de veiculos do ML: modelos de uma marca = /api/mercado/product-vehicle/vehicle {site:'BR', type:2, paramMap:{BRAND:[id]}} (nomes vem como "Polo-Volkswagen"); anos = type 3 com BRAND + MODEL. Ford Ecosport 389468; Ford Focus 68463, Focus Sedan (45 veiculos 2009-2013); VW Polo 61695, Polo Sedan 389571.
+- Agendamento: update_trigger aceitou trocar o horario e o texto do lote (trig_01BLXYNwPH54PzjrNWzEQpqh, 08:00). Lote de 19/11: trig_01AuAfVReacw9nRa7VeoNs1F (08:00).
+
+## 97.8 ESPERANDO O DONO
+1. LOGIN no UpSeller (sessao caiu em 18/11 as 08h05). Sem isso nao roda nada: sobras do lote 2 da BELLIPARTS, lote do grupo 3 das 10h40, replica do SSS409FD-MH8.
+2. SSS036VW-MHB4: confirmar o SKU (o SSS036VW das lojas e Polo 2003-2006; o rascunho e Polo 2007-2011) e o preco.
+3. Criar SSS441FD (e SSS409FD) no armazem como Fabricado, estoque 10, e mapear?
+4. Ecosport: o kit serve mesmo ate 2013? Focus: incluir o Sedan na compatibilidade?
+5. SSS414FD (3), SSS981RN (16), SSS413FD (10) sem produto no armazem.
