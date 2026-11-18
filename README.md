@@ -5638,3 +5638,38 @@ Pedidos do dono (17/11, noite): "deixe agendado para as 08:00 assim que eu te de
 3. Criar SSS441FD (e SSS409FD) no armazem como Fabricado, estoque 10, e mapear?
 4. Ecosport: o kit serve mesmo ate 2013? Focus: incluir o Sedan na compatibilidade?
 5. SSS414FD (3), SSS981RN (16), SSS413FD (10) sem produto no armazem.
+
+---
+
+# 98. 18/11/2026 (08h15 A 08h35): SESSAO DE VOLTA - LOTE 2 DA BELLIPARTS FECHADO, SSS409FD-MH8 (FOCUS) REPLICADO, SSS441FD E SSS409FD NO ARMAZEM E MAPEADOS
+
+Resposta do dono (18/11, depois de logar): "COMPATIBILIDADES PODE FAZER, GERE O COD BARRAS, ECO PODE TIRAR 2013 DA COMPATIBILIDADE, CRIE O MAPEAMENTO SSS441FD E SSS409FD, PODE FAZER AS PENDENCIAS E BORA TRABALHAR".
+- Decisoes: Ecosport (SSS441FD) = 2003 a 2012 na compatibilidade (o 2013 sai); Focus pode ter a compatibilidade completa (Focus + Focus Sedan); criar os produtos SSS441FD e SSS409FD no armazem (com codigo de barras da casa) e mapear.
+
+## 98.1 BELLIPARTS - lote 2 fechado (conferido por sincronizacao 149/149 + releitura)
+- 150 ACTIVE (142 Classico, 8 Premium), preco e titulo iguais aos da origem. Loja com 300 ativos.
+- Compatibilidade: as 15 que faltavam gravadas. Mapa: 142 mapeados, 8 sem mapa (origem sem produto no armazem). Preco com Desconto: 233 tentativas (lotes 1 e 2), 233 recusas "Product_eligible_discount" - continua no preco cheio (ordem do dono).
+- MDM371-372 "Par Moldura Farol Milha Citroen C4 Pallas 2008 A 2011 Preta": a causa da falha NAO era o codigo de barras (o 303 do GTIN e so aviso) - era o erro 3703 "As fotos devem ter pelo menos 500 pixels em um dos lados e 250 no outro": a capa da origem tem 487 x 490. Regravado sem essa foto (ficaram 3, a capa passou a ser a 2a) e publicado: MLB5576637199, ACTIVE, 31 veiculos. Ainda sem linha no mapa (entra na deteccao do proximo lote). A origem na SS LIGHT (MLB5405083219) continua com a foto pequena.
+- Mecanica do conserto: G3.capture do Salvar na tela do rascunho que falhou (/pt/products/mercado/up-edit/<id>?dataType=2) -> corpo -> tirar a foto do mainImage -> /api/mercado/user-product/add -> batch-publish. Medir foto: new Image() + naturalWidth/naturalHeight na propria aba.
+
+## 98.2 SSS409FD-MH8 - KIT FOCUS 2009 A 2013 SUPER LED H8 COM MOLDURAS (conferido por sincronizacao 30/30 + 21/21)
+- Origem: o anuncio que o dono publicou na SS LIGHT (MLB5574116845, "Kit Cibie Milha Focus 2009 2010 2011 2012 2013", 173,09) - NAO foi alterado (titulo de 46 caracteres e descricao antiga continuam como ele publicou); so ganhou a compatibilidade.
+- Copias no padrao (descricao nova com molduras, chicote, rele, botao, Super LED 6000K H8 e parafusos; 6 fotos, sem a repetida): SS LIGHT 9, Isadora 10, SSS Shopee 10, JhonJhon 10, GERSON 10 - 173,09, estoque 10, titulos exatos. Shopee com Part Number SSS409FD.
+- Compatibilidade ML (origem + 19 copias): Ford 66432, Focus 68463 (52) + Focus Sedan 389485 (45), 2009 a 2013 = 97 veiculos.
+- Titulos ML: Kit Farol De Milha Completo Focus 2009 A 2013 Super Led (so na Isadora) | Kit Farol Milha Completo Ford Focus 2009 10 11 12 2013 Led | Kit Farol Neblina Completo Focus 2009 A 2013 Led Moldura | Kit Farol Auxiliar Completo Focus 2009 A 2013 Led Molduras | Kit Completo Farol De Milha Led Ford Focus 2009 A 2013 | Kit Farol De Neblina Led Focus 2009 A 2013 Completo H8 | Kit Faróis De Milha Completo Focus 2009 A 2013 Led H8 | Kit Farol Milha Neblina Completo Focus 2009 A 2013 Led | Kit Completo Farol Auxiliar Led Ford Focus 2009 A 2013 | Kit Farol De Milha Led Completo Focus 2009 A 2013 Botão. Shopee e GERSON: replicas/titulos_1711_1811.json (IndexedDB G3_T409).
+- Pesquisa (skill): 5 consultas no autocomplete + pagina de concorrentes do ML ("farol de milha / neblina / auxiliar focus", anos).
+- Mecanica: como a origem ja estava online, o __repDraft so gravou a compatibilidade nela; para as copias do ML sairem com a descricao no padrao foi posto um gancho no G3.pj (window.__fixAdd troca description e tira a foto repetida em todo /api/mercado/user-product/add do SKU). 50 anuncios em ~3 min.
+
+## 98.3 ARMAZEM (Fabricado = fornecedor AUTOPLUS, estoque 10, sem custo, mesmo padrao do SSS518TA)
+- SSS441FD "KIT FAROL DE MILHA ECOSPORT 2003 A 2012": Codigo do Produto SC52P10078, Codigo de Barras 682568450307, id 27379420325927499.
+- SSS409FD "KIT FAROL DE MILHA FOCUS 2009 A 2013": SC52P10079, 682531405655, id 27379420325927509.
+- MAPA (deteccao Shopee + ML, depois map-group-sku): SSS441FD-MHB4 -> SSS441FD em 51 anuncios (GERSON 10, SSS Shopee 10, JhonJhon 10, SS LIGHT 10, Isadora 10, BELLIPARTS 1); SSS409FD-MH8 -> SSS409FD em 60 (GERSON 19, sendo 9 pausados antigos; SSS Shopee 10; JhonJhon 10; SS LIGHT 10; Isadora 10; BELLIPARTS 1).
+
+## 98.4 Ecosport SSS441FD-MHB4
+- A compatibilidade ja estava em 2003 a 2012 (95 veiculos) - nada a tirar. Os TITULOS e a descricao dos 50 anuncios continuam dizendo "2003 a 2013" (igual ao rascunho do dono): perguntar se troca para 2012.
+
+## 98.5 ESPERANDO O DONO
+1. SSS036VW-MHB4 (Polo 2007 a 2011): SKU certo (SSS036VW ou SSS037VW) e preco - ainda sem resposta; rascunho intacto.
+2. Ecosport: trocar "2013" por "2012" nos titulos e na descricao dos 50 anuncios?
+3. Focus: padronizar tambem o anuncio que o dono publicou (titulo 50-60 e descricao)?
+4. Continuam: produtos sem cadastro no armazem (SSS981RN, SSS413FD, SSS414FD), GERSON SSS069VW "Touch" a 208,88, 39 presos em promocao antiga, Hilux SSS559TA.
