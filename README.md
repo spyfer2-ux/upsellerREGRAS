@@ -5703,3 +5703,37 @@ Ordens do dono: "coloque como SSS037VW-MHB4" / "POR ENQUANTO NAO DA PRA COLOCAR 
 - MAPA (deteccao Shopee + ML, map-group-sku): 66 anuncios ligados - SS LIGHT 10, Isadora 10, SSS Shopee 10, JhonJhon 10, GERSON 26 (10 novos SSS037VW-MHB4 + os 16 pausados antigos com SKU SSS037VW). Estoque 10 / disponivel 10.
 - A aba tinha sido recarregada pelo dono (G3 sumiu): boot de novo antes de usar (testar typeof G3 no comeco de cada pedido).
 - Sai da lista de espera o item 1 da 99.2.
+
+---
+
+# 100. 18/11/2026 (10h15 A 10h50): AUDITORIA DE COMPATIBILIDADE DOS 3.533 ANUNCIOS DO MERCADO LIVRE (SS LIGHT, ISADORA, BELLIPARTS) - 151 CORRIGIDOS
+
+Pedido do dono: "verifique as compatibilidades que temos que fazer de todos anuncios!" (antes: "COMPATIBILIDADES PODE FAZER").
+
+## 100.1 ACHADO PRINCIPAL - O add-vehicle DIZ "OK" MAS O ML NEM SEMPRE GRAVA
+- /api/mercado/product/add-vehicle devolve {code: 0} mesmo quando o Mercado Livre descarta a compatibilidade. Aconteceu com as gravacoes feitas com 3 chamadas em paralelo (G3.compatFast, compatJob das replicas e __B.compat): na BELLIPARTS 24 do lote 1 e 59 do lote 2 estavam "gravados" e SEM compatibilidade no ML; na SS LIGHT 27 e na Isadora 10 tinham os veiculos no UpSeller e nada no ML; e copias novas das replicas (ex.: 8 SSS037VW-MHB4) idem.
+- Regravando UMA chamada por vez (pausa de ~1,2 s) e conferindo ao vivo, 120 de 120 pegaram na primeira.
+- REGRAS NOVAS: (1) compatibilidade sempre 1 chamada por vez; (2) depois de gravar, CONFERIR AO VIVO no ML e regravar o que nao pegou; (3) "compat ok" do log nao prova nada.
+- Bibliotecas corrigidas: belliparts/belli.js (B.compat com 1 fila + B.vcheck ao vivo dentro do B.run; IndexedDB BELLI_LIB) e g3/g3_day.js (G.compatFast com 1 fila + G.compatLive; IndexedDB G3_DAYLIB). O compatJob das replicas continua como estava: depois de cada replica rodar a conferencia ao vivo.
+
+## 100.2 Como ler o estado da compatibilidade
+- UpSeller (dado local): GET /api/mercado/product/get-vehicle?id=<id do anuncio> -> [{brandName, modelName, yearList, versionList[{vehicleId,...}]}]. Pode estar atrasado (anuncio com compatibilidade no ML e lista vazia aqui) ou adiantado (lista aqui e nada no ML).
+- AO VIVO no ML: G3.vehiclesOf(MLB, shopId) = GET /api/mercado/product-vehicle/copy?itemId=&shopId=&type=1; sem compatibilidade devolve "Mercado.Listings.item_without_autoparts_info".
+- No indice de anuncios: campo compatibilitiesState (1 = sincronizado; 2 = pendente / nao confirmado; 0 = categoria sem compatibilidade) e a tag do ML "incomplete_compatibilities" (o ML cobrando).
+- Auditoria: ler os 3.533 pelo get-vehicle (6 filas, ~6 min) e conferir ao vivo so os suspeitos (sem veiculo, cs diferente de 1 ou com a tag): 265. Resultado em IndexedDB COMPAT_AUDIT_1811.
+
+## 100.3 Resultado (depois das correcoes, tudo conferido ao vivo)
+| Loja | Anuncios | Com compatibilidade | Corrigidos hoje | Categoria sem compatibilidade | Ficaram sem |
+|---|---|---|---|---|---|
+| SS LIGHT | 1.618 | 1.589 | 33 | 24 | 5 |
+| Isadora ML | 1.615 | 1.582 | 25 | 33 | 0 |
+| BELLIPARTS | 300 | 293 | 93 | 6 | 1 |
+- De onde veio a lista de veiculos dos 151 corrigidos: 83 da origem na SS LIGHT (BELLIPARTS), 37 da lista que o UpSeller ja tinha guardada (SS LIGHT 27, Isadora 10), 28 de um anuncio irmao (mesmo SKU, mesmo carro e mesmos anos no titulo, com compatibilidade ao vivo) e 3 pelo catalogo (SS LIGHT DLT621 Corolla 2020 = 5 veiculos; BELLIPARTS kit Creta 2020-2021 = 23 e kit Celta 2007-2011 = 64).
+- Categoria sem compatibilidade (cs 0, o ML nao aceita nem cobra): aerofolio AER001 (23), molduras DLT621 (22), fita FL852 (11), SSS621DLT (3), SSS303NS (2), SSS726CV (2).
+- FICARAM SEM (o ML nao aceitou a gravacao e tambem nao cobra - sem a tag): SS LIGHT MLB7634801400 (SSS1305HY Creta 2019+), MLB7767070474 (kit Creta 2020 2021, sem SKU), MLB7634810342 (FUN189-190 Civic 2009-2011), MLB7635014666 (FUN117-118 Versa 2015-2020), MLB7586072048 (kit Celta 2007-2011, sem SKU). BELLIPARTS MLB5574010003 (FL852 fita HB20, com a tag; titulo sem ano).
+- Catalogo: Hyundai 1089 (Creta 1007110, HB20 389507, HB20S 389509, HB20X 389510); Chevrolet 58955 (Celta 389419); Toyota Corolla 60334. Marcas: /api/mercado/product-vehicle/vehicle {site:'BR', type:1, paramMap:{}}.
+
+## 100.4 ESPERANDO O DONO
+1. Os 5 da SS LIGHT que nao aceitam compatibilidade (2 deles sem SKU): ver na tela do ML o motivo, ou deixar.
+2. FL852 fita do HB20 na BELLIPARTS: quais anos?
+3. Continuam: Ecosport "2013" nos titulos, pausados do Polo 2007-2011 na GERSON com SSS036VW-MH8/-XH8, produtos sem cadastro (SSS981RN, SSS413FD, SSS414FD), GERSON SSS069VW "Touch", 39 presos em promocao antiga, Hilux SSS559TA.
