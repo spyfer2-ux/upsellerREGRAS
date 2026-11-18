@@ -5983,3 +5983,11 @@ Importante:
 3. Precos 269,88 (Led) e 299,88 (Xenon) do HB20 x regra base + 20 / base + 40.
 4. TikTok dos 5 SKUs novos de hoje: lote de 19/11 (os 150 de hoje ja foram).
 5. Magalu: o 1o registro de cada publicacao por API fica como "deleted" no UpSeller (sobra) - apagar junto com as outras sobras quando o dono autorizar.
+
+## 101.19 SSS137FT-MH8 - KIT TORO 2016 A 2018 COM ARO CROMADO + SUPER LED (rascunho 27379422795368422, 18/11 17h25 a 17h45)
+- Pedido do dono: "SSS137FT-MH8 esta em rascunho, pode replicar e deixar no meu padrao para todas as lojas". Rascunho com o mesmo titulo do SSS137FT (ja usado na SS LIGHT), 229,88, capa e foto das lampadas LED novas; descricao = a do SSS137FT com "01 Par de Lampadas H8 Super LED" no lugar de "(Brinde)". Ajustei as outras 2 frases que ainda diziam "cortesia" ("e lampadas H8 Super LED" / "Acompanha 01 par de lampadas H8 Super LED").
+- ATENCAO PRECO: regra Led = base + 20 daria 219,00 (base 199,00); o dono pos 229,88 e foi mantido (mesmo caso do HB20 na 101.16).
+- Fotos: as 7 do rascunho + 2 horas + envio (ML 9); Shopee 8 (sem a de envio); Magalu 7.
+- Titulos G3_T137M (/home/claude/rep137/cand2.json): 10 ML "... Toro 2016 2017 2018 ... Led / Super Led / Lampadas Led" (57 a 60), 10 + 10 Shopee/GERSON. Autocomplete: "farol de milha toro led", "lampada led farol de milha toro".
+- Resultado: ML SS LIGHT 10 (original MLB8017452244) + Isadora 10 + BELLIPARTS 10 ativos a 229,88, garantia 90 dias, compatibilidade Fiat Toro 2016 a 2018 = 21 veiculos lida nos 20 (4 copias precisaram regravar: G3.setVehicles + reler). Shopee 10 + 10 + 10. Magalu 1 (id 27379420110336472).
+- Sem produto no armazem (sem mapeamento), como os outros SKUs novos do dia (101.18 item 2).
