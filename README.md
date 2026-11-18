@@ -5793,3 +5793,151 @@ Pedidos do dono (18/11): (1) lote diario do grupo 3 (agendado 10h40); (2) "Tem u
 6. Falhou antigo na Shopee: SSS716CV-MH27 / -XH27 (2 + 2) e SSS743CV (1).
 7. Continuam da 100.4: SKU dos 2 anuncios sem SKU da SS LIGHT (kit Creta MLB7767070474 e kit Celta MLB7586072048), anos do FL852 HB20, Ecosport "2013" nos titulos, pausados do Polo na GERSON, produtos sem cadastro no armazem (SSS981RN, SSS413FD, SSS414FD), GERSON SSS069VW "Touch", 39 presos em promocao antiga, Hilux SSS559TA.
 8. Proximo lote C3: 19/11 10h40 (faltam aprox. SS LIGHT 534, Isadora 539, SSS Shopee 30, JhonJhon 31, GERSON 7). BELLIPARTS lote 3: 19/11 08h00.
+
+## 101.6 SKU DOS 2 ANUNCIOS SEM SKU DA SS LIGHT (18/11, 13h40 a 13h55) - REGRA DO DONO
+- REGRA (dono, 18/11): "Creta 2020 21 se tiver chicote rele botao e KIT SSS1306HY; se nao tiver e 1305HY, so o par de farol + 1 chicote. Celta 2007 a 2011: se o botao for meio oval e SSS710CV; se o botao for retangular e SSS707CV."
+- MLB7767070474 "Kit Farol Milha Creta 2020 2021 Com Drl" (SS LIGHT, 998,88, estoque 100): as fotos mostram o par com DRL, 2 chicotes, rele e o painel de botao -> SKU SSS1306HY. A descricao era de OUTRO produto ("Codigo do Produto: FUN955-956 ... Farol Milha Onix 2020 2021 ... H27") e o Numero de peca "89879.0": descricao trocada pela do SSS1306HY da propria SS LIGHT (doador MLB7776074176, "Kit Farol Auxiliar Neblina Hyundai Creta 2020 a 2024 Moldura Preta com DRL + Pisca ...") e Numero de peca = SSS1306HY. Copia na BELLIPARTS MLB8014563714: idem.
+- MLB7586072048 "Kit Farol Milha Celta 2007 A 2011 +4 Transparente" (SS LIGHT, 148,00, estoque 1000, familia com variacao): as fotos mostram kit completo (par, 2 lampadas, rele, chicote, parafusos) com botao meio oval -> SKU SSS710CV. A descricao era de PAR ("Kit composto de: 1 par de farois", "55wts") e o Numero de peca "STS710CV-LHB4": descricao trocada pela do SSS710CV da SS LIGHT (doador MLB8015577594) e Numero de peca = SSS710CV. Copia na BELLIPARTS MLB8011192132: idem.
+- Mapeamento: as 4 linhas (itemId = MLBU5392087985, MLBU5107740598 na SS LIGHT; MLBU5905505571, MLBU5898293677 na BELLIPARTS) mapeadas por map-group-sku para os produtos do armazem SSS1306HY (27379420303630072) e SSS710CV (27379420306193529); conferido relendo as linhas mapeadas.
+- NAO mexido (dono decide): preco diferente do padrao do SKU (Creta 998,88 x 887,00; Celta 148,00 x 185,99); a capa do Celta mostra 2 lampadas e a descricao padrao do SSS710CV diz "Nao acompanha lampada"; o titulo do Celta tem "+4 Transparen" sobrando.
+- MECANICA NOVA - GRAVAR SKU EM ANUNCIO DO ML QUE ESTA SEM SKU: o batch-online-sku type 1 (substituir) nao serve para SKU vazio, e o itemSku mandado no corpo do batch-update do editor so pegou na familia com variacao (Celta), nao no anuncio simples (Creta). O que grava: POST JSON /api/mercado/user-product/batch-online-sku {type:0, prefix:'<SKU>', parentSku:'', suffix:'', variationOrder:[], isVariantSku:0, separator:'', prefixType:0, suffixType:0, idList:['<id>'], isCover:1} -> GET /api/check-process?uuid=<data> (successNum 1) -> sync -> reler. E a aba "Gerar SKU" da tela Editar SKU: abas 1 = gerar (type 0) e 2 = modificar (type 1); prefixType/suffixType {input:0, random:1, product:2, sku:3}.
+- Hook do editor: ch.sku (grava up.itemSku) em F.mlSave5 - so montado na hora (nao esta no G3_PHOTOLIB).
+
+## 101.7 POR QUE AS ABAS DO ML FICAVAM LENTAS E "TRAVAVAM" - TIMER DE ABA EM SEGUNDO PLANO
+- Sintoma: depois de ~5 a 8 min cada aba do ML caia de ~6 para ~1,5 anuncios por minuto e mais tarde parava de responder (javascript_tool "failed in the extension"). Recarregar a aba devolvia a velocidade por alguns minutos.
+- Causa: o Chrome estrangula setTimeout/setInterval de aba que nao esta na frente (depois de 5 min, 1 disparo por minuto). O codigo do G3 ja espera por Worker (G3.sleep), mas o EDITOR dentro do iframe usa os timers da pagina.
+- Saida (IndexedDB PH_KEEP, ja dentro do PH_BOOT): window.__wt = timers num Worker; window.__wtPatch(w) troca setTimeout/clearTimeout/setInterval/clearInterval da janela do iframe por esses; o F.edHook chama o patch em todo iframe novo. Resultado medido: de ~1,5 para ~5 a 7 por minuto em cada aba, sustentado. (Tentativa de manter a aba "viva" com RTCPeerConnection local nao conectou - ICE "new"; nao e necessaria.)
+- Shopee: o save-batch-edit NAO aceita filas em paralelo (3 filas, uma por loja: so uma andava e as outras voltavam "sem resposta" e sem gravar - a chave do processo e por conta). Uma fila so, encadeada GER -> SSP -> JJ (PH_SP_CHAIN).
+- Os 3 anuncios antigos "Saveiro G4" (SS LIGHT MLB7764677152, Isadora MLB5348047905, BELLIPARTS MLB8011214520): o add-vehicle SUBSTITUI a lista (nao soma) - ficaram com os 52 veiculos de Saveiro 2006-2010 e perderam os 264 de Gol/Parati (o anuncio "Gol G4 2006 A 2014" MLB5359159533 tem essa lista, se o dono quiser de volta).
+
+## 101.8 TIKTOK LIBERADO PARA A SSS LIGHT TIKTOK (18/11, 13h55 a 14h15) - LOTE 1 DE 150 KITS "COMPLETO"
+- Pedido do dono (18/11): "tenho 2000 de limite de anuncios no TIKTOK, pode comecar a replicar agora pra Loja TIKTOK SS; veja o que nao tem de anuncios feitos, e complete baseado na data que eu pedi pra pausar que o limite era 1000". Vale SO para a SSS LIGHT TIKTOK (STK, shopId 1111840); ISA TIK TOK nao foi liberada.
+- Loja antes: 1.092 anuncios (994 ativos, 36 em revisao, 18 para corrigir, 44 inativos). Limite 2.000 -> cabem ~900.
+- O que ficou sem fazer no TikTok desde a pausa de 15/11: (a) grupo 3 = kits com "Completo" (310 kits ativos da STK ainda sem a replica); (b) grupo 2 lote 4 de 16/11 (SSS716CV Onix); (c) SSS240FT-4; (d) SKUs novos de 17 e 18/11 (SSS518TA Etios, SSS441FD-MHB4 Ecosport, SSS409FD-MH8 Focus, SSS037VW-MHB4 Polo, FUN205-206 Saveiro) - esses nao tem anuncio de origem no TikTok.
+- LOTE 1 (18/11): 91 itens / 150 copias / 37 SKUs (teto 12 por SKU), todos "Kit ... Completo", titulos 91 a 120 (17 completados com palavras neutras), 340 fotos conferidas (0 proibida). G3.xRunAll(i=>i.pl==='TK'): 150 de 150 em ~9 min, 0 falha; conferido pelo pullTK: 150 em "reviewing" (revisao do TikTok), titulo igual ao plano nos 150. Loja depois: 1.242 (994 ativos, 186 em revisao, 18 para corrigir, 44 inativos). C3.markDone = 1.697. Plano em IndexedDB G3_C3_PLAN_TK_2026-11-18. As fotos novas (2 horas) NAO foram para o TikTok (decisao do dono sobre as fotos: TikTok fora).
+- COMO O PLANO DO TIKTOK E MONTADO (o C3.isKitRow da biblioteca recusa linha TK e a loja STK): trocar na hora
+  const C=G3.C3, F=G3.FIX, nrm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); const k0=C.isKitRow;
+  C.isKitRow=r=>{ if(r.pl!=='TK') return k0(r); if(r.shop!=='STK'||r.st!=='active') return false; const t=r.t||''; if(!/^kit\b/i.test(t)||/\bcompleto\b/.test(nrm(t))) return false; const k=F.base(r.sku||''); if(!k.base||!/^(SSS|FUN)\d/.test(k.base)||F.isPar(k.base)||C.EXCL.has(k.base)) return false; if(/farolete|\bh11\b|55 ?w/i.test(t)) return false; return true; };
+  const P=await C.makePlan(G3.rows,{maxShop:150,capSku:12,shops:['STK']});  // titulos pelo C3.spTitle; completar os < 91
+  196 anuncios da STK aparecem sem SKU no indice (SKU na variacao) e ficam fora do plano.
+- ARMADILHA: a aba do TikTok travou aos ~8 min (titulo parado, javascript "failed in the extension"). Causa: o remendo de timers (PH_KEEP) deixava os setInterval/rAF de cada iframe JA REMOVIDO rodando para sempre (zumbis); o G3.capture cria 1 iframe por item. Corrigido no PH_KEEP v3 (cada timer confere se a janela ainda esta no documento; rAF incluso; vigia todos os iframes). Retomada: navigate + PH_BOOT + G3.PLAN = plano + xRunAll de novo (pula o que ja publicou).
+- As 2 abas do ML sumiram do Chrome as ~13h50 (provavel "pagina sem resposta" fechada pelo dono); reabertas (uma do comeco, outra do fim) ja com o PH_KEEP v3.
+
+## 101.9 MAGALU ATIVA - LEITURA E PROPOSTA DE CONTROLE DE SKU (18/11, 14h20 a 14h35) - SO LEITURA
+- Pedido do dono: "a MAGALU ja esta ativa, veja para copiar e checar os anuncios que estao e os que nao estao, la so pode um produto por SKU entao nao sei como fariamos para colocar mais produtos, pode me ajudar de uma forma organizada a gerenciar esses skus".
+- Sincronizado (POST /api/magalu/product/sync shopIds=1134187) e lido: online 66 ativos (subStatus PUBLISHED - a loja saiu do BLOCKED de outubro) + 3 pausados (FUN955-956, SSS707CV-XHB4, SSS710CV-XHB4) = 69 SKUs; 58 "excluidos pela Magalu", 203 rascunhos e 277 falhou (sobras de outubro, 538 registros). Dados em IndexedDB MG_ROWS_1811 / MG_EXPORT2; /home/claude/magalu/A.txt e B.txt.
+- Catalogo da SS LIGHT no ML: 112 SKUs com anuncio ativo (1.698 anuncios). FALTAM na Magalu 46 SKUs; 7 estao la com SKU ANTIGO (SSS132FT-MH11 = SSS130FT-MH8; SSS189-190 = FUN189-190; SSS117-118 = FUN117-118; SSS414FD-LHB4 = SSS414FD; SSS055VW/-MH3/-XH3 = SSS057VW - conferir); 55 com preco diferente do ML de hoje (a Magalu ficou com o preco de 19/10); 4 iguais.
+- PROPOSTA para ter mais de 1 anuncio do mesmo produto: o primeiro anuncio fica com o SKU puro; os outros (1 por carro) usam SKU + ponto + carro (ex.: SSS905RN.PAJERO, SSS905RN-MH8.PAJERO) e sao mapeados no mesmo produto do armazem (estoque unico). 148 "extras" possiveis pelos carros dos titulos do ML. Em 19/10 o dono tinha descartado sufixo no SKU; a decisao esta de novo com ele.
+- Planilha entregue: /mnt/user-data/outputs/Controle_SKUs_Magalu_2026-11-18.xlsx (abas Resumo, Catalogo x Magalu, SKU por carro (proposta), Sobras no UpSeller; gerada por /home/claude/magalu/build.py). NADA foi publicado, alterado ou apagado na Magalu.
+- Cuidado ao copiar fotos do ML para a Magalu: os anuncios do ML agora terminam com a foto "ENVIO NO MESMO DIA" que mostra caixas do Mercado Livre - NAO levar essa foto para a Magalu.
+
+## 101.10 BELLIPARTS LOTE 3 = 500 (ordem do dono 18/11: "pode copiar + 500")
+- Iniciado 14h30 na aba B: __B.day(500, 3). As 14h37: 500 copiados e publicados, 450 active, etapa "esperar"; faltam compatibilidade (fila unica), conferencia ao vivo e mapa. Restam 898 anuncios da SS LIGHT para copiar depois deste lote. Sem desconto (loja ainda sem 10 vendas).
+
+## 101.11 MAGALU: 46 SKUs QUE FALTAVAM PUBLICADOS (18/11, 15h20 a 15h35) - dono: "publicar os 46 SKUs que faltam apenas, e vou pensar sobre o SKU apos o ponto final"
+- 1 anuncio por SKU, copiado do anuncio da SS LIGHT (ML) com mais carros no titulo: titulo do ML, preco cheio do ML, estoque do ML, fotos do ML (sem as 2 fotos novas - a de "envio no mesmo dia" mostra caixas do Mercado Livre), descricao do ML convertida para HTML (sem "(nao utilizar H11)"), garantia 3 meses, marca SSS LIGHT, NCM 85122011, Modelo e Numero de peca = SKU, embalagem 35x25x30 cm / 850 g.
+- MECANICA NOVA: POST /api/magalu/product/add SEM id e com op 1 CRIA o registro (devolve data = id novo); depois o mesmo corpo com id e op 2 publica (code 0, data null). ~4 s por SKU. Funcoes na aba (nao salvas): window.__MG.pick(sku) / __MG.build(sku); estado em IndexedDB MG_PUB_1811 (id, anuncio do ML, titulo, preco, estoque).
+- Resultado depois de Sincronizar: 46 de 46 online/active (28 PUBLISHED + 18 NEW = recem-criados em processamento na Magalu), 0 falha. Loja: 112 ativos + 3 pausados. Os 7 com SKU antigo e os 55 precos diferentes NAO foram mexidos (dono decide). A regra SKU.CARRO para anuncios extras ficou em espera (dono vai pensar).
+- Mapeamento da Magalu: map-detect + auto-mapping (platform 'magalu') nas linhas sem mapa (312 -> 225 em 25 s, processo seguia); SSS714CV mapeado a mao no produto SSS713CV (regra). Conferir o resto depois (linhas de rascunho/falhou antigos tambem aparecem na lista).
+
+## 101.12 VAZAMENTO DE MEMORIA DAS ABAS DO ML (causa das travadas) E CONTROLADOR
+- Medido com performance.memory: cada anuncio aberto no editor deixava ~35 a 50 MB presos; a aba morre quando o heap chega em ~4,4 GB (por isso travava aos ~120 anuncios / 20 min). Remover o iframe do editor NAO libera; console mudo NAO resolve; so navegar a aba libera.
+- O que segura a memoria e o proprio UpSeller rodando na pagina de cima (a pagina que hospeda o iframe). Solucao: aba hospedeira SEM o UpSeller = https://app.upseller.com/api/check-process?uuid=host (pagina XML crua, mesma origem) + controlador PH_CTL (IndexedDB): cria um iframe "phw" com a pagina do UpSeller, da PH_BOOT dentro dele e roda o comando (ex.: window.__P.mlRun('A',1)); a cada C.max anuncios (25), memoria acima de C.memMax ou 3 min sem andar, joga o iframe fora e cria outro. Sobra ~10 MB por anuncio na hospedeira (4x menos): recarregar a aba hospedeira quando o titulo mostrar mem > 2500.
+- Uso: navigate para a URL hospedeira; definir __get; (0,eval)(await __get('PH_CTL')); __ctl.max=25; __ctl.start('A',"window.__P.mlRun('A',1)") (ou 'C' com mlRun('C',-1)). Titulo: "PH A <ok> ok <f> f pos N/3666 cN memNNN".
+- window.open a partir de uma aba controladora e bloqueado (popup) - nao serve.
+- PH_KEEP v4 (timers por Worker nos iframes, com registro por janela e limpeza das janelas mortas), PH_NOCON (console mudo; deixou o editor mais rapido), PH_MEM (memoria no titulo) estao dentro do PH_BOOT.
+
+## 101.13 HB20 SSS033HY - REPLICA DO RASCUNHO + PADRAO DE DESCRICAO DO DONO (18/11, 15h50 a 16h15)
+- Pedido do dono: "EM RASCUNHO deixei o Hb20 para vc copiar, e olhe bem a descricao dele, pois quero que seja o meu padrao (que fiz no GPT). pode replicar pra todas as lojas no meu padrao e titulos tmb."
+- REGRAS DITAS NA HORA (valem daqui em diante):
+  1. "quando digo que e pra usar o titulo e pra se basear nele" = o titulo do rascunho e a BASE; os outros titulos sao variacoes dele (dentro dos limites de cada plataforma).
+  2. "quando digo pra REPLICAR e o anuncio" = replicar o anuncio inteiro (fotos, descricao, preco) para todas as lojas seguindo o padrao.
+  3. "sempre verifique as 2 fotos adicionais para o ML, aquelas com as caixas do ML e ENVIAMOS EM 2 HORAS, sempre que eu fizer um anuncio novo" = todo anuncio novo do ML termina com 2HORAS-1000 + ENVIO-MESMO-DIA-1000 (quadradas, do Banco de Midias); se o rascunho vier com as originais pequenas (webp 500 px), trocar pelas 1000x1000 e por no fim. Shopee/Magalu/TikTok nunca levam a foto das caixas do Mercado Livre.
+  4. Lampadas do SSS033HY: a capa e a foto 8 do rascunho mostram 2 lampadas H8 e a descricao do GPT dizia "Nao acompanha lampadas H8". Resposta do dono: "pode deixar o sku como SSS033HY MESMO, atualiza a descricao mantendo as lampadas pois elas acompanham o kit SEMPRE". Vale para ESTE kit (nao generalizei para os outros SKUs).
+- Rascunho: SS LIGHT id 27379422795035140, SKU SSS033HY, "Kit Farol Milha Hb20 Hb20s 2013 2014 2015 Bt Alternativo" ("Bt Alternativo" = botao alternativo), 249,00, estoque 10, categoria MLB46659, 9 fotos (capa com carro + kit, 2 fotos do kit, chicote, botao/rele/parafusos, lampadas H8, grampos e parafusos + as 2 extras em webp pequeno). Sem logo de outra loja.
+- Fotos usadas: ML = 7 do rascunho + 2HORAS-1000 + ENVIO-MESMO-DIA-1000 (9). Shopee = 7 + 2HORAS-1000 (8). Magalu = as 7.
+- PADRAO DE DESCRICAO DO DONO (modelo para os proximos anuncios; texto puro - os "**" do GPT foram tirados porque ML e Shopee mostram o asterisco literal):
+  - Linha 1: titulo longo do produto (Kit Farol de Milha <Marca> <Modelo(s)> <anos> Completo com <itens principais>).
+  - Paragrafo 1: o que e e para qual carro. Paragrafo 2: como e o farol (lente, carcaca, encaixe H8) e o que acompanha.
+  - "Compativel com:" - um bloco por modelo (Hyundai HB20 Hatch: / Hyundai HB20S Sedan:) com um ano por linha ("- 2012").
+  - "Conteudo da Embalagem:" - lista com quantidade na frente ("- 02 Farois de Milha", "- 02 Lampadas H8", "- 02 Molduras para Farois de Milha", "- 01 Chicote Eletrico", "- 01 Rele", "- 01 Botao de Acionamento", "- 01 Par de Pingo LED T10 (Brinde)", "- 01 Kit de Instalacao com Parafusos e Porcas Rapidas").
+  - "Caracteristicas dos Farois:" - Produto Novo; Tipo: Farol Auxiliar de Milha / Neblina; Encaixe da Lampada: H8; Material da Lente: Acrilico; Lente Lisa; Material da Carcaca: Plastico Resistente; Potencia Maxima Suportada: 35W; Compativel com Lampadas LED de ate 35W; Regulagem de Foco Manual; Molduras em Plastico Resistente; Encaixe Sob Medida; Excelente Acabamento; Ideal para Reposicao ou Instalacao.
+  - "Importante:" - Produto novo; Valor referente ao kit completo; Acompanha 02 lampadas H8 (ou "Nao acompanha lampadas" quando for o caso); Verifique o modelo do para-choque antes da compra; Confira a compatibilidade com a versao e o ano; Nao recomendamos lampadas Super Brancas; somente lampadas ate 35W; Pingo LED T10 e brinde, sem garantia especifica, preservados os direitos legais do consumidor; Garantia do vendedor: 90 dias contra defeitos de fabricacao; instalacao por profissional especializado; danos por instalacao incorreta ou mau uso nao sao cobertos.
+  - Texto integral gravado no IndexedDB G3_DESC033 (2.035 caracteres) e em qualquer anuncio SSS033HY. Regras da casa continuam: so H8 (nunca H11), 35W, 90 dias, sem nome de loja/marketplace, sem fita/3M, nunca dizer que a loja instala.
+- Titulos (IndexedDB G3_T033; /home/claude/rep033/cand.json; gerador gen.py): 18 ML (55 a 60; o 1o e o titulo do dono), 16 Shopee e 17 GERSON (100 a 118), todos "Kit ... Hb20 Hb20s ... " com Completo / Bt ou Botao Alternativo / Moldura / Chicote / Rele. Autocomplete do Google (7 consultas): "farol de milha hb20 2013/2014/2015", "kit farol de milha hb20 2014/2015", "farol de neblina hb20", "farol auxiliar hb20", "farol de milha hb20s". Pagina de concorrentes do ML caiu em tela de verificacao (nao insisti). chk.py 0 erros; __pick: ML 18/18 nas duas lojas, Shopee 16/16, GERSON 17/17. Nas lojas da Shopee os titulos novos usam "Botao Alternativo" quando levam Milha + os 3 anos por extenso, para nao virar superconjunto do titulo antigo da GERSON. "Lampadas" ficou FORA dos titulos (o SKU nao tem sufixo L) - se o dono quiser, refazer com "Com Lampadas".
+- RESULTADO (conferido ao vivo):
+  - Mercado Livre: SS LIGHT 10 (original MLB8017087194 + 9 copias), Isadora 10, BELLIPARTS 10 (copias das 10 da SS LIGHT, __B.run(Q,'3b')) = 30 ativos a 249,00, estoque 10, garantia 90 dias. Compatibilidade pelo catalogo: Hyundai 1089 / HB20 389507 (40 veiculos) + HB20S 389509 (29) / 2012 a 2015 = 69 veiculos, lida de volta nos 30.
+  - Shopee: 10 + 10 + 10 (SSS Shopee, JhonJhon, GERSON) a 249,00, 30 de 30 online/NORMAL, 8 fotos (ultima = 2 horas), doador do dia SSS907RN.
+  - Magalu: 1 anuncio (id UpSeller 27379420110333373, add op 1 + op 2), titulo do dono, 7 fotos, 249,00; as 16h12 "online / inactive" (em analise da Magalu).
+  - TikTok: NAO feito - a SSS LIGHT TIKTOK ja recebeu os 150 do dia e o SKU nao tem origem no TikTok (precisa montar a partir de um doador). ISA TIK TOK nao liberada.
+- Mecanica nova:
+  - __repDraft em 3 chamadas: {skipSP:true} (ML), depois {skipML:true, shops:['SSP','JJ']} e {skipML:true, shops:['GER']}.
+  - Pausar a fila de fotos da Shopee antes da replica na Shopee: P.__spRun2 = P.spRun2; P.spRun2 = () => 'hold'; marcar stop em todos os P.sr e esperar "parado" (o lote de 30 em andamento demora ate ~5 min). Retomar: P.spRun2 = P.__spRun2; delete P.__spRun2; P.__chain = 0; (0,eval)(await __get('PH_SP_CHAIN')). So marcar stop nao basta: a corrente parte para a proxima loja.
+  - Magalu de SKU novo: M = window.__MG; trocar M.pick so para o SKU (linha {id, item, t, price, qty} do anuncio da SS LIGHT), M.build(sku) monta o corpo (tira as 2 fotos extras pela origem), add op 1 devolve o id, mesmo corpo com "id":<numero> + op 2 publica.
+  - G3.vehiclesOf(item, shopId) devolve {ids, cars} (ou {err}); o shopId tem de ser o da loja do anuncio (com o shopId errado vem "item_without_autoparts_info").
+  - Ler codigo-fonte de funcao da aba: gravar em <article><pre> e usar get_page_text (a saida do javascript_tool corta em ~1.100 caracteres quando tem ? ; = &).
+- BELLIPARTS lote 3 (soma final): 500 copiados - 472 ativos com compatibilidade e mapa, 14 ativos sem mapa (SKU sem produto no armazem), 9 ativos cuja ORIGEM nao tem compatibilidade, 5 FALHOU.
+- ESPERANDO O DONO: (1) SSS033HY nao existe no armazem -> os 61 anuncios estao sem mapeamento (criar como Fabricado, fornecedor AUTOPLUS, estoque 10?); (2) TikTok do SSS033HY: fazer no lote de 19/11 dentro dos 150; (3) Magalu: conferir se o anuncio saiu de "inactive".
+- TEXTO INTEGRAL DO PADRAO (SSS033HY, como esta nos anuncios):
+```
+Kit Farol de Milha Hyundai HB20 HB20S 2012 2013 2014 2015 Completo com Molduras e Botão de Acionamento
+
+Kit completo de faróis auxiliares de milha desenvolvido para Hyundai HB20 e HB20S, ideal para reposição ou instalação no veículo.
+
+Possui faróis com lente lisa em acrílico, carcaça em plástico resistente e encaixe para lâmpadas H8. Acompanha lâmpadas H8, molduras, chicote elétrico, relê, botão de acionamento e um par de pingos LED como brinde, proporcionando excelente acabamento e iluminação auxiliar em condições de baixa visibilidade.
+
+Compatível com:
+
+Hyundai HB20 Hatch:
+- 2012
+- 2013
+- 2014
+- 2015
+
+Hyundai HB20S Sedan:
+- 2012
+- 2013
+- 2014
+- 2015
+
+Conteúdo da Embalagem:
+
+- 02 Faróis de Milha
+- 02 Lâmpadas H8
+- 02 Molduras para Faróis de Milha
+- 01 Chicote Elétrico
+- 01 Relê
+- 01 Botão de Acionamento
+- 01 Par de Pingo LED T10 (Brinde)
+- 01 Kit de Instalação com Parafusos e Porcas Rápidas
+
+Características dos Faróis:
+
+- Produto Novo
+- Tipo: Farol Auxiliar de Milha / Neblina
+- Encaixe da Lâmpada: H8
+- Material da Lente: Acrílico
+- Lente Lisa
+- Material da Carcaça: Plástico Resistente
+- Potência Máxima Suportada: 35W
+- Compatível com Lâmpadas LED de até 35W
+- Regulagem de Foco Manual
+- Molduras em Plástico Resistente
+- Encaixe Sob Medida
+- Excelente Acabamento
+- Ideal para Reposição ou Instalação
+
+Importante:
+
+- Produto novo
+- Valor referente ao kit completo
+- Acompanha 02 lâmpadas H8
+- Verifique o modelo do para-choque antes da compra
+- Confira a compatibilidade com a versão e o ano do veículo
+- Não recomendamos a utilização de lâmpadas Super Brancas
+- Utilize somente lâmpadas compatíveis com a potência máxima de 35W suportada pelo farol
+- Pingo LED T10 é brinde, sem garantia específica oferecida pelo vendedor, preservados os direitos legais do consumidor
+- Garantia do vendedor: 90 dias contra defeitos de fabricação
+- Recomendamos que a instalação seja realizada por profissional especializado
+- Danos causados por instalação incorreta ou mau uso não são cobertos pela garantia oferecida pelo vendedor
+```
