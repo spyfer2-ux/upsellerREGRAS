@@ -5673,3 +5673,27 @@ Resposta do dono (18/11, depois de logar): "COMPATIBILIDADES PODE FAZER, GERE O 
 2. Ecosport: trocar "2013" por "2012" nos titulos e na descricao dos 50 anuncios?
 3. Focus: padronizar tambem o anuncio que o dono publicou (titulo 50-60 e descricao)?
 4. Continuam: produtos sem cadastro no armazem (SSS981RN, SSS413FD, SSS414FD), GERSON SSS069VW "Touch" a 208,88, 39 presos em promocao antiga, Hilux SSS559TA.
+
+---
+
+# 99. 18/11/2026 (08h40 A 09h00): POLO 2007 A 2011 = SSS037VW (REPLICADO COMO SSS037VW-MHB4) + BELLIPARTS SEM DESCONTO ATE 10 VENDAS
+
+Ordens do dono: "coloque como SSS037VW-MHB4" / "POR ENQUANTO NAO DA PRA COLOCAR PROMOCAO NA BELLI PARTS, PODE DEIXAR PRA DEPOIS DAS 10 VENDAS."
+- REGRA DE SKU: Polo 2007 a 2011 = SSS037VW; SSS036VW e so o Polo 2003 a 2006. (Na GERSON ainda existem pausados antigos do Polo 2007-2011 com SSS036VW-MH8 x20 e SSS036VW-XH8 x14 - nao mexidos.)
+- REGRA DA BELLIPARTS: NAO tentar Preco com Desconto ate a loja ter 10 vendas. O __B.day soma o soldQuantity dos anuncios da loja (B.vendas) e so chama o __B.promo com 10 ou mais; ate la o B.rp fica {adiado, vendas}. Hoje: 0 vendas. Biblioteca (belliparts/belli.js e IndexedDB BELLI_LIB) e o agendamento do lote de 19/11 (trig_01AuAfVReacw9nRa7VeoNs1F) atualizados.
+
+## 99.1 SSS037VW-MHB4 - KIT POLO 2007 A 2011 SUPER LED HB4 COM MOLDURAS (conferido por sincronizacao 30/30 + 20/20)
+- Origem: o rascunho do ML na SS LIGHT (id 27379422782975018, que estava com o SKU SSS036VW-MHB4 e o titulo "Kit Farol Milha Cibie Neblina Polo 2007 2008 2009 2011"), coletado do anuncio antigo do proprio dono. Virou o 1o anuncio: MLB5576783113.
+- Descricao no padrao: 02 farois, 02 molduras, chicote, rele, botao modelo alternativo, par de lampadas Super LED 6000K HB4, parafusos; lente lisa em vidro; 35W (a descricao antiga dizia "ate 55W" - saiu); Polo 2007 a 2011. 4 fotos sem logo (a 2a do rascunho era repetida).
+- No ar: SS LIGHT 10, Isadora 10, SSS Shopee 10, JhonJhon 10, GERSON 10 - 160,43 (preco do rascunho; nao ha SSS037VW base ativo para a regra Led = base + 20), estoque 10, titulos exatos. Shopee com Part Number SSS037VW.
+- Compatibilidade ML (20): Volkswagen 60249, Polo 61695 (24) + Polo Sedan 389571 (25), 2007 a 2011 = 49 veiculos (a foto de capa e de um Polo Sedan).
+- Titulos ML: Kit Farol De Milha Completo Polo 2007 A 2011 Super Led | Kit Farol Milha Completo Vw Polo 2007 2008 2009 10 2011 Led | Kit Farol Neblina Completo Polo 2007 A 2011 Led Com Moldura | Kit Farol Auxiliar Completo Polo 2007 A 2011 Led Molduras | Kit Completo Farol De Milha Led Vw Polo Sedan 2007 A 2011 | Kit Farol De Neblina Led Polo 2007 A 2011 Completo Moldura | Kit Faróis De Milha Completo Polo Hatch 2007 A 2011 Led Hb4 | Kit Farol Milha Neblina Completo Polo Sedan 2007 A 2011 Led | Kit Completo Farol Auxiliar Led Volkswagen Polo 2007 A 2011 | Kit Farol De Milha Led Completo Polo 2007 A 2011 Com Botão.
+- Titulos da GERSON: conjunto novo so com "Faróis" (plural) e "2007 a 2011" / "2007 até 2011", para nao conter todas as palavras dos pausados antigos de titulo curto - 14 de 14 aceitos pelo __pick (antes 3 de 12). Ex.: "Kit Faróis de Milha Completo Volkswagen Polo 2007 a 2011 com Molduras Super Led HB4 6000K Chicote Relé e Botão". Conjuntos em IndexedDB G3_T037.
+- Pesquisa (skill): 5 consultas no autocomplete + pagina de concorrentes do ML (farol de milha polo, polo sedan, anos). Fora: "original", "Track", "Virtus", "Drl".
+- Armazem: NAO existe SSS037VW - os 50 anuncios estao sem mapa. Os atributos do anuncio antigo dizem "Origem: China": perguntar ao dono se cadastra como Fabricado ou Importado.
+
+## 99.2 ESPERANDO O DONO
+1. SSS037VW no armazem: criar (estoque 10) e mapear? Fabricado ou Importado?
+2. Ecosport: trocar "2013" por "2012" nos titulos e na descricao dos 50 anuncios?
+3. GERSON: os pausados do Polo 2007-2011 com SSS036VW-MH8 / -XH8 passam para SSS037VW?
+4. Continuam: produtos sem cadastro (SSS981RN, SSS413FD, SSS414FD), GERSON SSS069VW "Touch", 39 presos em promocao antiga, Hilux SSS559TA.
