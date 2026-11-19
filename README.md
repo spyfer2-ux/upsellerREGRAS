@@ -6028,3 +6028,9 @@ Importante:
 - MAPA: Deteccao de Mapeamento em ML (SS LIGHT, Isadora, BELLIPARTS), Shopee (3 lojas) e Magalu; depois map-group-sku linha a linha: 430 linhas dos SKUs SSS033HY, -MH8, -XH8 -> SSS033HY; SSS137FT, -MH8, -XH8 -> SSS137FT; SSS517TA -> SSS517TA (Led e Xenon no produto BASE, regra do dono). Mais 54 linhas do FUN977-978 (copias de hoje) -> produto FUN977-978 (27379420322760316). Releitura: 0 linhas sem mapa desses SKUs. O Magalu do SSS517TA (ainda "inativo") nao apareceu na deteccao: mapear quando ativar.
 - Continuam SEM MAPA (antigos, nao mexidos): ML SS LIGHT 142, Isadora 802, BELLIPARTS 21; Shopee SSS 892, JhonJhon 894, GERSON 2.293 (inclui pausados); Magalu 148.
 - Aba B recarregada as 19h00 (memoria 2,5 GB): PH_BOOT + PH_SP_CHAIN; a fila da Shopee seguiu (SSS Shopee ~680 pendentes, depois JhonJhon ~1.470).
+
+## 101.25 ETIOS: SSS517TA x SSS518TA (dono, 19/11)
+- REGRA DO DONO: "SSS517TA e KIT COM BOTAO ORIGINAL e SSS518TA e KIT COM BOTAO TICTAC". Sao produtos diferentes - nunca mapear um no outro.
+- Nomes no armazem acertados pela tela de edicao (/pt/products/product-edit/<id>?productType=single, campos Nome e Apelido + Salvar; estoque e codigo de barras nao mudaram): SSS517TA "KIT FAROL DE MILHA ETIOS 2012 A 2020 BOTAO ORIGINAL" (id 27379420326445634); SSS518TA "KIT FAROL DE MILHA ETIOS 2013 A 2020 BOTAO TIC TAC" (id 27379420325654740).
+- A tela de edicao NAO grava por /api/sku/save-single (o gancho nesse caminho nao pegou nada e o nome mudou assim mesmo): para teste "seco" na edicao, bloquear todo POST /api/sku/* do iframe.
+- Os anuncios do SSS518TA dizem "Botao de Acionamento Modelo Universal" na descricao; o dono chama esse botao de Tic Tac - nao mexido (perguntar se troca).
