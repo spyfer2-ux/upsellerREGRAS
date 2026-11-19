@@ -1,5 +1,7 @@
 # 0. TRABALHO EM ANDAMENTO (LER PRIMEIRO AO RETOMAR)
 
+**REGRA NOVA (19/11/2026, dono): TITULO DO MERCADO LIVRE ATE 120 CARACTERES (secao 110). Substitui o teto de 50-60 citado em todo o arquivo e nas skills.**
+
 Atualizado 15/11/2026 11h15 (15/11 10h40 A 11h15: GRUPO 2 LOTE 3 - 279 ANUNCIOS NOVOS (ML 85, Shopee 102, TikTok 92) - secao 86; falta o lote 4 (SSS716CV Onix) em 16/11 e as pendencias da GERSON (84.6); antes, 15/11 00h (AUDITORIA DE TITULOS E DESCRICOES das 7 lojas - secao 85: 2.653 dos 8.016 anuncios no ar com algum ponto; os maiores: 1.209 descricoes com "55W" (regra 35W), 544 anuncios do ML SEM descricao, 301 com H11 na descricao, 47 com "L7 Auto Pecas" no texto; NADA FOI MUDADO, dono escolhe o que corrigir; antes, 14/11 noite: FOTOS COM LOGO DE OUTRA LOJA E DO MERCADO LIVRE REMOVIDAS DE 21 ANUNCIOS DA GERSON (11 ativos + 10 pausados; 16 pausados ficaram, 84.8) e REGRA NOVA: nunca publicar/copiar foto com logo de outra loja ou marketplace - 84.8; Vectra SSS712CV = H3 (robo corrigido); antes, 14/11 11h20 A 15h40: GRUPO 2 DA DUPLICACAO, LOTE 2 - 806 ANUNCIOS NOVOS COM NOME DE CARRO NAS 7 LOJAS (ML 225, Shopee 327, TikTok 254) - secao 84, sem perguntas ao dono ("faca todo esse cronograma sem me perguntar nada"); ANALISE DAS FOTOS dos 1.247 anuncios do grupo 2 na 84.5 (SSS716CV mostra lampada H8/H11 num kit H27; logo de outra loja e do ML em anuncios da GERSON); continua em 15/11 e 16/11 (84.7); antes, 14/11: SSS743CV FORA DE TODAS AS PROMOCOES E PRECO NOVO 169,00 / MH3 189,00 NAS 7 LOJAS - secao 83: 123 anuncios, conferido por sync; mecanica de tirar anuncio de promocao no ML, Shopee e TikTok na 83.3; antes, 13/11 21h35: FOTO "medidasuniversal" (MEDIDAS DO FAROL) ACRESCENTADA NO FIM DE TODOS OS SSS905RN* E FUN100-101* - secao 82: 882 anuncios (ML 318, Shopee 482, TikTok 82), 53 pausados da Shopee REATIVADOS a pedido do dono, 13 unitarios da GERSON nao mexidos, 0 falhas no fim; antes, 13/11 16h45: SSS907RN-MH8 (Led 219,00) E SSS907RN-XH8 (Xenon 239,00) CRIADOS E REPLICADOS 10+10 NAS 7 LOJAS - secao 81: 138 novos, 0 falhas, compatibilidade do ML gravada; antes, 13/11: FUN955-956 (PAR ONIX PLUS 2020-2021) PAUSADO EM TODAS AS PLATAFORMAS - secao 80: 43 anuncios, 0 falhas; antes, 12/11 17h45: 12/11 17h20 A 17h45: ML SSS905RN - 44 TITULOS "Par" VIRARAM "Kit" E 39 ANUNCIOS SEM DESCRICAO GANHARAM A DESCRICAO DE KIT - secao 79, correcao do dono "Par com SKU de kit esta errado"; sobram 170 anuncios do ML com titulo "Par" e SKU de kit em OUTROS SKUs para o dono decidir (79.5); antes: FOTOS DOS ANUNCIOS SSS905RN TROCADAS PELAS 4 DA PASTA "universal" DO BANCO DE MIDIAS - secao 78: 196 anuncios (ML 95, Shopee 99, TikTok 2) com a capa de sempre + 4 fotos padrao, conferidos por sync; 16 da GERSON ficaram como estavam por decisao do dono (78.3); mecanica nova de troca de fotos por API/iframe na 78.4; 12/11 de manha: ANUNCIOS DA GERSON MAPEADOS AO ARMAZEM - secao 77: TODOS os 1.698 ativos; 7 SKUs novos cadastrados no armazem com codigo de barras - 77.5 (SSS507TA, SSS202HD, SSS036VW, FUN117-118, SSS004VW, FUN977-978, SSS080VW), faltam custo e estoque; SSS603MS CADASTRADO NO ARMAZEM com codigo de barras 682545553847, lixo da GERSON apagado e 2a remocao pela Shopee - secao 76.9; MIGRACAO SSS Shopee -> GERSON CONCLUIDA - secao 76: 573 publicados, 571 ativos e 2 REMOVIDOS PELA SHOPEE por "Anuncios duplicados" codigo 302 - LER A 76.8 ANTES DE COPIAR/MIGRAR QUALQUER ANUNCIO ENTRE LOJAS DA SHOPEE; pares com "Par"; L200 2011-2013 = SSS603MS na GERSON (76.7); A SECAO 75 PODE RETOMAR, lendo antes a 76.5; decisoes do dono de 11/11 na 73.10 (Strada = SSS130FT, L200 = SSS905RN/FUN100-101, peso 0,85 kg nos kits); EM ANDAMENTO: DESCRICOES DA GERSON NO PADRAO SSS COM REFORCO DOS 35W E AVISO DAS SUPER BRANCAS - secao 75, retomar pela 75.4; CORRECAO DO DONO: KIT E KIT E PAR E PAR - secao 74, LER ANTES DE MEXER EM QUALQUER TITULO; antes, 10/11 21h30: LOJA NOVA GERSON CONCLUIDA - secao 73: SKUs, pausas, titulos e descricoes gravados e conferidos na Shopee; armadilha nova da recusa silenciosa de titulo na 73.8; antes: replica do SSS202HD na 72, lote 1 do grupo 2 na 71, grupo 1 na 70; de manha: -XHB4 pausados e compatibilidades dos kits novos no ML). Esta secao e o ponto de retomada: se a tela do Claude fechar, abrir o repo, ler esta secao e continuar daqui. Sempre atualizar esta secao ao terminar cada etapa (editar pelo GitHub web: README > lapis > Commit changes).
 
 ## 0.1 Ultima sessao concluida
@@ -1834,6 +1836,7 @@ Levantamento de 3.764 anuncios ativos (AUTOPLUS 2.781 + Jz 1.010), 18.037 vendas
 | 81-90 | 369 | 34,7 | 2,17 |
 
 O otimo medido e 61-70 caracteres. **Teto operacional em vigor: 60 caracteres (regra do dono).** Se o dono liberar, subir para 70.
+**ATUALIZADO 19/11/2026: o dono liberou ATE 120 caracteres no ML (secao 110) - o teto de 60 acima nao vale mais.**
 
 ## 32.5 FAROLETE - DESCARTADO, CONFIRMADO PELOS DADOS
 Controlado por comprimento de titulo, "farolete" nao adiciona views (52,3 contra 52,0) e vem com MENOS vendas (5,41 contra 9,57).
@@ -1897,7 +1900,7 @@ Travas obrigatorias:
 | 14 | | 194 | PENDENTE | |
 
 ## 32.10 REGRAS DE TITULO (VALEM PARA TODO ANUNCIO NOVO)
-- ML: 50 a 60 caracteres. Shopee: 85 a 120 caracteres.
+- ML: ATE 120 caracteres (dono, 19/11/2026: "Titulo do ML agora e 120 caracteres" - secao 110; antes era 50 a 60). Shopee: 85 a 120 caracteres.
 - Estrutura: TIPO + VARIACAO + MODELO + GERACAO + ANOS + ESPECIFICACAO.
 - Variacao: MILHA, NEBLINA, AUXILIAR. Nunca FAROLETE.
 - Geracao antes do ano - o comprador busca "gol g4", nao "gol 2006".
@@ -2148,7 +2151,7 @@ muito mais barato que cabeca de cauda saturada. Concorrencia lida em lista.merca
 | farol de milha (generico) | +9.999 | - | - | - |
 
 ## 29.5 TITULO
-Limite duro: 60 caracteres no Mercado Livre, 120 na Shopee, contados ANTES de enviar.
+Limite duro: 120 caracteres no Mercado Livre (era 60 ate 19/11/2026 - secao 110), 120 na Shopee, contados ANTES de enviar.
 Estrutura: TIPO + VARIACAO + MODELO + GERACAO + ANOS + ESPECIFICACAO TECNICA.
 
 Variacoes permitidas, em ordem de forca medida no autocomplete do ML:
@@ -6139,3 +6142,9 @@ Importante:
 - RESULTADO: ML SS LIGHT 10 (original MLB8023400498 + 9) + Isadora 10 + BELLIPARTS 10 (__B.run lote '604', compat conferida ao vivo) = 30 ativos a 295,10, estoque 10, compatibilidade nos 30. Shopee SSS 10 + JhonJhon 10 + GERSON 10 = 30 online/NORMAL, 295,10, estoque 10, sem promocao. TikTok SSS LIGHT TIKTOK 10 (Revisando) - ISA TIK TOK fora (limite de 1.000 anuncios, 108.1). Magalu 1 (id 27379420110353401, online/active, titulo 96 caracteres).
 - Mecanica: __repDraft (G3_REPDRAFT) com o source trocado "U.attributes = c.attrsML || JSON.stringify(A)". JJ e GERSON nao tinham doador C3 do dia (repDonSP null): G3.xItem direto, copia DENTRO da loja de um SSS907RN ativo dela (JJ 27379420221348783, GER 27379420220556350) + opt.fix (itemSku, descricao, mainImage, preco, Part Number, gtin vazio). A copia demorou mais que o waitFor de 60 s ("rascunhos nao apareceram"): bastou gravar S.drafts com os 10 ids novos e chamar xItem de novo. TikTok: batch-collect do rascunho ML ja publicado -> add (imgUrl so com as 9 fotos do produto) -> publicar -> copy x9 -> titulos -> publicar. Magalu: corpo do edit de um anuncio ativo (SSS517TA) sem id/datas, op 1 cria; mesmo corpo com id em STRING + op 2 publica (id numerico perde precisao: Error_no_product_found).
 - ESPERANDO O DONO: SSS604MS NAO existe no armazem (so o SSS603MS, L200 Triton 2011-2013) -> 61 anuncios sem mapeamento. Criar como Fabricado ou Importado?
+
+## 110 REGRA NOVA: TITULO DO MERCADO LIVRE ATE 120 CARACTERES (19/11/2026)
+- Palavras do dono: "Titulo do ML agora e 120 caracteres, pode alterar no Readme".
+- Vale para todo titulo NOVO do Mercado Livre (SS LIGHT, Isadora ML, BELLIPARTS): limite 120 caracteres, contado antes de enviar. Substitui o teto de 60 (secoes 29.5, 32.4, 32.10, 62 e as skills replica-de-anuncio / upseller-duplicar-anuncios, que ainda dizem 50-60).
+- Continua tudo o resto da 32.10: estrutura TIPO + VARIACAO + MODELO + GERACAO + ANOS + ESPECIFICACAO, um carro por titulo, Kit e Kit / Par e Par, nunca Farolete, sem Original, sem H11, sem nome de loja, nao repetir titulo dentro da loja, anos do anuncio do dono preservados, maiuscula na 1a letra de cada palavra no ML.
+- Os titulos ja publicados (ate 60) NAO foram mexidos. Faixa minima para os titulos novos do ML: ainda nao definida pelo dono (perguntado se usa 91-120 igual a Shopee).
