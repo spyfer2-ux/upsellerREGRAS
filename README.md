@@ -6148,3 +6148,15 @@ Importante:
 - Vale para todo titulo NOVO do Mercado Livre (SS LIGHT, Isadora ML, BELLIPARTS): limite 120 caracteres, contado antes de enviar. Substitui o teto de 60 (secoes 29.5, 32.4, 32.10, 62 e as skills replica-de-anuncio / upseller-duplicar-anuncios, que ainda dizem 50-60).
 - Continua tudo o resto da 32.10: estrutura TIPO + VARIACAO + MODELO + GERACAO + ANOS + ESPECIFICACAO, um carro por titulo, Kit e Kit / Par e Par, nunca Farolete, sem Original, sem H11, sem nome de loja, nao repetir titulo dentro da loja, anos do anuncio do dono preservados, maiuscula na 1a letra de cada palavra no ML.
 - Os titulos ja publicados (ate 60) NAO foram mexidos. Faixa minima para os titulos novos do ML: ainda nao definida pelo dono (perguntado se usa 91-120 igual a Shopee).
+
+## 111 REGRA DO DONO: FUN240 E FIAT PALIO / PUNTO / BRAVA / MAREA = LENTE DE VIDRO (19/11, noite)
+- Motivo: um cliente perguntou se a lente era mesmo de policarbonato. Leitura: FUN240-2 e variacoes 128 anuncios (116 diziam vidro, 12 policarbonato); FUN240-4 116 (92 policarbonato, 20 vidro, 4 sem material).
+- Palavras do dono: "Fun240-2 todos sao vidro, fun240-4 e vidro e todas variacoes, tudo que for Palio de 2003 a 2019 erradas, Punto, maioria da Fiat e vidro" e "Brava Marea tudo e vidro e fun240-2".
+- REGRA: FUN240-2, FUN240-2-LH1/-MH1/-XH1/-UH1, FUN240-4 e variacoes = LENTE DE VIDRO. Anuncios de Palio (2003 a 2019), Punto, Brava e Marea = LENTE DE VIDRO (Brava/Marea usam o FUN240-2). "Maioria da Fiat e vidro" = nos outros Fiat, na duvida perguntar. Continua valendo: FUN100-101 e SSS905RN (universais) = policarbonato (57.8).
+- Corrigido (troca "policarbonato" -> "vidro", "anti-UV" tirado; titulo "Lente Policarbonato" -> "Lente de Vidro"; backup IndexedDB FX_LENTE240_BAK e FX_LENTE240_MG_BAK):
+  - ML: 40 descricoes (6 FUN240-2-LH1 + 34 FUN240-4) por POST form /api/mercado/product/update-description. 1 FALTA: FUN240-4 MLB8014589146 EM REVISAO no ML (Error_failed_product_status) - refazer quando sair da revisao. Titulos do ML nao citavam policarbonato.
+  - Shopee: 56 (FUN240-2/-LH1 6, FUN240-4 37 com 18 titulos, GERSON pausados: SSS104FT Palio/Strada/Siena G4 11, RF098 Palio G5 com titulo "PolIcarbonato" -> "Lente de Vidro", MLBU778261866 Palio G5 1) - batch-edit (__G da GERSON_LIB_SRC), releitura 56/56 vidro. O GRX102FT (GERSON, pausado) ja dizia vidro (so a pergunta frequente "Acrilico ou Vidro?") - nao mexido.
+  - TikTok: 24 (20 FUN240-4 com 12 titulos + 4 pares Palio com variacao sem SKU) por G3.FIX.tkSaveApi (conferido).
+  - Magalu: FUN240-4 27379420109719256 corrigido e CONFIRMADO no sync (platformUpdateTime 20/11 00h19). FUN240-2, FUN240-2-LH1, SSS101FT, SSS101FT-MH1 e SSS166FT ja diziam vidro.
+- Releitura final no ML: todos os anuncios com Palio/Punto/Brava/Marea no titulo ou SKU FUN240 dizem vidro (menos o em revisao).
+- ESPERANDO O DONO: outros Fiat que dizem policarbonato e NAO foram mexidos: SSS130FT (ML 28, Shopee 85, com -MH8/-XH8). Universais FUN100-101 e SSS905RN continuam policarbonato pela 57.8.
