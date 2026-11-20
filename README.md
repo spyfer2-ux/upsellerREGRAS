@@ -6160,3 +6160,10 @@ Importante:
   - Magalu: FUN240-4 27379420109719256 corrigido e CONFIRMADO no sync (platformUpdateTime 20/11 00h19). FUN240-2, FUN240-2-LH1, SSS101FT, SSS101FT-MH1 e SSS166FT ja diziam vidro.
 - Releitura final no ML: todos os anuncios com Palio/Punto/Brava/Marea no titulo ou SKU FUN240 dizem vidro (menos o em revisao).
 - ESPERANDO O DONO: outros Fiat que dizem policarbonato e NAO foram mexidos: SSS130FT (ML 28, Shopee 85, com -MH8/-XH8). Universais FUN100-101 e SSS905RN continuam policarbonato pela 57.8.
+
+## 112 BELLIPARTS LOTE 5 (20/11/2026, 08h00 a 08h45 de Brasilia) - tarefa agendada (ordem do dono 17/11: copiar todos os ativos da SS LIGHT, 150 por dia)
+- Sessao do UpSeller ok (product-map-sku/index code 0). Lote numerado 5 (os lotes "604" e "3b".."3i" sao replicas avulsas, nao contam na numeracao). __B.day(150, 5): plano 150, restam 698 ativos da SS LIGHT sem copia.
+- Resultado: 150 rascunhos casados; 149 ATIVOS, conferidos por sincronizacao (POST /api/mercado/product/sync, 2 blocos) com preco e titulo IGUAIS aos da origem (149/149). Compatibilidade: 148 conferidas ao vivo (147 ok + 1 regravada), 1 origem sem compatibilidade. Mapa: 145 do lote mapeados (passada geral: 157 novos, 990 ja tinham); 3 sem mapa porque a ORIGEM na SS LIGHT nao tem mapa (SSS981RN MLB5587035775 e MLB5587035629, SSS413FD MLB5587022689). O MDM371-372 do lote 2 esta mapeado.
+- 1 FALHOU (fora do padrao, nao mexido): SSS204HD (Fit 2003 a 2006), rascunho 27379422808747493, origem MLB8009208166 - ML erro 3701 "Insira um codigo universal que voce nao tenha usado no anuncio de outra categoria" (GTIN da origem ja usado em outra categoria). Esperando o dono.
+- Desconto: pulado (BELLIPARTS com 0 vendas; regra do dono de 18/11: so depois de 10 vendas).
+- Proximo lote agendado para 21/11 08h00 (send_later).
