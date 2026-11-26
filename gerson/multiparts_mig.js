@@ -48,7 +48,7 @@ M.plan = async () => {
 M.load = async () => {
   M.S = await G.idb.get(M.KEY); const g = (await idx('online', M.DST)).filter(x => x.productStatus === 'NORMAL').slice(0, 5).map(x => String(x.idStr));
   const fr = await G.pj('/api/shopee/product/batch-edit-index', g); M.LOG = (fr.data || []).map(p => p.logistics).find(Boolean);
-  const pd = await G.post('/api/shopee/promotion/detail', { id: M.PROMO.id }); M.promoN = (pd.data || {}).productCount || ((pd.data || {}).shopeeProductList || []).length;
+  const pd = await G.post('/api/shopee/promotion/detail', { id: (M.S.promoCur || M.PROMO).id }); M.promoN = (pd.data || {}).productCount || ((pd.data || {}).shopeeProductList || []).length;
   return { itens: M.S.items.length, pos: M.S.pos, blocos: M.S.blocks.length, logi: !!M.LOG, promoN: M.promoN };
 };
 M.copy = async (blk) => { let c = 0; for (const it of blk) { if (it.draft || it.copyKey) continue; const j = await G.pj('/api/shopee/product/copy-shopee-product', { id: it.src, shopCountVoList: [{ count: '1', shopId: M.DST }] }); it.copyKey = j.data || ('code' + j.code); it.copyCode = j.code; c++; } await save(); return c; };
@@ -92,13 +92,24 @@ M.check = async (b) => {
   b.check = st; b.odd = odd; b.checkedAt = now(); await save(); return { st, odd };
 };
 M.repub = async (b) => { const S = M.S; const L = S.items.filter(x => b.ids.includes(x.draft) && x.state === 'fail' && /Image_API_error/i.test(x.err || '') && (x.rep || 0) < 2); if (!L.length) return 0; L.forEach(x => x.rep = (x.rep || 0) + 1); const r = await G.post('/api/shopee/product/batch-publish', { ids: L.map(x => x.draft).join(','), anyway: false }); await save(); return L.length + ' code ' + r.code; };
+const mkP = x => ({ itemId: Number(x.newItem), promotionPrice: (Math.round(Number(x.pr || x.price) * 92) / 100).toFixed(2), purchaseLimit: null, hasVariation: 0, editStatus: 'add', totalReservedStock: '' });
+// promocao cheia (1.000): cria a "OITO MULTI 3" com o 1o grupo (inicio >= 1 h depois, mesmo fim) e passa a usar ela
+M.promoNew = async (todo) => {
+  const S = M.S, name = 'OITO MULTI 3', st = Math.floor(Date.now() / 1000) + 3900;
+  const r = await G.post('/api/shopee/promotion/add', { shopId: M.DST, promotionName: name, startTime: st, endTime: M.PROMO.endTime, enableAutoRenew: 0, promotionProductStr: JSON.stringify(todo.map(mkP)), deleteActivityProducts: '[]' });
+  if (r.code !== 0) { S.promoErr = 'criar ' + r.code + ' ' + String(r.msg).slice(0, 100); await save(); return false; }
+  let row = null; for (let t = 0; t < 4 && !row; t++) { await sl(6); const li = await G.post('/api/shopee/promotion/index', { pageNum: 1, pageSize: 50 }); row = ((((li.data || {}).page || {}).list) || []).find(x => x.promotionName === name && String(x.shopId) === M.DST); }
+  todo.forEach(x => x.promo = name); if (!row) { S.promoErr = 'OITO MULTI 3 criada mas nao achei na lista'; S.promoCheia = now(); await save(); return false; }
+  S.promoCur = { id: String(row.idStr || row.id), promotionId: String(row.promotionId), name, startTime: st, endTime: M.PROMO.endTime }; M.promoN = todo.length; S.log.push(hh() + ' criada ' + name); await save(); return true;
+};
 M.promo = async () => {
-  const S = M.S, P = S.promoCur || M.PROMO; let n = 0;
-  for (let g = 0; g < 6; g++) {
-    const todo = S.items.filter(x => x.done && x.newItem && !x.promo).slice(0, 50); if (!todo.length) break;
-    if ((M.promoN || 0) + todo.length > 1000) { S.promoCheia = now(); break; }
-    const r = await G.post('/api/shopee/promotion/add', { shopId: M.DST, promotionName: P.name, startTime: P.startTime, endTime: P.endTime, enableAutoRenew: 0, promotionProductStr: JSON.stringify(todo.map(x => ({ itemId: Number(x.newItem), promotionPrice: (Math.round(Number(x.pr || x.price) * 92) / 100).toFixed(2), purchaseLimit: null, hasVariation: 0, editStatus: 'add', totalReservedStock: '' }))), deleteActivityProducts: '[]', promotionId: P.promotionId, id: P.id });
-    if (r.code !== 0) { S.promoErr = String(r.code) + ' ' + String(r.msg).slice(0, 100); break; }
+  const S = M.S; let n = 0; if (S.promoCheia) return 0;
+  for (let g = 0; g < 8; g++) {
+    const P = S.promoCur || M.PROMO, room = 1000 - (M.promoN || 0); let todo = S.items.filter(x => x.done && x.newItem && !x.promo).slice(0, 50); if (!todo.length) break;
+    if (room <= 0) { if (S.promoCur) { S.promoCheia = now(); await save(); break; } if (!(await M.promoNew(todo))) break; n += todo.length; await sl(2); continue; }
+    todo = todo.slice(0, room);
+    const r = await G.post('/api/shopee/promotion/add', { shopId: M.DST, promotionName: P.name, startTime: P.startTime, endTime: P.endTime, enableAutoRenew: 0, promotionProductStr: JSON.stringify(todo.map(mkP)), deleteActivityProducts: '[]', promotionId: P.promotionId, id: P.id });
+    if (r.code !== 0) { S.promoErr = String(r.code) + ' ' + String(r.msg).slice(0, 100); await save(); break; }
     todo.forEach(x => x.promo = P.name); M.promoN = (M.promoN || 0) + todo.length; n += todo.length; await save(); await sl(2);
   }
   return n;
