@@ -29,6 +29,7 @@ D.fixTitle = (name, sku) => {
   if (sp.line === 'X' && tl !== 'X') t += ' Xenon';
   if (kind === 'KIT') { let rest = t.replace(/^kit\s+/i, '').replace(/^par\s+(de\s+)?/i, ''); rest = rest.replace(/(^|\s)(kit|par)(?=\s|$)/gi, ' ').replace(/\s+/g, ' ').trim(); t = 'Kit ' + rest; }
   else if (kind === 'PAR') { if (!/^par\b/i.test(t)) t = 'Par ' + t.replace(/^kit\s+/i, ''); }
+  if (kind && !/\b(farol|far[oó]is|milha|neblina)\b/i.test(t)) t = t.replace(/^(Kit|Par)\b/, '$1 Farol De Milha'); // titulo que usava "Cibie" como nome do produto
   if (t.length > 120) t = t.slice(0, 120).replace(/\s+\S*$/, '');
   return t;
 };
