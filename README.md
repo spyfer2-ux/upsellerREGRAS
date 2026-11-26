@@ -6540,3 +6540,9 @@ Importante:
 - GERSON: precos antigos espalhados (ex. SSS069VW 208,88 x40). Magalu: quase tudo ~5% abaixo (parece regra da copia); muito fora FUN977-978 988,88 (ref 467,26) e SSS218HD 295/314/333 (ref 402,99/422,99/442,99).
 - Certos: SSS743CV (199,88 / MH3 219,88), SSS137FT, SSS907RN iguais em todas as lojas; SSS110HD 498,88 antigos x 538,79 novos = +8% pedido (secao 139).
 - Perguntado ao dono se iguala as listas 1 (conflito entre lojas) e 2 (Led/Xenon) pela referencia, deixando GERSON, Magalu e Isadora SSS1306HY (HOLD) para depois. Sem resposta = nao mexer.
+
+## 145 SSS101FT E VARIACOES REATIVADOS EM TODAS AS LOJAS (26/11/2026) - dono: "Despausar 101FT e todas as variacoes dele" - FIM DA REGRA DA SECAO 133
+- SSS101FT, -MH1, -XH1 e -MH8 VOLTARAM AO NORMAL: podem entrar em replica, lote da BELLIPARTS, robo de precos e igualadas como qualquer SKU. Continuam pausados por ordem do dono so SSS710CV e SSS707CV (secao 129).
+- Reativados os 613 que a secao 133 pausou (lista FX_PAUSA_101_2411.todo), mesmas rotas com flag:true: ML 231 (/api/mercado/product/one-update-unlist form, 1 por chamada), Shopee 254 (/api/shopee/product/updateUnlist form, ids 20 por chamada), TikTok 126 (/api/tiktok/product/one-update-unlist JSON), Magalu 2 (/api/magalu/product/product-state form state:true). 613 chamadas code 0; resultado em IndexedDB FX_DESPAUSA_101_2611.
+- Conferido por sync (ML 50, Shopee 100, TikTok 50 por bloco) + pullAll ~2 min depois: ML 231 active (SS LIGHT 80, Isadora 79, BELLIPARTS 72); Shopee 254 NORMAL (SSS Shopee 80, JhonJhon 82, GERSON 92); TikTok 102 active + 24 em reviewing (o TikTok reavalia ao reativar; SSS LIGHT TIKTOK 63+13, ISA TIK TOK 39+11); Magalu 2 online.
+- NAO REATIVADOS (ja estavam fora do ar ANTES da pausa de 24/11): Shopee GERSON 3 SSS101FT-XH1 UNLIST; TikTok SSS LIGHT TIKTOK 4 inactive; 2 em rectification (1 em cada TikTok - pedem correcao do TikTok). Perguntado ao dono se quer esses de volta.
