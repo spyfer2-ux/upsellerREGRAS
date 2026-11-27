@@ -6752,3 +6752,6 @@ Importante:
 - MIGRACAO RECONFERIDA as 07h58 (sync dos 1.069 + indice): 1.067 NORMAL e os MESMOS 2 SHOPEE_DELETE (DLT619 Yaris e SSS507TA Hilux 2005-2008) - nenhuma remocao nova em 7 h. Loja: 2.327 NORMAL, 1.438 UNLIST, 3 BANNED antigos.
 - PROMOCAO: "OITO MULTI 3" aparece como "upcoming" na lista do UpSeller (status parado), mas no indice dos anuncios os 354 estao com isPromotion e preco promocional = 92% do preco (conferido 1 a 1; 0 fora de 8%). "OITO MULTI 2" ongoing 1.000 (714 migrados a 8%). "OITO MULTI" ongoing 999.
 - PENDENTE COM O DONO: pausar ou nao os 16 do grupo A da 151.8; remocoes (motivo na tela "Obter Info. de Violacao").
+
+## 151.12 27/11 08h05 - DONO: "pode pausar" -> 16 DO GRUPO A DA 151.8 PAUSADOS NA MULTIPARTS
+- Pausados 16 de 16 (updateUnlist flag false; UNLIST conferido por sync): A1 1 (par de lampadas com SKU FUN100-101), A2 2 (SSS905RN-MH8 C4 Pallas com fotos do kit com moldura), A3 1 (SSS013VW Polo 2003-2006 com grades), A4 2 (SSS126FT e -MH1 Ducato com molduras), A5 2 (SSS405FD e -MHB4 Ford Ka 2008-2012 com capa do SSS408FD), A6 1 (SSS712CV Montana 269,99), A7 7 (FUN104-105 Ecosport 2008+). Lista com motivo: IndexedDB FX_PAUSA_FOTOA_2711. NAO reativar nem corrigir SKU sem o dono mandar. Grupos B e C da 151.8 continuam ativos.
