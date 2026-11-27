@@ -6746,3 +6746,9 @@ Importante:
 - FOTOS: o plano voltou sozinho as 00h39 (9o lote de 400 = resto da SSS Shopee + JhonJhon); 2.793 de 7.032 feitos antes. PRECISA DE ABA VIVA: conferir nos proximos check-ins.
 - FICOU FORA DA MIGRACAO: 18 anuncios com variacao, 15 sem titulo unico (MPMIG.semT), SKUs que ja tinham 10+; e a parte do ML (151.3: 15 SKUs, 203 anuncios).
 - CONFERIR DE NOVO pela manha (licao 76.8): sync completo da MULTIPARTS e status SHOPEE_DELETE; origem na SSS Shopee.
+
+## 151.11 27/11 02h25 A 08h00 - FOTOS EM LOTES POR CHECK-IN + RECONFERENCIA DA MIGRACAO (SEM REMOCAO NOVA)
+- FOTOS (arte NF + 2HORAS): como as abas morrem ao fim do turno, cada check-in abre aba, carrega gerson_lib.js + FOTO_CODE e roda UMA vez __FT.cycle(400) (fecha o lote pendente e manda o proximo; ~40 s). ESPERAR #app.__vue__ antes do __G.boot() (sem isso da "$utils undefined"). Andamento: 02h25 3.592; 04h15 3.992; 06h05 4.392; 07h58 4.792 de 7.032 (13o lote enviado), 8 falhas para refazer no fim.
+- MIGRACAO RECONFERIDA as 07h58 (sync dos 1.069 + indice): 1.067 NORMAL e os MESMOS 2 SHOPEE_DELETE (DLT619 Yaris e SSS507TA Hilux 2005-2008) - nenhuma remocao nova em 7 h. Loja: 2.327 NORMAL, 1.438 UNLIST, 3 BANNED antigos.
+- PROMOCAO: "OITO MULTI 3" aparece como "upcoming" na lista do UpSeller (status parado), mas no indice dos anuncios os 354 estao com isPromotion e preco promocional = 92% do preco (conferido 1 a 1; 0 fora de 8%). "OITO MULTI 2" ongoing 1.000 (714 migrados a 8%). "OITO MULTI" ongoing 999.
+- PENDENTE COM O DONO: pausar ou nao os 16 do grupo A da 151.8; remocoes (motivo na tela "Obter Info. de Violacao").
